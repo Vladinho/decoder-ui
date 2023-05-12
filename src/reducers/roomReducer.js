@@ -12,6 +12,7 @@ export const roomSlice = createSlice({
         users: [],
         me: localStorage.getItem('userName') || null,
         myTeam: null,
+        opponentTeam: null,
         isLoading: false,
         roomId: localStorage.getItem('roomId') || null,
         gameId: localStorage.getItem('gameId') || null,
@@ -26,9 +27,6 @@ export const roomSlice = createSlice({
     },
     reducers: {
         setState: (state, { payload }) => {
-            if (!state.myTeam && state.me && state.team_1.length && state.team_2.length) {
-                state.myTeam = state.team_1.some(i => i === state.me) ? 1 : 2;
-            }
             Object.keys(payload).forEach((key) => {
                 if (payload[key] !== undefined) {
                     state[key] = payload[key];

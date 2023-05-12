@@ -5,7 +5,7 @@ import css from './styles.module.scss'
 import classNames from "classnames";
 import api from "../../api";
 import {setState} from "../../reducers/roomReducer";
-import getApi from "../../api";
+// import getApi from "../../api";
 import {useNavigate} from "react-router";
 import Server from "../../services/server";
 
@@ -46,9 +46,9 @@ const LoginPage = () => {
         </form>
         <h3 className='text-center'>Or</h3>
         <button type="submit" className={classNames(['btn', ' btn-primary', 'mb-2', 'w-100'])} disabled={!userName || roomId} onClick={async () => {
-            const room = await getApi(dispatch).newRoom(userName);
+            const room = await api.newRoom(userName);
             const { data: { _id: roomId, mainUser, users }} = room;
-            const game = await getApi(dispatch).newGame(roomId);
+            const game = await api.newGame(roomId);
             const { data: { _id: gameId }} = game;
             roomId && localStorage.setItem('roomId', roomId);
             userName && localStorage.setItem('userName', userName);
