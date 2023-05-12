@@ -14,7 +14,7 @@ const ResultsTable = ({ answers, words }) => {
         }
     }
     const rows = wordsRows.filter((r) => r.some(i => i));
-    return <table className="table">
+    return <table className="table table-striped" style={{fontSize: '12px'}}>
         <thead>
         <tr>
             <th scope="col">#</th>

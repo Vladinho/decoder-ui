@@ -12,8 +12,8 @@ const Layout = ({ children, cx = [] }) => {
     const [isTeamsVisible, setIsTeamsVisible] = useState(false);
     return <div className={classNames(['container-md', 'p-3', ...cx])}>
         {state.me && <>
-            <h1 className={classNames(['d-flex', 'justify-content-between', 'position-relative' ])}>
-                {state.me} {state.round && <span className="badge bg-secondary">round {state.round}</span>}
+            <div className={'d-flex justify-content-between position-relative align-items-center flex-wrap'}>
+                <h2>{state.me}</h2> {state.round && <span className="badge bg-secondary">round {state.round}</span>}
                 <button type="button" className="btn btn-primary" onClick={() => setIsTeamsVisible((s) => !s)}>{isTeamsVisible ? 'Hide' : 'Show'} teams</button>
                 <button className="btn btn-primary" onClick={() => {
                     s.getGame();
@@ -33,14 +33,14 @@ const Layout = ({ children, cx = [] }) => {
                     </button>
                     <h3>Your team:</h3>
                     <ul className={classNames(["list-group", 'mb-3'])}>
-                        {myTeam.map(i => <li key={i} className={classNames("list-group-item", {['border']: i === curPlayer, ['border-primary']: i === curPlayer})}><h6>{i}</h6></li>)}
+                        {myTeam.map(i => <li key={i} className={classNames("list-group-item", {['border']: i === curPlayer, ['bg-light']: i === curPlayer})}><h6>{i}</h6></li>)}
                     </ul>
                     <h3>Opponent`s team:</h3>
                     <ul className={classNames(["list-group"])}>
-                        {opponentTeam.map(i => <li key={i} className={classNames("list-group-item", {['border']: i === opponentCurPlayer, ['border-primary']: i === opponentCurPlayer})}><h6>{i}</h6></li>)}
+                        {opponentTeam.map(i => <li key={i} className={classNames("list-group-item", {['border']: i === opponentCurPlayer, ['bg-light']: i === opponentCurPlayer})}><h6>{i}</h6></li>)}
                     </ul>
                 </div>}
-            </h1>
+            </div>
 
             <hr className="mt-2 mb-3"/>
         </>}

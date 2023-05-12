@@ -37,7 +37,7 @@ const Game = () => {
     return <Layout>
         {myTeamAnswersForTable && myTeamAnswersForTable.length === state.round && opponentTeamAnswersForTable && opponentTeamAnswersForTable.length === state.round &&
             <button type="button" className="btn btn-success w-100 mb-3" onClick={() => server.nextRound()}>Next Round</button>}
-        <ul className="list-group list-group-horizontal mb-3">
+        <ul className="list-group list-group-horizontal mb-3" style={{fontSize: '12px'}}>
             {words.map(i => <li className="list-group-item flex-grow-1 flex-shrink-1" key={i}>{i}</li>)}
         </ul>
         {
@@ -112,7 +112,7 @@ const Game = () => {
                 }
             </>
         }
-        <pre>{JSON.stringify(state, null, 4)}</pre>
+        {/*<pre>{JSON.stringify(state, null, 4)}</pre>*/}
     </Layout>
 }
 

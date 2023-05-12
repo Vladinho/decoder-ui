@@ -9,6 +9,7 @@ import JoinGame from "./pages/JoinGame";
 import StartGame from "./pages/StartGamePage";
 import Game from "./pages/GamePage";
 import Server from "./services/server";
+import Modal from "./components/Modal";
 
 function App() {
     const state = useSelector((state) => state);
@@ -28,6 +29,8 @@ function App() {
                   <Route path="/game" element={<Game />} />
               </Routes>
           </BrowserRouter>
+          {state.modalCallback && <Modal callback={state.modalCallback} /> }
+          {state.modalCallback && 'aaaaaa!!!!!' }
       </>
 
   );

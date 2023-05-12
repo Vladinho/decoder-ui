@@ -3,10 +3,10 @@ import classNames from "classnames";
 
 const Table = ({ answer }) => {
     const state = useSelector((state) => state);
-    return <table className="table">
+    return <table className="table table-striped">
         <thead>
         <tr>
-            <th scope="col">Round 1</th>
+            <th scope="col">Round {answer.round}</th>
             <th scope="col" className={'text-center'}>?</th>
             <th scope="col" className={'text-center'}>!</th>
             <th scope="col" className={'text-center'}>??</th>

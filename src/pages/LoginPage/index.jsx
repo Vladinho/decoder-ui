@@ -56,7 +56,7 @@ const LoginPage = () => {
             dispatch(setState({ mainUser, users, roomId, gameId }));
             navigate('/StartGame')
         }}>Create new room</button>
-        <pre>{JSON.stringify(state, null, 4)}</pre>
+        {/*<pre>{JSON.stringify(state, null, 4)}</pre>*/}
     </Layout>
 }
 

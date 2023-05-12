@@ -1,0 +1,22 @@
+.overlay {
+  width: 100%;
+  position: fixed;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+
+  :global(.modal) {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-size: 20px;
+}

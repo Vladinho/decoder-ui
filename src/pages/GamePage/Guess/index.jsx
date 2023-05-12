@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import Server from "../../../services/server";
+import useModal from "../../../hooks/useModal";
 
 const Guess = ({answers, }) => {
     const [guessState, setGuessState] = useState(['', '', '']);
@@ -16,6 +17,7 @@ const Guess = ({answers, }) => {
         guess && guess.length && setGuessState(guess.split(''))
     }, [guess])
     const isGuessNotChanged = guess && guess === guessState.join('');
+    const showModal = useModal();
     return <>
         <table className="table">
             <thead>
@@ -43,11 +45,22 @@ const Guess = ({answers, }) => {
             </tbody>
         </table>
         <div className='d-flex justify-content-end'>
-            {isGuessNotChanged ? <button type="button" className="btn btn-success text-end" onClick={() => {
-                server.agree(curAnswer._id);
-            }}>Confirm?</button> : <button type="button" className="btn btn-primary text-end" disabled={new Set(guessState.filter(i => i)).size !== 3} onClick={() => {
-                server.guess(curAnswer._id, guessState.join(''));
-            }}>Submit yours</button>}
+            {isGuessNotChanged ?
+                <button
+                    type="button"
+                    className="btn btn-success text-end"
+                    onClick={() => {
+                        server.agree(curAnswer._id);
+                    }}
+                >Confirm?</button> :
+                <button
+                    type="button"
+                    className="btn btn-primary text-end"
+                    disabled={new Set(guessState.filter(i => i)).size !== 3}
+                    onClick={() => showModal(() => {
+                        server.guess(curAnswer._id, guessState.join(''));
+                    })}
+                >Submit</button>}
         </div>
     </>
 }
