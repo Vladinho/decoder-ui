@@ -1,6 +1,7 @@
 import axios from "axios";
 
-axios.defaults.baseURL = 'http://localhost:4444/';
+axios.defaults.baseURL = 'https://decoder90.herokuapp.com/';
+// axios.defaults.baseURL = 'http://localhost:4444/';
 
 const api = {
     getGame: (id) =>axios.get('game', {

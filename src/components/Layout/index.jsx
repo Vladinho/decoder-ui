@@ -6,7 +6,6 @@ import useMy from "../../hooks/useMy";
 import Server from "../../services/server";
 import useModal from "../../hooks/useModal";
 import refreshIcon from "../../assets/refresh.svg"
-import king from "../../assets/king.svg"
 import done from "../../assets/done.svg"
 
 const Layout = ({ children, cx = [] }) => {
@@ -38,7 +37,7 @@ const Layout = ({ children, cx = [] }) => {
                             className={classNames("list-group-item", {border: i === curPlayer, 'bg-light': i === curPlayer})}
                         >
                             <h6>{i}
-                                {state.mainUser === i && <img className={css.king} src={king} alt={'king'}/>}
+                                {state.mainUser === i && ' (admin)'}
                                 {!!curAnswers?.length && curAnswers.every(a => a.user === i || a[`team_${state.team_1.some(u => u === i) ? 1 : 2}_agree`]?.some(j => j === i)) && <img src={done} className={css.done} alt={'done'}/>}
                             </h6>
                         </li>)}
@@ -51,7 +50,7 @@ const Layout = ({ children, cx = [] }) => {
                         >
                             <h6>
                                 {i}
-                                {state.mainUser === i && <img className={css.king} src={king} alt={'king'} />}
+                                {state.mainUser === i && ' (admin)'}
                                 {!!curAnswers?.length && curAnswers.every(a => a.user === i || a[`team_${state.team_1.some(u => u === i) ? 1 : 2}_agree`]?.some(j => j === i)) && <img src={done} className={css.done} alt={'done'}/>}
                             </h6>
                         </li>)}
