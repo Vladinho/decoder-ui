@@ -1,23 +1,17 @@
 import './App.css';
-import api from "./api";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
-import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import Loader from "./components/Loader";
 import JoinGame from "./pages/JoinGame";
 import StartGame from "./pages/StartGamePage";
 import Game from "./pages/GamePage";
-import Server from "./services/server";
 import Modal from "./components/Modal";
+import {setState} from "./reducers/roomReducer";
 
 function App() {
     const state = useSelector((state) => state);
-    // const dispatch = useDispatch();
-    // useEffect(async () => {
-    //     const s = new Server(dispatch);
-    //     s.getGame();
-    // }, []);
+    const dispatch = useDispatch();
   return (
       <>
           {state.isLoading && <Loader />}
@@ -30,7 +24,11 @@ function App() {
               </Routes>
           </BrowserRouter>
           {state.modalCallback && <Modal callback={state.modalCallback} /> }
-          {state.modalCallback && 'aaaaaa!!!!!' }
+          {!!state.errors?.length && <Modal
+              text={`${state.errors[0]?.message}\n${state.errors[0]?.response?.data?.message}` || 'Something went wrong!'}
+              callback={() => dispatch(setState({ errors: [] }))}
+              noAction={true}
+          /> }
       </>
 
   );

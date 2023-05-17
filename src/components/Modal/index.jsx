@@ -2,7 +2,7 @@ import {useDispatch} from "react-redux";
 import {setState} from "../../reducers/roomReducer";
 import css from './styles.module.scss'
 import classNames from "classnames";
-const Modal = ({ callback }) => {
+const Modal = ({ callback, text, noAction }) => {
     const dispatch = useDispatch();
     return <div className={css.overlay} onClick={() => dispatch(setState({modalCallback: null }))}>
         <div className="modal" tabIndex="-1" role="dialog">
@@ -15,14 +15,22 @@ const Modal = ({ callback }) => {
                         </button>
                     </div>
                     <div className="modal-body">
-                        <p>Are you sure?</p>
+                        <pre>{text || 'Are you sure?'}</pre>
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-primary" onClick={() => {
-                            callback();
-                            dispatch(setState({modalCallback: null }))
-                        }}>Confirm</button>
-                        <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={() => dispatch(setState({modalCallback: null }))}>Cancel</button>
+                        {
+                            noAction ? <>
+                                <button type="button" className="btn btn-primary" onClick={() => {
+                                    callback();
+                                }}>Ok</button>
+                            </> : <>
+                                <button type="button" className="btn btn-primary" onClick={() => {
+                                    callback();
+                                    dispatch(setState({modalCallback: null }))
+                                }}>Confirm</button>
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={() => dispatch(setState({modalCallback: null }))}>Cancel</button>
+                            </>
+                        }
                     </div>
                 </div>
             </div>

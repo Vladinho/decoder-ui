@@ -20,9 +20,6 @@ const StartGame = () => {
         <h1>room ID: {state.roomId}</h1>
         <button className={classNames(['btn', ' btn-primary', 'mb-2', 'w-100'])} onClick={async () => {
             s.getRoom();
-            // const room = await api.getRoom(state.roomId);
-            // const { data: { mainUser, team_1, team_2, users } } = room;
-            // dispatch(setState({mainUser, team_1, team_2, users}));
         }}>See team members</button>
         <button className={classNames(['btn', ' btn-primary', 'mb-2', 'w-100'])} disabled={state.users.length < 2} onClick={async () => {
             const room = await api.createTeams(state.roomId);
@@ -36,7 +33,7 @@ const StartGame = () => {
             navigate('/game');
         }}>Start Game</button>
         {
-            state.team_1.length && state.team_2.length ? <>
+            !!state.team_1.length && !!state.team_2.length ? <>
                 <h2>Team 1:</h2>
                 <ul className="list-group">
                     {state.team_1.map((i) => <li key={i} className="list-group-item">{i}</li>)}
@@ -52,6 +49,7 @@ const StartGame = () => {
                 </ul>
             </>
         }
+        {/*<pre>{JSON.stringify(state, null, 4)}</pre>*/}
     </Layout>
 }
 

@@ -3,7 +3,7 @@ import classNames from "classnames";
 
 const Table = ({ answer }) => {
     const state = useSelector((state) => state);
-    return <table className="table table-striped">
+    return <div className={'overflow-auto'}><table className="table table-striped">
         <thead>
         <tr>
             <th scope="col">Round {answer.round}</th>
@@ -31,7 +31,7 @@ const Table = ({ answer }) => {
             })
         }
         </tbody>
-    </table>
+    </table></div>
 }
 
 export default Table;

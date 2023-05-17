@@ -1,5 +1,4 @@
 import axios from "axios";
-import {setState} from "./reducers/roomReducer";
 
 axios.defaults.baseURL = 'http://localhost:4444/';
 
@@ -43,51 +42,13 @@ const api = {
     }),
     setNextRound: (roomId, gameId, curRound) => axios.post('nextRound', {
         roomId, gameId, curRound
+    }),
+    setComment: (gameId, { comments_1, comments_2 }) => axios.post('comment', {
+        gameId, comments_1, comments_2
+    }),
+    reset: (gameId, roomId) => axios.post('reset', {
+        gameId, roomId
     })
 }
-
-// const getApi = (dispatch = () => {}) => {
-//     return {
-//         getGame: (id) => middleWare(() => axios.get('game', {
-//             params: { id }
-//         }), dispatch),
-//         getRoom: (id) => middleWare(() => axios.get('room', {
-//             params: { id }
-//         }), dispatch),
-//         joinRoom: (id, user) => middleWare(() => axios.post('joinRoom', {
-//             id,
-//             user
-//         }), dispatch),
-//         getGameByRoomId: (id) => middleWare(() => axios.get('gameByRoomId', {
-//             params: { id }
-//         }), dispatch),
-//         newRoom: (user) => middleWare(() => axios.post('room', {
-//             user
-//         }), dispatch),
-//         newGame: (roomId) => middleWare(() => axios.post('game', {
-//             roomId
-//         }), dispatch),
-//         createTeams: (id) => middleWare(() => axios.post('teams', {
-//             id
-//         }), dispatch),
-//         nextRound: (roomId, gameId, curRound) => middleWare(() => axios.post('nextRound', {
-//             roomId, gameId, curRound
-//         }), dispatch),
-//
-//         getAnswers: (gameId) => middleWare(() => axios.get('answer', {
-//             params: { gameId }
-//         }), dispatch),
-//         setAnswer: (roomId, gameId, user, code, answer) => middleWare(() => axios.post('answer', {
-//             roomId, gameId, user, code, answer
-//         }), dispatch),
-//     }
-// }
-
-// const middleWare = (callback, dispatch) => {
-//     dispatch(setState({ isLoading: true }));
-//     return callback().catch((e) => dispatch(setState({ errors: e }))).finally(() => {
-//         dispatch(setState({ isLoading: false }));
-//     })
-// }
 
 export default api;

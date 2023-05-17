@@ -28,7 +28,6 @@ export const roomSlice = createSlice({
     },
     reducers: {
         setState: (state, { payload }) => {
-            console.log(payload)
             Object.keys(payload).forEach((key) => {
                 if (payload[key] !== undefined) {
                     state[key] = payload[key];

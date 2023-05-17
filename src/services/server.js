@@ -50,7 +50,7 @@ class Server {
             this.dispatch(setState(data));
             return data;
         } catch (e) {
-            this.dispatch(setState({ errors: e }));
+            this.dispatch(setState({ errors: [e] }));
         } finally {
             this.stopLoading();
         }
@@ -66,7 +66,7 @@ class Server {
             const answers = await api.getAnswers(id);
             this.dispatch(setState({ answers: answers.data }));
         } catch (e) {
-            this.dispatch(setState({ errors: e }));
+            this.dispatch(setState({ errors: [e] }));
         } finally {
             this.stopLoading();
         }
@@ -76,8 +76,6 @@ class Server {
         try {
             const { data: { team_1_code, team_2_code, team_1_player, team_2_player } } = await api.setAnswer(this.roomId, this.gameId, this.user, code, answer);
             await this.getAnswers();
-            // const answers = this.getState().answers;
-
             const newState = { team_1_code, team_2_code, team_1_player, team_2_player }
             Object.keys(newState).forEach(key => {
                 if (newState[key] === undefined) {
@@ -86,15 +84,10 @@ class Server {
             })
             this.dispatch(setState({ ...newState }));
         } catch (e) {
-            this.dispatch(setState({ errors: e }));
+            this.dispatch(setState({ errors: [e] }));
         } finally {
             this.stopLoading();
         }
-
-        // console.log(data);
-        // console.log(this.getState().answers)
-        // this.dispatch(setState());
-        // const { data: {} } = answers
     }
 
     createTeams = async () => {
@@ -105,7 +98,7 @@ class Server {
             const { data: { team_1, team_2 } } = room;
             this.dispatch(setState({ team_1, team_2, myTeam: team_1.some(i => i === me) ? 1 : 2 }));
         } catch (e) {
-            this.dispatch(setState({ errors: e }));
+            this.dispatch(setState({ errors: [e] }));
         } finally {
             this.stopLoading();
         }
@@ -114,9 +107,9 @@ class Server {
         this.startLoading();
         try {
             await api.setAgree(this.roomId, this.gameId, this.user, answerId);
-            this.getAnswers();
+            await this.getAnswers();
         } catch (e) {
-            this.dispatch(setState({ errors: e }));
+            this.dispatch(setState({ errors: [e] }));
         } finally {
             this.stopLoading();
         }
@@ -125,9 +118,9 @@ class Server {
         this.startLoading();
         try {
             await api.setGuess(this.roomId, this.gameId, this.user, answerId, guess);
-            this.getAnswers();
+            await this.getAnswers();
         } catch (e) {
-            this.dispatch(setState({ errors: e }));
+            this.dispatch(setState({ errors: [e] }));
         } finally {
             this.stopLoading();
         }
@@ -138,9 +131,39 @@ class Server {
         try {
             const curRound = this.getState().round;
             await api.setNextRound(this.roomId, this.gameId, curRound);
-            this.getGame();
+            await this.getGame();
+            await this.getAnswers();
         } catch (e) {
-            this.dispatch(setState({ errors: e }));
+            this.dispatch(setState({ errors: [e] }));
+        } finally {
+            this.stopLoading();
+        }
+    }
+    setComment = async (comments) => {
+        this.startLoading();
+        try {
+            const state = this.getState();
+            await api.setComment(this.gameId, {
+                comments_1: state.myTeam === 1 ? comments : null,
+                comments_2: state.myTeam === 2 ? comments : null,
+            });
+            await this.getGame();
+        } catch (e) {
+            this.dispatch(setState({ errors: [e] }));
+        } finally {
+            this.stopLoading();
+        }
+    }
+    reset = async (mixTeams) => {
+        this.startLoading();
+        try {
+            mixTeams && await this.createTeams();
+            await api.reset(this.gameId, this.roomId);
+            await this.getGame();
+            await this.getRoom();
+            await this.getAnswers();
+        } catch (e) {
+            this.dispatch(setState({ errors: [e] }));
         } finally {
             this.stopLoading();
         }

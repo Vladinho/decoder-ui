@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import Server from "../../../services/server";
 import useModal from "../../../hooks/useModal";
 
-const Guess = ({answers, }) => {
+const Guess = ({answers}) => {
     const [guessState, setGuessState] = useState(['', '', '']);
 
     const state = useSelector((state) => state);
@@ -20,12 +20,6 @@ const Guess = ({answers, }) => {
     const showModal = useModal();
     return <>
         <table className="table">
-            <thead>
-            <tr>
-                <th scope="col">Word</th>
-                <th scope="col">Guess</th>
-            </tr>
-            </thead>
             <tbody>
             {
                 answers.find(i => i.round === state.round)?.answer.map((i, index) =>  <tr key={i}>
