@@ -10,7 +10,12 @@ const Modal = ({ callback, text, noAction }) => {
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title">Save changes</h5>
-                        <button type="button" className={classNames(['btn', 'btn-light', css.close])} aria-label="Close" onClick={() => dispatch(setState({modalCallback: null }))}>
+                        <button
+                            type="button"
+                            className={classNames(['btn', 'btn-light', css.close])}
+                            aria-label="Close"
+                            onClick={() => noAction ? callback && callback() : dispatch(setState({modalCallback: null }))}
+                        >
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
