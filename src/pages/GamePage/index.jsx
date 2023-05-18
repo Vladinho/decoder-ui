@@ -38,7 +38,13 @@ const Game = () => {
 
     return <Layout>
         <Counter />
-        {[...Object.values(myCounter), ...Object.values(opponentCounter)].every(i => i < 2) && myTeamAnswersForTable && myTeamAnswersForTable.length === state.round && opponentTeamAnswersForTable && opponentTeamAnswersForTable.length === state.round &&
+        {[...Object.values(myCounter), ...Object.values(opponentCounter)].every(i => i < 2) &&
+            myTeamAnswersForTable &&
+            myTeamAnswersForTable.length === state.round &&
+            opponentTeamAnswersForTable &&
+            opponentTeamAnswersForTable.length === state.round &&
+            myCounter.answeredRounds.some(i => i === state.round) &&
+            opponentCounter.answeredRounds.some(i => i === state.round) &&
             <button type="button" className="btn btn-success w-100 mb-3" onClick={() => server.nextRound()}>Next Round</button>}
         <ul className="list-group list-group-horizontal mb-3 overflow-auto" style={{fontSize: '12px'}}>
             {words.map(i => <li className="list-group-item flex-grow-1 flex-shrink-1" key={i} style={{textTransform: 'capitalize'}}>{i}</li>)}
