@@ -32,7 +32,10 @@ const LoginPage = () => {
             roomId && localStorage.setItem('roomId', roomId);
             userName && localStorage.setItem('userName', userName);
             dispatch(setState({ roomId, me: userName }));
-            server.joinRoom(roomId, userName);
+            const res = await server.joinRoom(roomId, userName);
+            if (!res) {
+                return;
+            }
             if (state.round) {
                 navigate('/game');
             } else {

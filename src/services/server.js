@@ -171,7 +171,7 @@ class Server {
     joinRoom = async (roomId, user) => {
         this.startLoading();
         try {
-            await api.joinRoom(roomId, user);
+            return await api.joinRoom(roomId, user);
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
         } finally {
