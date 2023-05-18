@@ -38,7 +38,7 @@ const Game = () => {
 
     return <Layout>
         <Counter />
-        {[...Object.values(myCounter), ...Object.values(opponentCounter)].every(i => i < 2) &&
+        {[myCounter.black, myCounter.white, opponentCounter.black, opponentCounter.white].every(i => i < 2) &&
             myTeamAnswersForTable &&
             myTeamAnswersForTable.length === state.round &&
             opponentTeamAnswersForTable &&
