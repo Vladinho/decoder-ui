@@ -168,6 +168,16 @@ class Server {
             this.stopLoading();
         }
     }
+    joinRoom = async () => {
+        this.startLoading();
+        try {
+            await api.joinRoom(this.roomId, this.user);
+        } catch (e) {
+            this.dispatch(setState({ errors: [e] }));
+        } finally {
+            this.stopLoading();
+        }
+    }
 }
 
 export default Server;

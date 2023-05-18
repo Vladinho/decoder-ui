@@ -13,6 +13,7 @@ const LoginPage = () => {
     const [roomId, setRoomId] = useState(localStorage.getItem('roomId') || '');
     const [userName, setUserName] = useState(localStorage.getItem('userName') || '');
     const state = useSelector((state) => state);
+    const server = new Server();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     useEffect(() => {
@@ -31,12 +32,12 @@ const LoginPage = () => {
             roomId && localStorage.setItem('roomId', roomId);
             userName && localStorage.setItem('userName', userName);
             dispatch(setState({ roomId, me: userName }));
+            server.joinRoom();
             if (state.round) {
                 navigate('/game');
             } else {
                 state.mainUser === userName ? navigate('/startGame') : navigate('/joinGame');
             }
-
         }}>
             <div className={classNames(['form-group', 'mb-2', 'w-100'])}>
                 <input type="text" className="form-control" id="roomID" aria-describedby="emailHelp" onChange={(e) => setRoomId(e.target.value)}
