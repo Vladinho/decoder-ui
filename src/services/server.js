@@ -168,10 +168,10 @@ class Server {
             this.stopLoading();
         }
     }
-    joinRoom = async () => {
+    joinRoom = async (roomId, user) => {
         this.startLoading();
         try {
-            await api.joinRoom(this.roomId, this.user);
+            await api.joinRoom(roomId, user);
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
         } finally {
