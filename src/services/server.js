@@ -45,9 +45,9 @@ class Server {
         try {
             const room = await api.getRoom(id);
             const me = this.getState().me;
-            const { data: { users, team_1, team_2, mainUser } } = room;
+            const { users = [], team_1 = [], team_2 = [], mainUser = null } = room?.data || { data: {}};
             const data = { users, team_1, team_2, mainUser, myTeam: team_1.some(i => i === me) ? 1 : 2, opponentTeam: team_1.some(i => i === me) ? 2 : 1 };
-            this.dispatch(setState(data));
+            room?.data && this.dispatch(setState(data));
             return data;
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
