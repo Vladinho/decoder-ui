@@ -3,13 +3,13 @@ import classNames from "classnames";
 
 const Table = ({ answer }) => {
     const state = useSelector((state) => state);
-    return <div className={'overflow-auto'}><table className="table table-striped">
+    return <div className={'overflow-auto animate__animated animate__backInRight'}><table className="table table-striped">
         <thead>
         <tr>
             <th scope="col">Round {answer.round}</th>
-            <th scope="col" className={'text-center'}>?</th>
-            <th scope="col" className={'text-center'}>!</th>
-            <th scope="col" className={'text-center'}>??</th>
+            <th scope="col" className={'text-center'} style={{fontSize: '10px'}}>your<br/>answer</th>
+            <th scope="col" className={'text-center'} style={{fontSize: '10px'}}>correct<br/>answer</th>
+            <th scope="col" className={'text-center'} style={{fontSize: '10px'}}>opponent`s<br/>answer</th>
         </tr>
         </thead>
         <tbody>

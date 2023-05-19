@@ -3,6 +3,7 @@ import {useState} from "react";
 import Server from "../../../services/server";
 
 const ResultsTable = ({ answers, words, comments = [], isMyResults }) => {
+    const [isCommentMode, setIsCommentMode] = useState(false);
     const state = useSelector((state) => state);
     const wordsColumns = [[], [], [], []];
     const server = new Server();
@@ -35,15 +36,10 @@ const ResultsTable = ({ answers, words, comments = [], isMyResults }) => {
         commentsObj[state.me] = ['', '', '', '']
     }
     const [inputs, setInputs] = useState(commentsObj[state.me] || ['', '', '', '']);
+    const isCommentChanged = commentsObj[state.me] &&
+        JSON.stringify(commentsObj[state.me]) !== JSON.stringify(inputs);
 
-    // let editedInput = null;
-    // commentsObj[state.me].forEach((comment, index) => {
-    //     if (comment !== inputs[index]) {
-    //         editedInput = index;
-    //     }
-    // })
-
-    return <>
+    return <div className={'animate__animated animate__backInRight'}>
         <div className={'overflow-auto'}>
             <table className="table table-striped mb-2 table-sm" style={{fontSize: '12px'}}>
             <thead>
@@ -65,8 +61,8 @@ const ResultsTable = ({ answers, words, comments = [], isMyResults }) => {
             {
                 !isMyResults && Object.keys(commentsObj).map(key => <tr key={key}>
                     <th scope="row" className={'text-nowrap'}>{key}</th>
-                    {commentsObj[key].map((i, index) => <td key={index}>
-                        {state.me === key ?
+                    {commentsObj[key].map((i, index) => <td key={index} className={'text-break'}>
+                        {state.me === key && isCommentMode ?
                             <input
                                 type="text"
                                 key={index}
@@ -88,17 +84,36 @@ const ResultsTable = ({ answers, words, comments = [], isMyResults }) => {
         </table>
         </div>
         {
-            !isMyResults && commentsObj[state.me] &&
-            JSON.stringify(commentsObj[state.me]) !== JSON.stringify(inputs) &&
+            !isMyResults && isCommentChanged &&
             <button
-                className="btn btn-primary w-100"
+                className="btn btn-success w-100 mb-2"
                 type="submit"
-                onClick={() => {
-                    server.setComment(inputs.map((i, index) => `${state.me}_${index + 1}__${i}`))
+                onClick={async () => {
+                    await server.setComment(inputs.map((i, index) => `${state.me}_${index + 1}__${i}`));
+                    setIsCommentMode(false);
                 }}
             >Save comment</button>
         }
-    </>
+        {
+            !isMyResults && !isCommentMode && <button
+                className="btn btn-primary w-100"
+                type="submit"
+                onClick={() => {
+                    setIsCommentMode(true)
+                }}
+            >Add comment</button>
+        }
+        {
+            !isMyResults && isCommentMode && <button
+                className="btn btn-secondary w-100"
+                type="submit"
+                onClick={() => {
+                    setIsCommentMode(false);
+                    setInputs(commentsObj[state.me])
+                }}
+            >Cancel</button>
+        }
+    </div>
 }
 
 export default ResultsTable;
