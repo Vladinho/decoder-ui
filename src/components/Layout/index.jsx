@@ -7,6 +7,7 @@ import Server from "../../services/server";
 import useModal from "../../hooks/useModal";
 import refreshIcon from "../../assets/refresh.svg"
 import done from "../../assets/done.svg"
+import think from "../../assets/think.gif"
 
 const Layout = ({ children, cx = [] }) => {
     const state = useSelector((state) => state);
@@ -38,7 +39,7 @@ const Layout = ({ children, cx = [] }) => {
                         >
                             <h6>{i}
                                 {state.mainUser === i && ' (admin)'}
-                                {!!curAnswers?.length && curAnswers.every(a => a.user === i || a[`team_${state.team_1.some(u => u === i) ? 1 : 2}_agree`]?.some(j => j === i)) && <img src={done} className={css.done} alt={'done'}/>}
+                                {!!curAnswers?.length && curAnswers.every(a => a.user === i || a[`team_${state.team_1.some(u => u === i) ? 1 : 2}_agree`]?.some(j => j === i)) ? <img src={done} className={css.done} alt={'done'}/> : i === curPlayer && <img src={think} className={css.think} alt={'think'}/>}
                             </h6>
                         </li>)}
                     </ul>
@@ -51,7 +52,10 @@ const Layout = ({ children, cx = [] }) => {
                             <h6>
                                 {i}
                                 {state.mainUser === i && ' (admin)'}
-                                {!!curAnswers?.length && curAnswers.every(a => a.user === i || a[`team_${state.team_1.some(u => u === i) ? 1 : 2}_agree`]?.some(j => j === i)) && <img src={done} className={css.done} alt={'done'}/>}
+                                {!!curAnswers?.length && curAnswers.every(a => a.user === i || a[`team_${state.team_1.some(u => u === i) ? 1 : 2}_agree`]?.some(j => j === i)) ?
+                                    <img src={done} className={css.done} alt={'done'}/> :
+                                    i === opponentCurPlayer && <img src={think} className={css.think} alt={'think'}/>
+                                }
                             </h6>
                         </li>)}
                     </ul>
