@@ -7,7 +7,6 @@ const Guess = ({answers}) => {
     const [guessState, setGuessState] = useState(['', '', '']);
 
     const state = useSelector((state) => state);
-    // const words = state.myTeam === 1 ? state.words_1 : state.words_2;
     const dispatch = useDispatch();
     const server = new Server(dispatch);
 
@@ -49,7 +48,7 @@ const Guess = ({answers}) => {
                 >Confirm?</button> :
                 <button
                     type="button"
-                    className="btn btn-primary text-end"
+                    className="btn btn-primary w-100 mb-4"
                     disabled={new Set(guessState.filter(i => i)).size !== 3}
                     onClick={() => showModal(() => {
                         server.guess(curAnswer._id, guessState.join(''));

@@ -55,11 +55,11 @@ const ResultsTable = ({ answers, words, comments = [], isMyResults }) => {
                     {i.map((j, index) => <td key={index}>{j}</td>)}
                 </tr>)
             }
-            {!isMyResults && <tr>
-                <th scope="row" colSpan={5}>Comments:</th>
+            {!isMyResults && !!Object.keys(commentsObj).filter(i => isCommentMode || commentsObj[i].some(i => i)).length && <tr>
+                <th className={'pt-4'} scope="row" colSpan={5}>Comments:</th>
             </tr>}
             {
-                !isMyResults && Object.keys(commentsObj).map(key => <tr key={key}>
+                !isMyResults && Object.keys(commentsObj).filter(i => isCommentMode || commentsObj[i].some(i => i)).map(key => <tr key={key}>
                     <th scope="row" className={'text-nowrap'}>{key}</th>
                     {commentsObj[key].map((i, index) => <td key={index} className={'text-break'}>
                         {state.me === key && isCommentMode ?

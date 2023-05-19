@@ -35,6 +35,8 @@ const Game = () => {
 
     const myCounter = useCount();
     const opponentCounter = useCount(false);
+    const isMyGuess = answers.length === state.round && opponentAnswers.length === state.round && !teamAgree?.some(i => i === state.me) && curAnswer?.user !== state.me;
+    const isOpponentGuess = answers.length === state.round && opponentAnswers.length === state.round && !teamAgreeOnOpponentAnswer?.some(i => i === state.me);
 
     return <Layout>
         <Counter />
@@ -85,22 +87,20 @@ const Game = () => {
                 <a className={classNames('nav-link', {active: activeTab === 'My'})} onClick={(e) => {
                     e.preventDefault();
                     setActiveTab('My');
-                }} href='#'>My words</a>
+                }} href='#'>My words {isMyGuess && <span className="badge bg-danger">1</span>}</a>
             </li>
             <li className="nav-item">
                 <a className={classNames('nav-link', {active: activeTab === 'Opponent'})} onClick={(e) => {
                     e.preventDefault();
                     setActiveTab('Opponent');
-                }} href='#'>Opponent`s words</a>
+                }} href='#'>Opponent`s words {isOpponentGuess && <span className="badge bg-danger">1</span>}</a>
             </li>
         </ul>
 
         {
             activeTab === 'My' && <>
                 {
-                    answers.length === state.round && opponentAnswers.length === state.round && <>
-                        {!teamAgree?.some(i => i === state.me) && curAnswer?.user !== state.me && <Guess answers={answers} />}
-                    </>
+                    isMyGuess && <Guess answers={answers} />
                 }
                 {
                     myTeamAnswersForTable.map(a => <Table answer={a} key={a._id} /> )
@@ -111,19 +111,18 @@ const Game = () => {
                 {
                     !myTeamAnswersForTable?.length &&
                     !myTeamAnswersForTable.length &&
-                    <>
+                    !isMyGuess &&
+                    <div className={'animate__animated animate__backInRight'}>
                         <h6>There are no your words. Wait...</h6>
                         <img className={'w-100'} src={emptyGif} alt={'empty'}/>
-                    </>
+                    </div>
                 }
             </>
         }
         {
             activeTab === 'Opponent' && <>
                 {
-                    answers.length === state.round && opponentAnswers.length === state.round && <>
-                        {!teamAgreeOnOpponentAnswer?.some(i => i === state.me) && <Guess answers={opponentAnswers}/>}
-                    </>
+                    isOpponentGuess && <Guess answers={opponentAnswers}/>
                 }
                 {
                     opponentTeamAnswersForTable.map(a => <Table answer={a} key={a._id} /> )
@@ -134,10 +133,11 @@ const Game = () => {
                 {
                     !opponentTeamAnswersForTable?.length &&
                     !opponentTeamAnswersForTable.length &&
-                    <>
+                    !isOpponentGuess &&
+                    <div className={'animate__animated animate__backInRight'}>
                         <h6>There are no opponent`s words. Wait...</h6>
                         <img className={'w-100'} src={emptyGif} alt={'empty'}/>
-                    </>
+                    </div>
                 }
             </>
         }
