@@ -77,7 +77,7 @@ const Game = () => {
                                     })}/>
                         </div>)
                     }
-                    <button type="submit" className="btn btn-primary" disabled={answerState.some(i => !i)}>Submit</button>
+                    <button type="submit" className="btn btn-primary w-100" disabled={answerState.some(i => !i)}>Submit</button>
                 </form>
             </>
         }
