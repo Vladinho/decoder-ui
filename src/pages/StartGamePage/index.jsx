@@ -17,11 +17,12 @@ const StartGame = () => {
         s.getGame();
     }, []);
     return <Layout>
-        <h1>room ID: {state.roomId}</h1>
+        <h1>Room ID:</h1>
+        <h3 className={'mb-4'}>{state.roomId}</h3>
         <button className={classNames(['btn', ' btn-primary', 'mb-2', 'w-100'])} onClick={async () => {
             s.getRoom();
         }}>See team members</button>
-        <button className={classNames(['btn', ' btn-primary', 'mb-2', 'w-100'])} disabled={state.users.length < 2} onClick={async () => {
+        <button className={classNames(['btn', ' btn-primary', 'mb-2', 'w-100'])} disabled={state.users.length < 4} onClick={async () => {
             const room = await api.createTeams(state.roomId);
             const { data: { team_1, team_2 } } = room;
             dispatch(setState({team_1, team_2}));
@@ -34,8 +35,8 @@ const StartGame = () => {
         }}>Start Game</button>
         {
             !!state.team_1.length && !!state.team_2.length ? <>
-                <h2>Team 1:</h2>
-                <ul className="list-group">
+                <h2 className={'mt-4'}>Team 1:</h2>
+                <ul className="list-group mb-4">
                     {state.team_1.map((i) => <li key={i} className="list-group-item">{i}</li>)}
                 </ul>
                 <h2>Team 2:</h2>

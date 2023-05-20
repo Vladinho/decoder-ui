@@ -11,6 +11,7 @@ import Counter from "../Counter";
 import emptyGif from "../../assets/empty.gif"
 import useModal from "../../hooks/useModal";
 import useCount from "../../hooks/useCount";
+import {setState} from "../../reducers/roomReducer";
 
 const Game = () => {
     const state = useSelector((state) => state);
@@ -48,10 +49,6 @@ const Game = () => {
             myCounter.answeredRounds.some(i => i === state.round) &&
             opponentCounter.answeredRounds.some(i => i === state.round) &&
             <button type="button" className="btn btn-success w-100 mb-3" onClick={() => server.nextRound()}>Next Round</button>}
-        <ul className="list-group list-group-horizontal mb-3 overflow-auto" style={{fontSize: '12px'}}>
-            {words.map(i => <li className="list-group-item flex-grow-1 flex-shrink-1" key={i} style={{textTransform: 'capitalize'}}>{i}</li>)}
-        </ul>
-
 
         {
             code && state.round > answers.length && curPlayer === state.me && <>
@@ -87,57 +84,98 @@ const Game = () => {
                 <a className={classNames('nav-link', {active: activeTab === 'My'})} onClick={(e) => {
                     e.preventDefault();
                     setActiveTab('My');
-                }} href='#'>My words {isMyGuess && <span className="badge bg-danger">1</span>}</a>
+                }} href='#' style={{fontSize: '12px'}}>My words {isMyGuess && <span className="badge bg-danger">1</span>}</a>
             </li>
             <li className="nav-item">
                 <a className={classNames('nav-link', {active: activeTab === 'Opponent'})} onClick={(e) => {
                     e.preventDefault();
                     setActiveTab('Opponent');
-                }} href='#'>Opponent`s words {isOpponentGuess && <span className="badge bg-danger">1</span>}</a>
+                }} href='#' style={{fontSize: '12px'}}>Opponent`s words {isOpponentGuess && <span className="badge bg-danger">1</span>}</a>
             </li>
         </ul>
 
         {
             activeTab === 'My' && <>
+                <ul className="list-group list-group-horizontal mb-3 overflow-auto" style={{fontSize: '12px'}}>
+                    {words.map(i => <li className="list-group-item flex-grow-1 flex-shrink-1" key={i}
+                                        style={{textTransform: 'capitalize'}}>{i}</li>)}
+                </ul>
+                {
+                    !!myTeamAnswersForTable.length && <ResultsTable answers={myTeamAnswersForTable} words={words} isMyResults={true}/>
+                }
                 {
                     isMyGuess && <Guess answers={answers} />
                 }
                 {
-                    myTeamAnswersForTable.map(a => <Table answer={a} key={a._id} /> )
-                }
-                {
-                    !!myTeamAnswersForTable.length && <ResultsTable answers={myTeamAnswersForTable} words={words} isMyResults={true}/>
+                    !!myTeamAnswersForTable.length && <div className="accordion mt-4">
+                        <div className="accordion-item">
+                            <h2 className="accordion-header">
+                                <button
+                                    className={classNames('accordion-button', { 'collapsed': !state.isMyDetailsOpened })}
+                                    onClick={() => dispatch(setState({isMyDetailsOpened: !state.isMyDetailsOpened}))}
+                                    type="button">
+                                    Show detailed results
+                                </button>
+                            </h2>
+                            <div className={classNames('accordion-collapse', 'collapse', { 'show': state.isMyDetailsOpened })}>
+                                <div className="accordion-body">
+                                    {
+                                        myTeamAnswersForTable.map(a => <Table answer={a} key={a._id} /> )
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 }
                 {
                     !myTeamAnswersForTable?.length &&
                     !myTeamAnswersForTable.length &&
                     !isMyGuess &&
-                    <div className={'animate__animated animate__backInRight'}>
+                    <>
                         <h6>There are no your words. Wait...</h6>
                         <img className={'w-100'} src={emptyGif} alt={'empty'}/>
-                    </div>
+                    </>
                 }
             </>
         }
         {
             activeTab === 'Opponent' && <>
                 {
+                    !!opponentTeamAnswersForTable.length && <ResultsTable answers={opponentTeamAnswersForTable} words={opponentWords}  comments={state[`comments_${state.myTeam}`]} isMyResults={false}/>
+                }
+                {
                     isOpponentGuess && <Guess answers={opponentAnswers}/>
                 }
                 {
-                    opponentTeamAnswersForTable.map(a => <Table answer={a} key={a._id} /> )
+                    !!myTeamAnswersForTable.length && <div className="accordion mt-4">
+                        <div className="accordion-item">
+                            <h2 className="accordion-header">
+                                <button
+                                    className={classNames('accordion-button', { 'collapsed': !state.isOpponentDetailsOpened })}
+                                    onClick={() => dispatch(setState({isOpponentDetailsOpened: !state.isOpponentDetailsOpened}))}
+                                    type="button">
+                                    Show detailed results
+                                </button>
+                            </h2>
+                            <div className={classNames('accordion-collapse', 'collapse', { 'show': state.isOpponentDetailsOpened })}>
+                                <div className="accordion-body">
+                                    {
+                                        opponentTeamAnswersForTable.map(a => <Table answer={a} key={a._id} /> )
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 }
-                {
-                    !!opponentTeamAnswersForTable.length && <ResultsTable answers={opponentTeamAnswersForTable} words={opponentWords}  comments={state[`comments_${state.myTeam}`]} isMyResults={false}/>
-                }
+
                 {
                     !opponentTeamAnswersForTable?.length &&
                     !opponentTeamAnswersForTable.length &&
                     !isOpponentGuess &&
-                    <div className={'animate__animated animate__backInRight'}>
+                    <>
                         <h6>There are no opponent`s words. Wait...</h6>
                         <img className={'w-100'} src={emptyGif} alt={'empty'}/>
-                    </div>
+                    </>
                 }
             </>
         }

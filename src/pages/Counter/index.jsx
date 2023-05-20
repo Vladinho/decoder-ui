@@ -12,8 +12,8 @@ const Counter = () => {
         return null
     }
 
-    const isLost = myCounter.black > 1 && opponentCounter.black < 2;
-    const isWin = myCounter.white > 1 && opponentCounter.white < 2;
+    const isLost = (myCounter.black > 1 && opponentCounter.black < 2) || (opponentCounter.white > 1 && myCounter.white < 2);
+    const isWin = (myCounter.white > 1 && opponentCounter.white < 2) || (opponentCounter.black > 1 && myCounter.black < 2);
 
     return <div className={css.container}>
         <div className={classNames('d-flex', 'justify-content-between', 'w-100')}>

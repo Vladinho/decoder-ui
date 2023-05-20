@@ -1,26 +1,24 @@
 import {useSelector} from "react-redux";
-import {useState} from "react";
+import {useMemo, useState} from "react";
 import Server from "../../../services/server";
+import columnsToRows from "../../../utils/columnsToRows";
 
 const ResultsTable = ({ answers, words, comments = [], isMyResults }) => {
     const [isCommentMode, setIsCommentMode] = useState(false);
     const state = useSelector((state) => state);
-    const wordsColumns = [[], [], [], []];
+    const wordsColumns = [];
     const server = new Server();
     answers.forEach((i) => {
         const code = i.code.split('');
         code.forEach((c, index) => {
+            if (!wordsColumns[+c - 1]) {
+                wordsColumns[+c - 1] = []
+            }
             wordsColumns[+c - 1].push(i.answer[index])
         });
     })
-    const wordsRows = [];
-    for(let i = 0; i < wordsColumns.length; i++) {
-        for(let j= 0; j < wordsColumns.length; j++) {
-            wordsRows[j] = wordsRows[j] || [];
-            wordsRows[j][i] = wordsColumns[i][j];
-        }
-    }
-    const rows = wordsRows.filter((r) => r.some(i => i));
+
+    const rows = useMemo(() => columnsToRows(wordsColumns), [wordsColumns])
 
     const commentsObj = {};
     comments.forEach(c => {
@@ -39,29 +37,27 @@ const ResultsTable = ({ answers, words, comments = [], isMyResults }) => {
     const isCommentChanged = commentsObj[state.me] &&
         JSON.stringify(commentsObj[state.me]) !== JSON.stringify(inputs);
 
-    return <div className={'animate__animated animate__backInRight'}>
+    return <>
         <div className={'overflow-auto'}>
-            <table className="table table-striped mb-2 table-sm" style={{fontSize: '12px'}}>
+            <table className="table table-striped mb-2 table-sm table-bordered" style={{fontSize: '12px'}}>
             <thead>
             <tr>
-                <th scope="col"></th>
-                { words.map(i => <th key={i} scope="col">{isMyResults ? i : ''}</th>) }
+                { isMyResults && words.map(i => <th key={i} scope="col" style={{width: '25%'}}>{isMyResults ? i : ''}</th>) }
             </tr>
             </thead>
             <tbody>
             {
                 rows.map((i, index) => <tr key={index}>
-                    <th scope="row">{index + 1}</th>
-                    {i.map((j, index) => <td key={index}>{j}</td>)}
+                    {i.map((j, index) => <td key={index} className={'text-break'} style={{width: '25%'}}>{j}</td>)}
                 </tr>)
             }
             {!isMyResults && !!Object.keys(commentsObj).filter(i => isCommentMode || commentsObj[i].some(i => i)).length && <tr>
-                <th className={'pt-4'} scope="row" colSpan={5}>Comments:</th>
+                <th className={'pt-4'} scope="row" colSpan={5} style={{'--bs-table-accent-bg': '#fff'}}>Comments:</th>
             </tr>}
             {
                 !isMyResults && Object.keys(commentsObj).filter(i => isCommentMode || commentsObj[i].some(i => i)).map(key => <tr key={key}>
-                    <th scope="row" className={'text-nowrap'}>{key}</th>
-                    {commentsObj[key].map((i, index) => <td key={index} className={'text-break'}>
+                    {/*<th scope="row" className={'text-nowrap'}>{key}</th>*/}
+                    {commentsObj[key].map((i, index) => <td key={index} className={'text-break'} style={{width: '25%'}}>
                         {state.me === key && isCommentMode ?
                             <input
                                 type="text"
@@ -113,7 +109,7 @@ const ResultsTable = ({ answers, words, comments = [], isMyResults }) => {
                 }}
             >Cancel</button>
         }
-    </div>
+    </>
 }
 
 export default ResultsTable;

@@ -3,7 +3,7 @@ import classNames from "classnames";
 
 const Table = ({ answer }) => {
     const state = useSelector((state) => state);
-    return <div className={'overflow-auto animate__animated animate__backInRight'}><table className="table table-striped">
+    return <div className={'overflow-auto'}><table className="table table-striped">
         <thead>
         <tr>
             <th scope="col">Round {answer.round}</th>

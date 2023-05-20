@@ -24,7 +24,9 @@ export const roomSlice = createSlice({
         words_2: [],
         answers: [],
         errors: [],
-        modalCallback: null
+        modalCallback: null,
+        isMyDetailsOpened: false,
+        isOpponentDetailsOpened: false,
     },
     reducers: {
         setState: (state, { payload }) => {

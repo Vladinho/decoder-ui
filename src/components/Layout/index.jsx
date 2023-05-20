@@ -43,6 +43,7 @@ const Layout = ({ children, cx = [] }) => {
                                 {i === curPlayer && !curAnswers.some(i => i.round === state.round && i.user === curPlayer) && <img src={think} className={css.think} alt={'think'}/>}
                             </h6>
                         </li>)}
+                        {!state.team_1?.length && <li className="list-group-item">No users</li>}
                     </ul>
                     <h3>Opponent`s team:</h3>
                     <ul className={classNames(["list-group"])}>
@@ -57,6 +58,7 @@ const Layout = ({ children, cx = [] }) => {
                                 {i === opponentCurPlayer && !curAnswers.some(i => i.round === state.round && i.user === opponentCurPlayer) && <img src={think} className={css.think} alt={'think'}/>}
                             </h6>
                         </li>)}
+                        {!state.team_2?.length && <li className="list-group-item">No users</li>}
                     </ul>
                     { state.mainUser === state.me && <button type="button" className="btn btn-primary mt-4 w-100" onClick={() => showModal(() => s.reset())}>Restart the game</button>}
                     { state.mainUser === state.me && <button type="button" className="btn btn-primary mt-2 w-100" onClick={() => showModal(() => s.reset(true))}>Restart the game and mix the teams</button>}
