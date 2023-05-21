@@ -69,7 +69,7 @@ const ResultsTable = ({ answers, words, comments = [], isMyResults }) => {
                                     type="text"
                                     key={index}
                                     className="form-control"
-                                    placeholder="Enter your guess"
+                                    placeholder="Your guess"
                                     style={{fontSize: '10px'}}
                                     value={inputs[index]}
                                     onChange={(e) =>
@@ -104,7 +104,7 @@ const ResultsTable = ({ answers, words, comments = [], isMyResults }) => {
                 onClick={() => {
                     setIsCommentMode(true)
                 }}
-            >Add comment</button>
+            >{commentsObj[state.me]?.some(i => i) ? 'Edit comment' : 'Add comment'}</button>
         }
         {
             !isMyResults && isCommentMode && <button
