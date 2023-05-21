@@ -1,3 +1,4 @@
+import React from "react";
 import {useSelector} from "react-redux";
 import {useMemo, useState} from "react";
 import Server from "../../../services/server";
@@ -54,28 +55,33 @@ const ResultsTable = ({ answers, words, comments = [], isMyResults }) => {
                 </tr>)
             }
             {!isMyResults && !!commentUsers.length && <tr>
-                <th className={'pt-4'} scope="row" colSpan={5} style={{'--bs-table-accent-bg': '#fff'}}>Comments:</th>
+                <th className={'pt-4'} scope="row" colSpan={4} style={{'--bs-table-accent-bg': '#fff'}}>Comments:</th>
             </tr>}
             {
-                !isMyResults && commentUsers.map(key => <tr key={key}>
-                    {commentsObj[key].map((i, index) => <td key={index} className={'text-break'} style={{width: '25%'}}>
-                        {state.me === key && isCommentMode ?
-                            <input
-                                type="text"
-                                key={index}
-                                className="form-control"
-                                placeholder="Enter your guess"
-                                style={{fontSize: '10px'}}
-                                value={inputs[index]}
-                                onChange={(e) =>
-                                    setInputs((s) => {
-                                        const newInputs = [...s]
-                                        newInputs[index] = e.target.value;
-                                        return newInputs;
-                                    })}
-                            /> : i}
-                    </td>)}
-                </tr>)
+                !isMyResults && commentUsers.map(key => <React.Fragment key={key}>
+                    <tr>
+                        <th scope="row" colSpan={4} className={'text-secondary'}>{key}</th>
+                    </tr>
+                    <tr>
+                        {commentsObj[key].map((i, index) => <td key={index} className={'text-break'} style={{width: '25%'}}>
+                            {state.me === key && isCommentMode ?
+                                <input
+                                    type="text"
+                                    key={index}
+                                    className="form-control"
+                                    placeholder="Enter your guess"
+                                    style={{fontSize: '10px'}}
+                                    value={inputs[index]}
+                                    onChange={(e) =>
+                                        setInputs((s) => {
+                                            const newInputs = [...s]
+                                            newInputs[index] = e.target.value;
+                                            return newInputs;
+                                        })}
+                                /> : i}
+                        </td>)}
+                    </tr>
+                </React.Fragment>)
             }
             </tbody>
         </table>
