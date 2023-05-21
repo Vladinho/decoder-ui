@@ -37,6 +37,8 @@ const ResultsTable = ({ answers, words, comments = [], isMyResults }) => {
     const isCommentChanged = commentsObj[state.me] &&
         JSON.stringify(commentsObj[state.me]) !== JSON.stringify(inputs);
 
+    const commentUsers = Object.keys(commentsObj).filter(i => (isCommentMode && i === state.me) || commentsObj[i].some(i => i));
+
     return <>
         <div className={'overflow-auto'}>
             <table className="table table-striped mb-2 table-sm table-bordered" style={{fontSize: '12px'}}>
@@ -51,12 +53,11 @@ const ResultsTable = ({ answers, words, comments = [], isMyResults }) => {
                     {i.map((j, index) => <td key={index} className={'text-break'} style={{width: '25%'}}>{j}</td>)}
                 </tr>)
             }
-            {!isMyResults && !!Object.keys(commentsObj).filter(i => isCommentMode || commentsObj[i].some(i => i)).length && <tr>
+            {!isMyResults && !!commentUsers.length && <tr>
                 <th className={'pt-4'} scope="row" colSpan={5} style={{'--bs-table-accent-bg': '#fff'}}>Comments:</th>
             </tr>}
             {
-                !isMyResults && Object.keys(commentsObj).filter(i => isCommentMode || commentsObj[i].some(i => i)).map(key => <tr key={key}>
-                    {/*<th scope="row" className={'text-nowrap'}>{key}</th>*/}
+                !isMyResults && commentUsers.map(key => <tr key={key}>
                     {commentsObj[key].map((i, index) => <td key={index} className={'text-break'} style={{width: '25%'}}>
                         {state.me === key && isCommentMode ?
                             <input
