@@ -28,3 +28,13 @@
   margin-left: 10px;
   border-radius: 10px;
 }
+
+.header {
+  position: sticky !important;
+  margin: 0 -16px;
+  width: calc(100% + 32px);
+  background-color: #fff;
+  top: 0;
+  left: 0;
+  z-index: 111;
+}

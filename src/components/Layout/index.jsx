@@ -18,7 +18,7 @@ const Layout = ({ children, cx = [] }) => {
     const curAnswers = state.answers.filter(i => i.round === state.round);
     return <div className={classNames(['container-md', 'p-3', ...cx])}>
         {state.me && <>
-            <div className={'d-flex justify-content-between position-relative align-items-center flex-wrap'}>
+            <div className={`d-flex justify-content-between position-relative align-items-center flex-wrap p-3 shadow-sm ${css.header}`}>
                 <h2>{state.me}</h2> {!!state.round && <span className="badge bg-secondary">round {state.round}</span>}
                 <button type="button" className="btn btn-primary" onClick={() => setIsTeamsVisible((s) => !s)}>{isTeamsVisible ? 'Hide' : 'Show'} teams</button>
                 <button className="btn btn-primary" onClick={() => {
@@ -64,8 +64,6 @@ const Layout = ({ children, cx = [] }) => {
                     { state.mainUser === state.me && <button type="button" className="btn btn-primary mt-2 w-100" onClick={() => showModal(() => s.reset(true))}>Restart the game and mix the teams</button>}
                 </div>}
             </div>
-
-            <hr className="mt-2 mb-3"/>
         </>}
         {children}
     </div>

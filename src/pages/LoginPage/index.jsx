@@ -22,7 +22,7 @@ const LoginPage = () => {
         s.getRoom();
     }, []);
     return <Layout>
-        <h1>Decoder</h1>
+        <h2 className={'mb-3 display-6'}>Decoder -<br />the best game ever!</h2>
         <div className={classNames(['form-group', 'mb-2', 'w-100'])}>
             <input type="text" className="form-control" id="userName" onChange={(e) => setUserName(e.target.value)}
                    placeholder="Enter your name" value={userName}/>
