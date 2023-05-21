@@ -42,7 +42,7 @@ const ResultsTable = ({ answers, words, comments = [], isMyResults }) => {
             <table className="table table-striped mb-2 table-sm table-bordered" style={{fontSize: '12px'}}>
             <thead>
             <tr>
-                { isMyResults && words.map(i => <th key={i} scope="col" style={{width: '25%'}}>{isMyResults ? i : ''}</th>) }
+                { isMyResults && words.map(i => <th key={i} scope="col" className={'text-center pt-2 pb-2'} style={{width: '25%'}}>{isMyResults ? i : ''}</th>) }
             </tr>
             </thead>
             <tbody>

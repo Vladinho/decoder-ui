@@ -171,7 +171,11 @@ class Server {
     joinRoom = async (roomId, user) => {
         this.startLoading();
         try {
-            return await api.joinRoom(roomId, user);
+            const r = await api.joinRoom(roomId, user);
+            await this.getGame();
+            await this.getRoom();
+            await this.getAnswers();
+            return r;
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
         } finally {

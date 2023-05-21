@@ -52,7 +52,7 @@ const Game = () => {
 
         {
             code && state.round > answers.length && curPlayer === state.me && <>
-                <h1 className='m-2'>Code: {code}</h1>
+                <h1 className='mb-2'>Code: {code}</h1>
                 <form onSubmit={(e) => {
                     e.preventDefault();
                     showModal(() => server.setAnswer(code, answerState))
@@ -96,13 +96,11 @@ const Game = () => {
 
         {
             activeTab === 'My' && <>
-                <ul className="list-group list-group-horizontal mb-3 overflow-auto" style={{fontSize: '12px'}}>
-                    {words.map(i => <li className="list-group-item flex-grow-1 flex-shrink-1" key={i}
-                                        style={{textTransform: 'capitalize'}}>{i}</li>)}
-                </ul>
-                {
-                    !!myTeamAnswersForTable.length && <ResultsTable answers={myTeamAnswersForTable} words={words} isMyResults={true}/>
-                }
+                {/*<ul className="list-group list-group-horizontal mb-3 overflow-auto" style={{fontSize: '12px'}}>*/}
+                {/*    {words.map(i => <li className="list-group-item flex-grow-1 flex-shrink-1" key={i}*/}
+                {/*                        style={{textTransform: 'capitalize'}}>{i}</li>)}*/}
+                {/*</ul>*/}
+                <ResultsTable answers={myTeamAnswersForTable} words={words} isMyResults={true}/>
                 {
                     isMyGuess && <Guess answers={answers} />
                 }
@@ -126,15 +124,6 @@ const Game = () => {
                             </div>
                         </div>
                     </div>
-                }
-                {
-                    !myTeamAnswersForTable?.length &&
-                    !myTeamAnswersForTable.length &&
-                    !isMyGuess &&
-                    <>
-                        <h6>There are no your words. Wait...</h6>
-                        <img className={'w-100'} src={emptyGif} alt={'empty'}/>
-                    </>
                 }
             </>
         }

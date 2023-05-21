@@ -8,7 +8,7 @@ import noWinners from "../../assets/noWinners.gif";
 const Counter = () => {
     const myCounter = useCount();
     const opponentCounter = useCount(false);
-    if (!myCounter.black && !myCounter.white && opponentCounter.black && !opponentCounter.white) {
+    if (!myCounter.black && !myCounter.white && !opponentCounter.black && !opponentCounter.white) {
         return null
     }
 
