@@ -21,14 +21,15 @@ const LoginPage = () => {
         }
         run();
     }, []);
-    return <Layout>
+    return <div className={'container-md p-3'}>
         <h2 className={'mb-3 display-6'}>Decoder -<br />the best game ever!</h2>
         <div className={classNames(['form-group', 'mb-2', 'w-100'])}>
             <input type="text" className="form-control" id="userName" onChange={(e) =>{
                 localStorage.setItem('userName', e.target.value);
                 dispatch(setState({ me: e.target.value }));
             }}
-                   placeholder="Enter your name" value={state.me}/>
+                   placeholder="Enter your name"
+                   value={state.me || ''}/>
         </div>
         <form className={css.form} onSubmit={async (e) => {
             e.preventDefault();
@@ -39,7 +40,7 @@ const LoginPage = () => {
             if (state.round) {
                 navigate('/game');
             } else {
-                state.mainUser === state.me ? navigate('/startGame') : navigate('/joinGame');
+                state.mainUser === state.me ? navigate('/startGame') : navigate('/game');
             }
         }}>
             <div className={classNames(['form-group', 'mb-2', 'w-100'])}>
@@ -54,7 +55,9 @@ const LoginPage = () => {
                             dispatch(setState({roomId: e.target.value}));
                         }
                     }
-                       placeholder="Enter room ID, for example: 6459811ff421a7f05fe752c0" value={state.roomId}/>
+                       placeholder="Enter room ID, for example: 6459811ff421a7f05fe752c0"
+                    value={state.roomId || ''}
+                />
             </div>
             <button type="submit" className={classNames(['btn', ' btn-primary', 'mb-2'])} disabled={!state.roomId || state.roomId.length < 24 || !state.me}>Join</button>
         </form>
@@ -71,7 +74,7 @@ const LoginPage = () => {
             navigate('/StartGame')
         }}>Create new room</button>
         {/*<pre>{JSON.stringify(state, null, 4)}</pre>*/}
-    </Layout>
+    </div>
 }
 
 export default LoginPage;

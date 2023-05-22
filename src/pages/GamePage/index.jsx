@@ -46,6 +46,13 @@ const Game = () => {
         myCounter.answeredRounds.some(i => i === state.round) &&
         opponentCounter.answeredRounds.some(i => i === state.round);
 
+    if (!state.round && !state.isLoading) {
+        return <Layout>
+            <h6 className={'mt-4'}>The game has`t been started yet! Wait...</h6>
+            <img className={'w-100'} src={emptyGif} alt={'empty'}/>
+        </Layout>
+    }
+
     return <Layout>
         <Counter isTeamsReady={isTeamsReady} />
         {[myCounter.black, myCounter.white, opponentCounter.black, opponentCounter.white].every(i => i < 2) && isTeamsReady &&

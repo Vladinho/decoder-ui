@@ -8,7 +8,7 @@ export const initialState = {
     team_1: [],
     team_2: [],
     users: [],
-    me: '',
+    me: null,
     myTeam: null,
     opponentTeam: null,
     isLoading: false,
