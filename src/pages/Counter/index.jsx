@@ -5,7 +5,7 @@ import winGif from "../../assets/win.gif";
 import looserGif from "../../assets/looser.gif";
 import noWinners from "../../assets/noWinners.gif";
 
-const Counter = () => {
+const Counter = ({isTeamsReady}) => {
     const myCounter = useCount();
     const opponentCounter = useCount(false);
     if (!myCounter.black && !myCounter.white && !opponentCounter.black && !opponentCounter.white) {
@@ -30,16 +30,16 @@ const Counter = () => {
             {Array(opponentCounter.white).fill('').map((i, index) => <div className={classNames(css.badge, css.white)} key={index}></div>)}
             {Array(opponentCounter.black).fill('').map((i, index) => <div className={classNames(css.badge, css.black)} key={index}></div>)}
         </div>
-        { isLost && !isWin && <>
+        { isTeamsReady && isLost && !isWin && <>
             <span className="badge bg-danger mb-2 w-100 mt-2">You are the looser!</span>
             <img className={'w-100'} src={looserGif} alt={'loose'}/>
         </> }
-        { isWin && !isLost && <>
+        { isTeamsReady && isWin && !isLost && <>
             <span className="badge bg-success mb-2 w-100 mt-2">You are the winner!</span>
             <img className={'w-100'} src={winGif} alt={'win'}/>
         </> }
         {
-            !isWin && !isLost && [...Object.values(myCounter), ...Object.values(opponentCounter)].some(i => i > 1) && <img className={'w-100 mt-2'} src={noWinners} alt={'no winners'}/>
+            isTeamsReady && !isWin && !isLost && [...Object.values(myCounter), ...Object.values(opponentCounter)].some(i => i > 1) && <img className={'w-100 mt-2'} src={noWinners} alt={'no winners'}/>
         }
     </div>
 }

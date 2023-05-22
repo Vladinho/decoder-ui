@@ -42,7 +42,7 @@ const ResultsTable = ({ answers, words, comments = [], isMyResults }) => {
 
     return <>
         <div className={'overflow-auto'}>
-            <table className="table table-striped mb-2 table-sm table-bordered" style={{fontSize: '12px'}}>
+            <table className="table table-striped mb-4 table-sm table-bordered" style={{fontSize: '12px'}}>
             <thead>
             <tr>
                 { isMyResults && words.map(i => <th key={i} scope="col" className={'text-center pt-3 pb-3'} style={{width: '25%'}}>{i}</th>) }

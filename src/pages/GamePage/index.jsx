@@ -21,37 +21,38 @@ const Game = () => {
     const [answerState, setAnswerState] = useState(['', '', ''])
     const [activeTab, setActiveTab] = useState('My');
     const { code, answers, curPlayer, words, opponentAnswers, myTeam, opponentTeam, opponentWords } = useMy();
-    useEffect( () => {
-        server.getRoom();
-        server.getGame();
-        server.getAnswers();
+    useEffect(  () => {
+        server.reloadData();
     }, []);
     const curAnswer = answers.find(i => i.round === state.round);
     const teamAgree = curAnswer?.[`team_${state.myTeam}_agree`];
 
-    const curOpponentAnswer = opponentAnswers.find(i => i.round === state.round);
-    const teamAgreeOnOpponentAnswer = curOpponentAnswer?.[`team_${state.myTeam}_agree`];
-    const myTeamAnswersForTable = answers.filter(i => i[`team_${state.myTeam}_agree`].length === myTeam.length - 1 &&  i[`team_${state.opponentTeam}_agree`].length === opponentTeam.length);
-    const opponentTeamAnswersForTable = opponentAnswers.filter(i => i[`team_${state.opponentTeam}_agree`].length === opponentTeam.length - 1 &&  i[`team_${state.myTeam}_agree`].length === myTeam.length);
-
     const myCounter = useCount();
     const opponentCounter = useCount(false);
+
+    const curOpponentAnswer = opponentAnswers.find(i => i.round === state.round);
+    const teamAgreeOnOpponentAnswer = curOpponentAnswer?.[`team_${state.myTeam}_agree`];
+
+    const myTeamAnswersForTable = answers.filter(i => myCounter.answeredRounds.some(j => j === i.round));
+    const opponentTeamAnswersForTable = opponentAnswers.filter(i => opponentCounter.answeredRounds.some(j => j === i.round));
+
     const isMyGuess = answers.length === state.round && opponentAnswers.length === state.round && !teamAgree?.some(i => i === state.me) && curAnswer?.user !== state.me;
     const isOpponentGuess = answers.length === state.round && opponentAnswers.length === state.round && !teamAgreeOnOpponentAnswer?.some(i => i === state.me);
 
+    const isTeamsReady = myTeamAnswersForTable &&
+        myTeamAnswersForTable.length === state.round &&
+        opponentTeamAnswersForTable &&
+        opponentTeamAnswersForTable.length === state.round &&
+        myCounter.answeredRounds.some(i => i === state.round) &&
+        opponentCounter.answeredRounds.some(i => i === state.round);
+
     return <Layout>
-        <Counter />
-        {[myCounter.black, myCounter.white, opponentCounter.black, opponentCounter.white].every(i => i < 2) &&
-            myTeamAnswersForTable &&
-            myTeamAnswersForTable.length === state.round &&
-            opponentTeamAnswersForTable &&
-            opponentTeamAnswersForTable.length === state.round &&
-            myCounter.answeredRounds.some(i => i === state.round) &&
-            opponentCounter.answeredRounds.some(i => i === state.round) &&
+        <Counter isTeamsReady={isTeamsReady} />
+        {[myCounter.black, myCounter.white, opponentCounter.black, opponentCounter.white].every(i => i < 2) && isTeamsReady &&
             <button type="button" className="btn btn-success w-100 mb-3" onClick={() => server.nextRound()}>Next Round</button>}
 
         {
-            code && state.round > answers.length && curPlayer === state.me && <>
+            !state.isLoading && code && state.round > answers.length && curPlayer === state.me && <>
                 <h1 className='mb-2'>Code: {code}</h1>
                 <form onSubmit={(e) => {
                     e.preventDefault();
@@ -96,14 +97,10 @@ const Game = () => {
 
         {
             activeTab === 'My' && <>
-                {/*<ul className="list-group list-group-horizontal mb-3 overflow-auto" style={{fontSize: '12px'}}>*/}
-                {/*    {words.map(i => <li className="list-group-item flex-grow-1 flex-shrink-1" key={i}*/}
-                {/*                        style={{textTransform: 'capitalize'}}>{i}</li>)}*/}
-                {/*</ul>*/}
-                <ResultsTable answers={myTeamAnswersForTable} words={words} isMyResults={true}/>
                 {
                     isMyGuess && <Guess answers={answers} />
                 }
+                <ResultsTable answers={myTeamAnswersForTable} words={words} isMyResults={true}/>
                 {
                     !!myTeamAnswersForTable.length && <div className="accordion mt-4">
                         <div className="accordion-item">
@@ -130,10 +127,10 @@ const Game = () => {
         {
             activeTab === 'Opponent' && <>
                 {
-                    !!opponentTeamAnswersForTable.length && <ResultsTable answers={opponentTeamAnswersForTable} words={opponentWords}  comments={state[`comments_${state.myTeam}`]} isMyResults={false}/>
+                    isOpponentGuess && <Guess answers={opponentAnswers}/>
                 }
                 {
-                    isOpponentGuess && <Guess answers={opponentAnswers}/>
+                    !!opponentTeamAnswersForTable.length && <ResultsTable answers={opponentTeamAnswersForTable} words={opponentWords}  comments={state[`comments_${state.myTeam}`]} isMyResults={false}/>
                 }
                 {
                     !!myTeamAnswersForTable.length && <div className="accordion mt-4">
@@ -161,6 +158,7 @@ const Game = () => {
                     !opponentTeamAnswersForTable?.length &&
                     !opponentTeamAnswersForTable.length &&
                     !isOpponentGuess &&
+                    !state.isLoading &&
                     <>
                         <h6>There are no opponent`s words. Wait...</h6>
                         <img className={'w-100'} src={emptyGif} alt={'empty'}/>

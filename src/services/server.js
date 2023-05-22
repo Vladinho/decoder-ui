@@ -1,4 +1,4 @@
-import {setState} from "../reducers/roomReducer";
+import {initialState, setState} from "../reducers/roomReducer";
 import api from "../api";
 import store from "../store";
 
@@ -6,9 +6,9 @@ class Server {
     constructor() {
         this.dispatch = store.dispatch;
         this.getState = store.getState;
-        this.gameId = localStorage.getItem('gameId');
-        this.roomId = localStorage.getItem('roomId');
-        this.user = localStorage.getItem('userName');
+        this.gameId = this.getState().gameId;
+        this.roomId = this.getState().roomId;
+        this.user = this.getState().me;
     }
     startLoading = () => {
         this.dispatch(setState({ isLoading: true }));
@@ -44,9 +44,9 @@ class Server {
         this.startLoading();
         try {
             const room = await api.getRoom(id);
-            const me = this.getState().me;
+            const me = localStorage.getItem('userName');
             const { users = [], team_1 = [], team_2 = [], mainUser = null } = room?.data || { data: {}};
-            const data = { users, team_1, team_2, mainUser, myTeam: team_1.some(i => i === me) ? 1 : 2, opponentTeam: team_1.some(i => i === me) ? 2 : 1 };
+            const data = { me, users, team_1, team_2, mainUser, myTeam: team_1.some(i => i === me) ? 1 : 2, opponentTeam: team_1.some(i => i === me) ? 2 : 1 };
             room?.data && this.dispatch(setState(data));
             return data;
         } catch (e) {
@@ -182,6 +182,19 @@ class Server {
             this.stopLoading();
         }
     }
+    reloadData = async () => {{
+        this.dispatch(setState({...initialState}));
+        this.startLoading();
+        try {
+            await this.getRoom();
+            await this.getGame();
+            await this.getAnswers();
+        } catch (e) {
+            this.dispatch(setState({ errors: [e] }));
+        } finally {
+            this.stopLoading();
+        }
+    }}
 }
 
 export default Server;

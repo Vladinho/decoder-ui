@@ -37,7 +37,7 @@ const Guess = ({answers}) => {
             }
             </tbody>
         </table>
-        <div className='d-flex justify-content-end'>
+        <div className='d-flex justify-content-end mb-4'>
             {isGuessNotChanged ?
                 <button
                     type="button"
