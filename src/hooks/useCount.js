@@ -44,6 +44,7 @@ const useCount = (isMyCount = true) => {
             black: 0,
             answeredRounds,
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state.answers, isMyCount, state.myTeam, state.opponentTeam, myTeam, opponentTeam]);
 }
 

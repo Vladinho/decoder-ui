@@ -1,20 +1,13 @@
-import {useEffect, useMemo, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import {useMemo, useState} from "react";
+import {useSelector} from "react-redux";
 import {DropMarker} from "@epam/uui";
 import {DndActor, uuiDndState} from "@epam/uui-core";
 import {DragHandle} from "@epam/uui-components";
 import Server from "../../services/server";
 import classNames from "classnames";
-import {setState} from "../../reducers/roomReducer";
 import css from './styles.module.scss'
 
 const TeamsDragAndDrop = ({onSave, onCancel}) => {
-    // useEffect(() => {
-    //     document.addEventListener('wheel', function(e) {
-    //         e.preventDefault();
-    //     }, { passive: false });
-    // }, [])
-    const dispatch = useDispatch();
     const server =  useMemo(() => {
         return new Server();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -68,7 +61,7 @@ const TeamsDragAndDrop = ({onSave, onCancel}) => {
                    onDrop={ (params) => handleOnDrop(params) }
                    render={ (params) => {
                        return <div ref={ params.ref } { ...params.eventHandlers } className={classNames({[uuiDndState.dragGhost]: params.isDragGhost})}>
-                           <li className={`list-group-item bg-${params.isDragGhost ? 'light' : 'white'} p-1 mb-1`}><DragHandle />{i}</li>
+                           <li className={`list-group-item bg-${params.isDragGhost ? 'light' : 'white'} p-1 mb-1 text-break`}><DragHandle />{i}</li>
                            <DropMarker { ...params } />
                        </div>
                    }}
@@ -90,7 +83,7 @@ const TeamsDragAndDrop = ({onSave, onCancel}) => {
                             { ...params.eventHandlers }
                             className={classNames({[uuiDndState.dragGhost]: params.isDragGhost})}
                         >
-                            <li className={`list-group-item bg-${params.isDragGhost ? 'light' : 'white'} p-1 mb-1`}><DragHandle />{i}</li>
+                            <li className={`list-group-item bg-${params.isDragGhost ? 'light' : 'white'} p-1 mb-1 text-break`}><DragHandle />{i}</li>
                             <DropMarker { ...params } />
                         </div>
                     }}
