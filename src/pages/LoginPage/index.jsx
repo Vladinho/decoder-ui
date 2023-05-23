@@ -1,6 +1,5 @@
-import Layout from "../../components/Layout";
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useState} from "react";
+import {useEffect, useMemo,} from "react";
 import css from './styles.module.scss'
 import classNames from "classnames";
 import api from "../../api";
@@ -10,16 +9,19 @@ import Server from "../../services/server";
 
 const LoginPage = () => {
     const state = useSelector((state) => state);
-    const server = new Server();
+    const server = useMemo(() => {
+        return new Server();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     useEffect(() => {
         const run = async () => {
-            const s = new Server(dispatch);
-            await s.getGame();
-            await s.getRoom();
+            await server.getGame();
+            await server.getRoom();
         }
         run();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return <div className={'container-md p-3'}>
         <h2 className={'mb-3 display-6'}>Decoder -<br />the best game ever!</h2>

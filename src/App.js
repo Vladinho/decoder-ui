@@ -7,12 +7,13 @@ import StartGame from "./pages/StartGamePage";
 import Game from "./pages/GamePage";
 import Modal from "./components/Modal";
 import {setState} from "./reducers/roomReducer";
+import { ContextProvider } from '@epam/uui-core';
 
 function App() {
     const state = useSelector((state) => state);
     const dispatch = useDispatch();
   return (
-      <>
+      <ContextProvider onInitCompleted={() => {}}>
           {state.isLoading && <Loader />}
           <BrowserRouter>
               <Routes>
@@ -27,7 +28,7 @@ function App() {
               callback={() => dispatch(setState({ errors: [] }))}
               noAction={true}
           /> }
-      </>
+      </ContextProvider>
 
   );
 }

@@ -1,15 +1,16 @@
 import useMy from "../../../hooks/useMy";
 import Server from "../../../services/server";
-import {useDispatch} from "react-redux";
-import {useState} from "react";
+import {useMemo, useState} from "react";
 import useModal from "../../../hooks/useModal";
 
 const Answer = () => {
     const [answerState, setAnswerState] = useState(['', '', ''])
     const { code, words } = useMy();
-    const dispatch = useDispatch();
     const showModal = useModal();
-    const server = new Server(dispatch);
+    const server = useMemo(() => {
+        return new Server();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     return <>
         <h1 className='mb-2'>Code: {code}</h1>
         <form onSubmit={(e) => {

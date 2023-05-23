@@ -1,6 +1,6 @@
 import Layout from "../../components/Layout";
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import Server from "../../services/server";
 import useMy from "../../hooks/useMy";
 import Guess from "./Guess";
@@ -16,12 +16,15 @@ import Answer from "./Answer";
 const Game = () => {
     const state = useSelector((state) => state);
     const dispatch = useDispatch();
-    const server = new Server(dispatch);
+    const server = useMemo(() => {
+        return new Server();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     const [activeTab, setActiveTab] = useState('My');
     const { code, answers, curPlayer, words, opponentAnswers, opponentWords } = useMy();
     useEffect(  () => {
         server.reloadData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const curAnswer = answers.find(i => i.round === state.round);
     const teamAgree = curAnswer?.[`team_${state.myTeam}_agree`];

@@ -1,0 +1,96 @@
+import {useMemo, useState} from "react";
+import {useSelector} from "react-redux";
+import {DropMarker} from "@epam/uui";
+import {DndActor, uuiDndState} from "@epam/uui-core";
+import {DragHandle} from "@epam/uui-components";
+import Server from "../../services/server";
+import classNames from "classnames";
+import css from './styles.module.scss';
+const TeamsDragAndDrop = ({onSave, onCancel}) => {
+    const server =  useMemo(() => {
+        return new Server();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    const state = useSelector((state) => state);
+    const [order, setOrder] = useState({team_1: state.team_1, team_2: state.team_2});
+
+    const canAcceptDrop = ({srcData}) => {
+        const srcTeam = order.team_1.some(i => i === srcData) ? 1 : 2;
+        if (order[`team_${srcTeam}`].length === 1) {
+            return {
+                top: false,
+                bottom: false,
+            }
+        }
+        return {
+            top: true,
+            bottom: true,
+        }
+    };
+
+    const handleOnDrop = (params, prevItem, nextItem) => {
+        const { srcData, dstData, position } = params;
+        const dstTeam = order.team_1.some(i => i === dstData) ? 1 : 2;
+
+        let t1 = order.team_1.filter(i => i !== srcData);
+        let t2 = order.team_2.filter(i => i !== srcData);
+        if (dstTeam === 1) {
+            const index = order.team_1.indexOf(dstData);
+            t1.splice( position === 'top' ? index : index + 1, 0, srcData);
+        } else {
+            const index = order.team_2.indexOf(dstData);
+            t2.splice(position === 'top' ? index : index + 1, 0, srcData);
+        }
+
+        setOrder({
+            team_1: t1,
+            team_2: t2
+        })
+    };
+
+    return <>
+        <h3>Team 1</h3>
+        <ul className={'list-group mb-4'}>
+        { order.team_1.map(i => <DndActor
+            key={ i }
+            srcData={ i }
+            dstData={ i }
+            canAcceptDrop={ canAcceptDrop }
+            onDrop={ (params) => handleOnDrop(params) }
+            render={ (params) => {
+                return <div ref={ params.ref } { ...params.eventHandlers } className={classNames({[uuiDndState.dragGhost]: params.isDragGhost})}>
+                    <li className={`list-group-item bg-${params.isDragGhost ? 'light' : 'white'} p-3`}><DragHandle />{i}</li>
+                    <DropMarker { ...params } />
+                </div>
+            }}
+        />)}
+        </ul>
+        <h3>Team 2</h3>
+        <ul className={'list-group'}>
+            { order.team_2.map(i => <DndActor
+                key={ i }
+                srcData={ i }
+                dstData={ i }
+                canAcceptDrop={ canAcceptDrop }
+                onDrop={ (params) => handleOnDrop(params) }
+                render={ (params) => {
+                    return <div
+                        ref={ params.ref }
+                        { ...params.eventHandlers }
+                        className={classNames({[uuiDndState.dragGhost]: params.isDragGhost})}>
+                        <li className={`list-group-item bg-${params.isDragGhost ? 'light' : 'white'} p-3`}><DragHandle />{i}</li>
+                        <DropMarker { ...params } />
+                    </div>
+                }}
+            />)}
+        </ul>
+
+        <button className="btn btn-primary w-100 mt-2 mb-2" onClick={ async () => {
+            await server.createTeams(order.team_1, order.team_2);
+            onSave();
+        }}>Save and Restart</button>
+        <button className="btn btn-secondary w-100" onClick={onCancel}>Cancel</button>
+    </>
+}
+
+export default TeamsDragAndDrop;

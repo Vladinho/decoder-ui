@@ -23,8 +23,10 @@ const api = {
     newGame: (roomId) => axios.post('game', {
         roomId
     }),
-    createTeams: (id) => axios.post('teams', {
-        id
+    createTeams: (id, team_1, team_2) => axios.post('teams', {
+        id,
+        team_1,
+        team_2
     }),
     nextRound: (roomId, gameId, curRound) => axios.post('nextRound', {
         roomId, gameId, curRound

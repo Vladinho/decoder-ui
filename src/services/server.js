@@ -90,11 +90,11 @@ class Server {
         }
     }
 
-    createTeams = async () => {
+    createTeams = async (t1, t2) => {
         this.startLoading();
         try {
             const me = this.getState().me;
-            const room = await api.createTeams(this.roomId);
+            const room = await api.createTeams(this.roomId, t1, t2);
             const { data: { team_1, team_2 } } = room;
             this.dispatch(setState({ team_1, team_2, myTeam: team_1.some(i => i === me) ? 1 : 2 }));
         } catch (e) {
@@ -154,10 +154,10 @@ class Server {
             this.stopLoading();
         }
     }
-    reset = async (mixTeams) => {
+    reset = async (mixTeams, t1, t2) => {
         this.startLoading();
         try {
-            mixTeams && await this.createTeams();
+            mixTeams && await this.createTeams(t1, t2);
             await api.reset(this.gameId, this.roomId);
             await this.getGame();
             await this.getRoom();
@@ -182,7 +182,7 @@ class Server {
             this.stopLoading();
         }
     }
-    reloadData = async () => {{
+    reloadData = async () => {
         this.dispatch(setState({...initialState}));
         this.startLoading();
         try {
@@ -194,7 +194,7 @@ class Server {
         } finally {
             this.stopLoading();
         }
-    }}
+    }
 }
 
 export default Server;

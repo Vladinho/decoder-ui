@@ -1,14 +1,16 @@
-import React from "react";
 import {useSelector} from "react-redux";
-import {useMemo, useState} from "react";
+import React, {useMemo, useState} from "react";
 import Server from "../../../services/server";
 import columnsToRows from "../../../utils/columnsToRows";
 
 const ResultsTable = ({ answers, words, comments = [], isMyResults }) => {
     const [isCommentMode, setIsCommentMode] = useState(false);
     const state = useSelector((state) => state);
-    const wordsColumns = [];
-    const server = new Server();
+    const wordsColumns = useMemo(() => [], []);
+    const server = useMemo(() => {
+        return new Server();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     answers.forEach((i) => {
         const code = i.code.split('');
         code.forEach((c, index) => {

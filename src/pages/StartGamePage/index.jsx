@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import classNames from "classnames";
 import {setState} from "../../reducers/roomReducer";
 import {useNavigate} from "react-router";
-import {useEffect} from "react";
+import {useEffect, useMemo} from "react";
 import Server from "../../services/server";
 import api from "../../api";
 
@@ -11,16 +11,23 @@ const StartGame = () => {
     const state = useSelector((state) => state);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const s = new Server(dispatch);
+    const server = useMemo(() => {
+        return new Server();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     useEffect( () => {
-        s.getRoom();
-        s.getGame();
+        const run = async () => {
+            await server.getRoom();
+            await server.getGame();
+        }
+        run();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return <Layout>
         <h1>Room ID:</h1>
         <h3 className={'mb-4'}>{state.roomId}</h3>
         <button className={classNames(['btn', ' btn-primary', 'mb-2', 'w-100'])} onClick={async () => {
-            s.getRoom();
+            server.getRoom();
         }}>See team members</button>
         <button className={classNames(['btn', ' btn-primary', 'mb-2', 'w-100'])} disabled={state.users.length < 4} onClick={async () => {
             const room = await api.createTeams(state.roomId);
