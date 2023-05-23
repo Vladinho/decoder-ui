@@ -68,7 +68,7 @@ const Layout = ({ children, cx = [] }) => {
                             {!state.team_2?.length && <li className="list-group-item">No users</li>}
                             { state.mainUser === state.me && <button type="button" className="btn btn-primary mt-4 w-100" onClick={() => showModal(() => server.reset())}>Restart the game</button>}
                             { state.mainUser === state.me && <button type="button" className="btn btn-primary mt-2 w-100" onClick={() => showModal(() => server.reset(true))}>Restart the game and mix the teams</button>}
-                            { state.mainUser === state.me && <button type="button" className="btn btn-primary mt-2 w-100" onClick={() => setIsDragMode(true)}>Restart the game and change the order</button>}
+                            { state.mainUser === state.me && <button type="button" className="btn btn-primary mt-2 w-100" onClick={() => setIsDragMode(true)}>Change the order</button>}
                         </ul>
                     </>}
                 </div>}
