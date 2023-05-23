@@ -3,7 +3,6 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import {useDispatch, useSelector} from "react-redux";
 import Loader from "./components/Loader";
-import JoinGame from "./pages/JoinGame";
 import StartGame from "./pages/StartGamePage";
 import Game from "./pages/GamePage";
 import Modal from "./components/Modal";
@@ -18,7 +17,6 @@ function App() {
           <BrowserRouter>
               <Routes>
                   <Route path="/" element={<LoginPage />} />
-                  <Route path="/joinGame" element={<JoinGame />} />
                   <Route path="/startGame" element={<StartGame />} />
                   <Route path="/game" element={<Game />} />
               </Routes>
