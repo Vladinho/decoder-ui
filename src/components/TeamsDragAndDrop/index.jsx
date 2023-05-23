@@ -93,8 +93,9 @@ const TeamsDragAndDrop = ({onSave, onCancel}) => {
 
         <button disabled={JSON.stringify([state.team_1, state.team_2]) === JSON.stringify([order.team_1, order.team_2])} className="btn btn-primary w-100 mt-2 mb-2" onClick={ async () => {
             await server.createTeams(order.team_1, order.team_2);
+            await server.reloadData();
             onSave();
-        }}>Save and Restart</button>
+        }}>Save order</button>
         <button className="btn btn-secondary w-100" onClick={onCancel}>Cancel</button>
     </div>
 }
