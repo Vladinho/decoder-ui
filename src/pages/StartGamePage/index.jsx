@@ -43,6 +43,8 @@ const StartGame = () => {
             navigate('/game');
         }}>Start Game</button>
 
+        <button onClick={() => setIsDragMode(true)} className={'btn btn-primary w-100 mb-2'}>Change teams order</button>
+
         { isDragMode ?
             <TeamsDragAndDrop onSave={() => setIsDragMode(false)} onCancel={() => setIsDragMode(false)} /> :
             <>
