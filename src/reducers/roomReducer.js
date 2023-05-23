@@ -25,6 +25,7 @@ export const initialState = {
     modalCallback: null,
     isMyDetailsOpened: false,
     isOpponentDetailsOpened: false,
+    isDndInProgress: false
 }
 export const roomSlice = createSlice({
     name: 'room',

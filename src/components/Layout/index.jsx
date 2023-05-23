@@ -30,7 +30,7 @@ const Layout = ({ children, cx = [] }) => {
                 <button className="btn btn-primary" onClick={() => server.reloadData()}>
                     <img src={refreshIcon} alt={'refresh'}/>
                 </button>
-                {isTeamsVisible && <div className={classNames([css.container, 'shadow', 'p-3', 'mb-5', 'bg-white', 'rounded', 'animate__animated animate__bounceInDown'])}>
+                {isTeamsVisible && <div className={classNames([css.container, 'shadow', 'p-3', 'mb-5', 'bg-white', 'rounded', 'animate__animated animate__bounceInDown', {[css.isDnd]: state.isDndInProgress} ])}>
                     <div className={`${css.teamsHeader} shadow`}>
                         <button type="button" className={classNames(['btn', 'btn-light', css.close])} aria-label="Close" onClick={() => setIsTeamsVisible(false)}>
                             <span aria-hidden="true">&times;</span>

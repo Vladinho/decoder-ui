@@ -3,12 +3,14 @@ import {useDispatch, useSelector} from "react-redux";
 import classNames from "classnames";
 import {setState} from "../../reducers/roomReducer";
 import {useNavigate} from "react-router";
-import {useEffect, useMemo} from "react";
+import {useEffect, useMemo, useState} from "react";
 import Server from "../../services/server";
 import api from "../../api";
+import TeamsDragAndDrop from "../../components/TeamsDragAndDrop";
 
 const StartGame = () => {
     const state = useSelector((state) => state);
+    const [isDragMode, setIsDragMode] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const server = useMemo(() => {
@@ -40,8 +42,9 @@ const StartGame = () => {
             dispatch(setState({ round: round.data.round }));
             navigate('/game');
         }}>Start Game</button>
-        {
-            !!state.team_1.length && !!state.team_2.length ? <>
+
+        { isDragMode ? <TeamsDragAndDrop onSave={() => setIsDragMode(false)} onCancel={() => setIsDragMode(false)} /> : <>
+                !!state.team_1.length && !!state.team_2.length ? <>
                 <h2 className={'mt-4'}>Team 1:</h2>
                 <ul className="list-group mb-4">
                     {state.team_1.map((i) => <li key={i} className="list-group-item">{i}</li>)}
@@ -56,7 +59,7 @@ const StartGame = () => {
                     {state.users.map((i) => <li key={i} className="list-group-item">{i}</li>)}
                 </ul>
             </>
-        }
+        </>}
         {/*<pre>{JSON.stringify(state, null, 4)}</pre>*/}
     </Layout>
 }

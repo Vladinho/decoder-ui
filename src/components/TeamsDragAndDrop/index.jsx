@@ -1,12 +1,14 @@
 import {useMemo, useState} from "react";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {DropMarker} from "@epam/uui";
 import {DndActor, uuiDndState} from "@epam/uui-core";
 import {DragHandle} from "@epam/uui-components";
 import Server from "../../services/server";
 import classNames from "classnames";
-import css from './styles.module.scss';
+import {setState} from "../../reducers/roomReducer";
+
 const TeamsDragAndDrop = ({onSave, onCancel}) => {
+    const dispatch = useDispatch();
     const server =  useMemo(() => {
         return new Server();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -28,7 +30,7 @@ const TeamsDragAndDrop = ({onSave, onCancel}) => {
         }
     };
 
-    const handleOnDrop = (params, prevItem, nextItem) => {
+    const handleOnDrop = (params) => {
         const { srcData, dstData, position } = params;
         const dstTeam = order.team_1.some(i => i === dstData) ? 1 : 2;
 
@@ -74,6 +76,7 @@ const TeamsDragAndDrop = ({onSave, onCancel}) => {
                 canAcceptDrop={ canAcceptDrop }
                 onDrop={ (params) => handleOnDrop(params) }
                 render={ (params) => {
+                    params.isDndInProgress !== state.isDndInProgress && dispatch(setState({ isDndInProgress: params.isDndInProgress}));
                     return <div
                         ref={ params.ref }
                         { ...params.eventHandlers }
@@ -85,7 +88,7 @@ const TeamsDragAndDrop = ({onSave, onCancel}) => {
             />)}
         </ul>
 
-        <button className="btn btn-primary w-100 mt-2 mb-2" onClick={ async () => {
+        <button disabled={JSON.stringify([state.team_1, state.team_2]) === JSON.stringify([order.team_1, order.team_2])} className="btn btn-primary w-100 mt-2 mb-2" onClick={ async () => {
             await server.createTeams(order.team_1, order.team_2);
             onSave();
         }}>Save and Restart</button>
