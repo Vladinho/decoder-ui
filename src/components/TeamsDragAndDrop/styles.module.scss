@@ -4,5 +4,10 @@
 }
 
 .container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.noTouch {
   touch-action: none;
 }

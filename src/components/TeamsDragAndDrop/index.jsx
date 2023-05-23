@@ -57,43 +57,46 @@ const TeamsDragAndDrop = ({onSave, onCancel}) => {
     };
 
     return <div className={css.container}>
-        <h3>Team 1</h3>
-        <ul className={'list-group mb-4'}>
-        { order.team_1.map(i => <DndActor
-            key={ i }
-            srcData={ i }
-            dstData={ i }
-            canAcceptDrop={ canAcceptDrop }
-            onDrop={ (params) => handleOnDrop(params) }
-            render={ (params) => {
-                return <div ref={ params.ref } { ...params.eventHandlers } className={classNames({[uuiDndState.dragGhost]: params.isDragGhost})}>
-                    <li className={`list-group-item bg-${params.isDragGhost ? 'light' : 'white'} p-3`}><DragHandle />{i}</li>
-                    <DropMarker { ...params } />
-                </div>
-            }}
-        />)}
-        </ul>
-        <h3>Team 2</h3>
-        <ul className={'list-group'}>
-            { order.team_2.map(i => <DndActor
-                key={ i }
-                srcData={ i }
-                dstData={ i }
-                canAcceptDrop={ canAcceptDrop }
-                onDrop={ (params) => handleOnDrop(params) }
-                render={ (params) => {
-                    // params.isDndInProgress !== state.isDndInProgress && dispatch(setState({ isDndInProgress: params.isDndInProgress}));
-                    return <div
-                        ref={ params.ref }
-                        { ...params.eventHandlers }
-                        className={classNames({[uuiDndState.dragGhost]: params.isDragGhost})}
-                    >
-                        <li className={`list-group-item bg-${params.isDragGhost ? 'light' : 'white'} p-3`}><DragHandle />{i}</li>
-                        <DropMarker { ...params } />
-                    </div>
-                }}
-            />)}
-        </ul>
+       <div className={'w-50 p-2'}>
+           <h3>Team 1</h3>
+           <ul className={`list-group mb-4 ${css.noTouch}`}>
+               { order.team_1.map(i => <DndActor
+                   key={ i }
+                   srcData={ i }
+                   dstData={ i }
+                   canAcceptDrop={ canAcceptDrop }
+                   onDrop={ (params) => handleOnDrop(params) }
+                   render={ (params) => {
+                       return <div ref={ params.ref } { ...params.eventHandlers } className={classNames({[uuiDndState.dragGhost]: params.isDragGhost})}>
+                           <li className={`list-group-item bg-${params.isDragGhost ? 'light' : 'white'} p-1 mb-1`}><DragHandle />{i}</li>
+                           <DropMarker { ...params } />
+                       </div>
+                   }}
+               />)}
+           </ul>
+       </div>
+        <div className={'w-50 p-2'}>
+            <h3>Team 2</h3>
+            <ul className={`list-group ${css.noTouch}`}>
+                { order.team_2.map(i => <DndActor
+                    key={ i }
+                    srcData={ i }
+                    dstData={ i }
+                    canAcceptDrop={ canAcceptDrop }
+                    onDrop={ (params) => handleOnDrop(params) }
+                    render={ (params) => {
+                        return <div
+                            ref={ params.ref }
+                            { ...params.eventHandlers }
+                            className={classNames({[uuiDndState.dragGhost]: params.isDragGhost})}
+                        >
+                            <li className={`list-group-item bg-${params.isDragGhost ? 'light' : 'white'} p-1 mb-1`}><DragHandle />{i}</li>
+                            <DropMarker { ...params } />
+                        </div>
+                    }}
+                />)}
+            </ul>
+        </div>
 
         <button disabled={JSON.stringify([state.team_1, state.team_2]) === JSON.stringify([order.team_1, order.team_2])} className="btn btn-primary w-100 mt-2 mb-2" onClick={ async () => {
             await server.createTeams(order.team_1, order.team_2);
