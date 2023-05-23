@@ -154,6 +154,19 @@ class Server {
             this.stopLoading();
         }
     }
+    mixTeams = async () => {
+        this.startLoading();
+        try {
+            await this.createTeams();
+            await this.getGame();
+            await this.getRoom();
+            await this.getAnswers();
+        } catch (e) {
+            this.dispatch(setState({ errors: [e] }));
+        } finally {
+            this.stopLoading();
+        }
+    }
     reset = async (mixTeams, t1, t2) => {
         this.startLoading();
         try {
