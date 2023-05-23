@@ -66,7 +66,10 @@ const Layout = ({ children, cx = [] }) => {
                                 </h6>
                             </li>)}
                             {!state.team_2?.length && <li className="list-group-item">No users</li>}
-                            { state.mainUser === state.me && <button type="button" className="btn btn-primary mt-4 w-100" onClick={() => showModal(() => server.reset())}>Restart the game</button>}
+                            { state.mainUser === state.me && <button type="button" className="btn btn-primary mt-4 w-100" onClick={() => showModal( async () => {
+                                await server.reset();
+                                setIsTeamsVisible(false);
+                            })}>Restart the game</button>}
                             { state.mainUser === state.me && <button type="button" className="btn btn-primary mt-2 w-100" onClick={() => showModal(() => server.mixTeams())}>Mix the teams</button>}
                             { state.mainUser === state.me && <button type="button" className="btn btn-primary mt-2 w-100" onClick={() => setIsDragMode(true)}>Change the order</button>}
                         </ul>
