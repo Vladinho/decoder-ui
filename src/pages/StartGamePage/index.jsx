@@ -43,23 +43,28 @@ const StartGame = () => {
             navigate('/game');
         }}>Start Game</button>
 
-        { isDragMode ? <TeamsDragAndDrop onSave={() => setIsDragMode(false)} onCancel={() => setIsDragMode(false)} /> : <>
+        { isDragMode ?
+            <TeamsDragAndDrop onSave={() => setIsDragMode(false)} onCancel={() => setIsDragMode(false)} /> :
+            <>
+            {
                 !!state.team_1.length && !!state.team_2.length ? <>
-                <h2 className={'mt-4'}>Team 1:</h2>
-                <ul className="list-group mb-4">
-                    {state.team_1.map((i) => <li key={i} className="list-group-item">{i}</li>)}
-                </ul>
-                <h2>Team 2:</h2>
-                <ul className="list-group">
-                    {state.team_2.map((i) => <li key={i} className="list-group-item">{i}</li>)}
-                </ul>
-            </>: <>
-                <h2>Team members:</h2>
-                <ul className="list-group">
-                    {state.users.map((i) => <li key={i} className="list-group-item">{i}</li>)}
-                </ul>
+                    <h2 className={'mt-4'}>Team 1:</h2>
+                    <ul className="list-group mb-4">
+                        {state.team_1.map((i) => <li key={i} className="list-group-item">{i}</li>)}
+                    </ul>
+                    <h2>Team 2:</h2>
+                    <ul className="list-group">
+                        {state.team_2.map((i) => <li key={i} className="list-group-item">{i}</li>)}
+                    </ul>
+                </>: <>
+                    <h2>Team members:</h2>
+                    <ul className="list-group">
+                        {state.users.map((i) => <li key={i} className="list-group-item">{i}</li>)}
+                    </ul>
+                </>
+            }
             </>
-        </>}
+        }
         {/*<pre>{JSON.stringify(state, null, 4)}</pre>*/}
     </Layout>
 }
