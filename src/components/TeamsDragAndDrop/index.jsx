@@ -1,4 +1,4 @@
-import {useMemo, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {DropMarker} from "@epam/uui";
 import {DndActor, uuiDndState} from "@epam/uui-core";
@@ -6,8 +6,14 @@ import {DragHandle} from "@epam/uui-components";
 import Server from "../../services/server";
 import classNames from "classnames";
 import {setState} from "../../reducers/roomReducer";
+import css from './styles.module.scss'
 
 const TeamsDragAndDrop = ({onSave, onCancel}) => {
+    // useEffect(() => {
+    //     document.addEventListener('wheel', function(e) {
+    //         e.preventDefault();
+    //     }, { passive: false });
+    // }, [])
     const dispatch = useDispatch();
     const server =  useMemo(() => {
         return new Server();
@@ -50,7 +56,7 @@ const TeamsDragAndDrop = ({onSave, onCancel}) => {
         })
     };
 
-    return <>
+    return <div className={css.container}>
         <h3>Team 1</h3>
         <ul className={'list-group mb-4'}>
         { order.team_1.map(i => <DndActor
@@ -76,11 +82,12 @@ const TeamsDragAndDrop = ({onSave, onCancel}) => {
                 canAcceptDrop={ canAcceptDrop }
                 onDrop={ (params) => handleOnDrop(params) }
                 render={ (params) => {
-                    params.isDndInProgress !== state.isDndInProgress && dispatch(setState({ isDndInProgress: params.isDndInProgress}));
+                    // params.isDndInProgress !== state.isDndInProgress && dispatch(setState({ isDndInProgress: params.isDndInProgress}));
                     return <div
                         ref={ params.ref }
                         { ...params.eventHandlers }
-                        className={classNames({[uuiDndState.dragGhost]: params.isDragGhost})}>
+                        className={classNames({[uuiDndState.dragGhost]: params.isDragGhost})}
+                    >
                         <li className={`list-group-item bg-${params.isDragGhost ? 'light' : 'white'} p-3`}><DragHandle />{i}</li>
                         <DropMarker { ...params } />
                     </div>
@@ -93,7 +100,7 @@ const TeamsDragAndDrop = ({onSave, onCancel}) => {
             onSave();
         }}>Save and Restart</button>
         <button className="btn btn-secondary w-100" onClick={onCancel}>Cancel</button>
-    </>
+    </div>
 }
 
 export default TeamsDragAndDrop;
