@@ -9,20 +9,19 @@ import classNames from "classnames";
 import ResultsTable from "./ResultsTable";
 import Counter from "../Counter";
 import emptyGif from "../../assets/empty.gif"
-import useModal from "../../hooks/useModal";
 import useCount from "../../hooks/useCount";
 import {setState} from "../../reducers/roomReducer";
+import Answer from "./Answer";
 
 const Game = () => {
     const state = useSelector((state) => state);
     const dispatch = useDispatch();
-    const showModal = useModal();
     const server = new Server(dispatch);
-    const [answerState, setAnswerState] = useState(['', '', ''])
     const [activeTab, setActiveTab] = useState('My');
-    const { code, answers, curPlayer, words, opponentAnswers, myTeam, opponentTeam, opponentWords } = useMy();
+    const { code, answers, curPlayer, words, opponentAnswers, opponentWords } = useMy();
     useEffect(  () => {
         server.reloadData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const curAnswer = answers.find(i => i.round === state.round);
     const teamAgree = curAnswer?.[`team_${state.myTeam}_agree`];
@@ -59,32 +58,7 @@ const Game = () => {
             <button type="button" className="btn btn-success w-100 mb-3" onClick={() => server.nextRound()}>Next Round</button>}
 
         {
-            !state.isLoading && code && state.round > answers.length && curPlayer === state.me && <>
-                <h1 className='mb-2'>Code: {code}</h1>
-                <form onSubmit={(e) => {
-                    e.preventDefault();
-                    showModal(() => server.setAnswer(code, answerState))
-                }}>
-                    {
-                        code.split('').map((i, index) => <div className="form-group mb-2" key={i}>
-                            <label htmlFor={`word${i}`} style={{textTransform: 'capitalize'}}>{words[+i - 1]}</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id={`word${i}`}
-                                placeholder='Enter your word'
-                                value={answerState[index]}
-                                onChange={(e) =>
-                                    setAnswerState((s) => {
-                                        const inputs = [...s];
-                                        inputs[index] = e.target.value;
-                                        return inputs;
-                                    })}/>
-                        </div>)
-                    }
-                    <button type="submit" className="btn btn-primary w-100" disabled={answerState.some(i => !i)}>Submit</button>
-                </form>
-            </>
+            !state.isLoading && code && state.round > answers.length && curPlayer === state.me && <Answer />
         }
 
         <ul className="nav nav-tabs mt-4 mb-4">
@@ -92,13 +66,13 @@ const Game = () => {
                 <a className={classNames('nav-link', {active: activeTab === 'My'})} onClick={(e) => {
                     e.preventDefault();
                     setActiveTab('My');
-                }} href='#' style={{fontSize: '12px'}}>My words {isMyGuess && <span className="badge bg-danger">1</span>}</a>
+                }} href='/' style={{fontSize: '12px'}}>My words {isMyGuess && <span className="badge bg-danger">1</span>}</a>
             </li>
             <li className="nav-item">
                 <a className={classNames('nav-link', {active: activeTab === 'Opponent'})} onClick={(e) => {
                     e.preventDefault();
                     setActiveTab('Opponent');
-                }} href='#' style={{fontSize: '12px'}}>Opponent`s words {isOpponentGuess && <span className="badge bg-danger">1</span>}</a>
+                }} href='/' style={{fontSize: '12px'}}>Opponent`s words {isOpponentGuess && <span className="badge bg-danger">1</span>}</a>
             </li>
         </ul>
 
