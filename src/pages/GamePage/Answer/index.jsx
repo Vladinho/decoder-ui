@@ -12,7 +12,7 @@ const Answer = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return <>
-        <h1 className='mb-2'>Code: {code}</h1>
+        <h1 className='mb-2 mt-2'>Code: {code}</h1>
         <form onSubmit={(e) => {
             e.preventDefault();
             showModal(() => server.setAnswer(code, answerState))
