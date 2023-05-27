@@ -25,7 +25,8 @@ export const initialState = {
     modalCallback: null,
     isMyDetailsOpened: false,
     isOpponentDetailsOpened: false,
-    isDndInProgress: false
+    isDndInProgress: false,
+    shortRoomId:  localStorage.getItem('shortRoomId') || null,
 }
 export const roomSlice = createSlice({
     name: 'room',

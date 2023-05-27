@@ -27,7 +27,7 @@ const StartGame = () => {
     }, []);
     return <Layout>
         <h1>Room ID:</h1>
-        <h3 className={'mb-4'}>{state.roomId}</h3>
+        <h3 className={'mb-4'}>{state.shortRoomId || state.roomId}</h3>
 
         { isDragMode ?
             <TeamsDragAndDrop onSave={() => setIsDragMode(false)} onCancel={() => setIsDragMode(false)} /> :

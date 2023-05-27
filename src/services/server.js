@@ -28,6 +28,7 @@ class Server {
             localStorage.setItem('gameId', _id);
             const data = { round, team_1_code, team_2_code, words_1, words_2, comments_1, comments_2, team_1_player, team_2_player }
             this.dispatch(setState(data));
+            this.gameId = _id;
             return data;
         } catch (e) {
             this.dispatch(setState({ errors: e }));
@@ -185,6 +186,12 @@ class Server {
         this.startLoading();
         try {
             const r = await api.joinRoom(roomId, user);
+            if ( r.data?._id) {
+                this.dispatch(setState({ roomId: r.data?._id }));
+                this.roomId = r.data?._id;
+                localStorage.setItem('roomId', r.data._id);
+            }
+
             await this.getGame();
             await this.getRoom();
             await this.getAnswers();
