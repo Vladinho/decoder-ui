@@ -21,7 +21,7 @@ const LoginPage = () => {
         run();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return <div className={'container-md p-3'}>
+    return <div className={`container-md p-3 ${css.main}`}>
         <h2 className={'mb-3 display-6'}>Decoder -<br />the best game ever!</h2>
         <div className={classNames(['form-group', 'mb-2', 'w-100'])}>
             <input type="text" className="form-control" id="userName" onChange={(e) =>{
@@ -55,7 +55,7 @@ const LoginPage = () => {
                             setRoomId(e.target.value);
                         }
                     }
-                       placeholder="Enter room ID, for example: 6459811ff421a7f05fe752c0"
+                       placeholder="Enter room ID"
                     value={roomId || ''}
                 />
             </div>

@@ -22,7 +22,7 @@ const Guess = ({answers}) => {
             {
                 answers.find(i => i.round === state.round)?.answer.map((i, index) =>  <tr key={i}>
                     <td>{i}</td>
-                    <td><input type="text" className="form-control" placeholder="Enter your guess" maxLength={1} value={guessState[index]}  onChange={(e) =>
+                    <td><input type="text" className="form-control" placeholder="Enter your code guess" maxLength={1} value={guessState[index]}  onChange={(e) =>
                         setGuessState((s) => {
                             const allowedCode = ['1', '2', '3', '4', ''];
                             if (allowedCode.some(i => i === e.target.value)) {
