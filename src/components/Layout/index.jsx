@@ -20,7 +20,7 @@ const Layout = ({ children, cx = [] }) => {
     const curAnswers = state.answers.filter(i => i.round === state.round);
     return <div className={classNames(['container-md', 'p-3', ...cx])}>
         {state.me && <>
-            <div className={`d-flex justify-content-between position-relative align-items-center flex-wrap p-3 shadow-sm ${css.header}`}>
+            <div className={`d-flex justify-content-between position-relative align-items-center flex-wrap p-3 shadow-sm ${css.header} mb-2`}>
                 <h2>{state.me}</h2> {!!state.round && <span className="badge bg-secondary">round {state.round}</span>}
                 <button type="button" className="btn btn-primary" onClick={() => setIsTeamsVisible((s) => !s)}>{isTeamsVisible ? 'Hide' : 'Show'} teams</button>
                 <button className="btn btn-primary" onClick={() => server.reloadData()}>
