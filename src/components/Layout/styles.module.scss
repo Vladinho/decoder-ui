@@ -9,18 +9,15 @@
   z-index: 100;
   overflow: auto;
   user-select: none;
-
-  &.isDnd {
-    //overflow: hidden;
-    //touch-action: none;
-  }
 }
 
 .close {
   position: absolute;
-  right: 0;
-  top: 0;
+  right: 10px;
+  top: 10px;
   font-size: 20px;
+  background: #dc3545;
+  color: #fff;
 }
 
 .king {
