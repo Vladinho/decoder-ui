@@ -1,16 +1,13 @@
-import {useEffect, useMemo, useState} from "react";
+import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
-import Server from "../../../services/server";
 import useModal from "../../../hooks/useModal";
+import useServer from "../../../hooks/useServer";
 
 const Guess = ({answers}) => {
     const [guessState, setGuessState] = useState(['', '', '']);
 
     const state = useSelector((state) => state);
-    const server = useMemo(() => {
-        return new Server();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const server = useServer();
 
     const curAnswer = answers.find(i => i.round === state.round);
     const guess = curAnswer?.[`team_${state.myTeam}_guess`];

@@ -1,23 +1,19 @@
 import classNames from "classnames";
 import {useSelector} from "react-redux";
-import {useMemo, useState} from "react";
+import {useState} from "react";
 import css from './styles.module.scss';
 import useMy from "../../hooks/useMy";
-import Server from "../../services/server";
 import useModal from "../../hooks/useModal";
 import refreshIcon from "../../assets/refresh.svg"
 import done from "../../assets/done.svg"
 import think from "../../assets/think.gif"
 import TeamsDragAndDrop from "../TeamsDragAndDrop";
+import useServer from "../../hooks/useServer";
 
 const Layout = ({ children, cx = [] }) => {
     const state = useSelector((state) => state);
     const [isDragMode, setIsDragMode] = useState(false);
-
-    const server =  useMemo(() => {
-        return new Server();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const server =  useServer();
     const { myTeam, opponentTeam, curPlayer, opponentCurPlayer } = useMy();
     const [isTeamsVisible, setIsTeamsVisible] = useState(false);
     const showModal = useModal();

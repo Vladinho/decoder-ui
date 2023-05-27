@@ -1,17 +1,14 @@
-import {useMemo, useState} from "react";
+import {useState} from "react";
 import {useSelector} from "react-redux";
 import {DropMarker} from "@epam/uui";
 import {DndActor, uuiDndState} from "@epam/uui-core";
 import {DragHandle} from "@epam/uui-components";
-import Server from "../../services/server";
 import classNames from "classnames";
 import css from './styles.module.scss'
+import useServer from "../../hooks/useServer";
 
 const TeamsDragAndDrop = ({onSave, onCancel}) => {
-    const server =  useMemo(() => {
-        return new Server();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const server =  useServer();
     const state = useSelector((state) => state);
     const [order, setOrder] = useState({team_1: state.team_1, team_2: state.team_2});
 

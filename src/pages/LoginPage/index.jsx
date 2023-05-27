@@ -1,19 +1,16 @@
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useMemo, useState,} from "react";
+import {useEffect, useState,} from "react";
 import css from './styles.module.scss'
 import classNames from "classnames";
 import api from "../../api";
 import {setState} from "../../reducers/roomReducer";
 import {useNavigate} from "react-router";
-import Server from "../../services/server";
+import useServer from "../../hooks/useServer";
 
 const LoginPage = () => {
     const [roomId, setRoomId] = useState(localStorage.getItem('shortRoomId') || localStorage.getItem('roomId'));
     const state = useSelector((state) => state);
-    const server = useMemo(() => {
-        return new Server();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const server = useServer();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     useEffect(() => {

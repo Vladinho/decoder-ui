@@ -3,20 +3,17 @@ import {useDispatch, useSelector} from "react-redux";
 import classNames from "classnames";
 import {setState} from "../../reducers/roomReducer";
 import {useNavigate} from "react-router";
-import {useEffect, useMemo, useState} from "react";
-import Server from "../../services/server";
+import {useEffect, useState} from "react";
 import api from "../../api";
 import TeamsDragAndDrop from "../../components/TeamsDragAndDrop";
+import useServer from "../../hooks/useServer";
 
 const StartGame = () => {
     const state = useSelector((state) => state);
     const [isDragMode, setIsDragMode] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const server = useMemo(() => {
-        return new Server();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const server = useServer();
     useEffect( () => {
         const run = async () => {
             await server.getRoom();

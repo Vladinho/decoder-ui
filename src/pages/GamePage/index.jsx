@@ -1,7 +1,6 @@
 import Layout from "../../components/Layout";
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useMemo, useState} from "react";
-import Server from "../../services/server";
+import {useEffect, useState} from "react";
 import useMy from "../../hooks/useMy";
 import Guess from "./Guess";
 import Table from "./Table";
@@ -12,14 +11,12 @@ import emptyGif from "../../assets/empty.gif"
 import useCount from "../../hooks/useCount";
 import {setState} from "../../reducers/roomReducer";
 import Answer from "./Answer";
+import useServer from "../../hooks/useServer";
 
 const Game = () => {
     const state = useSelector((state) => state);
     const dispatch = useDispatch();
-    const server = useMemo(() => {
-        return new Server();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const server = useServer();
     const [activeTab, setActiveTab] = useState('My');
     const { code, answers, curPlayer, words, opponentAnswers, opponentWords } = useMy();
     useEffect(  () => {

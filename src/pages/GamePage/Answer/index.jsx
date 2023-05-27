@@ -1,16 +1,13 @@
 import useMy from "../../../hooks/useMy";
-import Server from "../../../services/server";
-import {useMemo, useState} from "react";
+import {useState} from "react";
 import useModal from "../../../hooks/useModal";
+import useServer from "../../../hooks/useServer";
 
 const Answer = () => {
     const [answerState, setAnswerState] = useState(['', '', ''])
     const { code, words } = useMy();
     const showModal = useModal();
-    const server = useMemo(() => {
-        return new Server();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const server = useServer();
     return <>
         <h1 className='mb-2 mt-2'>Code: {code}</h1>
         <form onSubmit={(e) => {
