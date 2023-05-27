@@ -8,13 +8,15 @@ import Game from "./pages/GamePage";
 import Modal from "./components/Modal";
 import {setState} from "./reducers/roomReducer";
 import { ContextProvider } from '@epam/uui-core';
+import useDebounce from "./hooks/useDebounce";
 
 function App() {
     const state = useSelector((state) => state);
     const dispatch = useDispatch();
+    const isLoading = useDebounce(state.isLoading, 100);
   return (
       <ContextProvider onInitCompleted={() => {}}>
-          {state.isLoading && <Loader />}
+          {isLoading && <Loader />}
           <BrowserRouter>
               <Routes>
                   <Route path="/" element={<LoginPage />} />
