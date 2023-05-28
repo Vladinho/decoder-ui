@@ -1,9 +1,5 @@
 import {useState} from "react";
 import {useSelector} from "react-redux";
-import {DropMarker} from "@epam/uui";
-import {DndActor, uuiDndState} from "@epam/uui-core";
-import {DragHandle} from "@epam/uui-components";
-import classNames from "classnames";
 import css from './styles.module.scss'
 import useServer from "../../hooks/useServer";
 import DndElement from "./DndElement";
