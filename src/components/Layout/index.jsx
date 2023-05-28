@@ -14,7 +14,7 @@ const Layout = ({ children, cx = [] }) => {
     const state = useSelector((state) => state);
     const [isDragMode, setIsDragMode] = useState(false);
     const server =  useServer();
-    const { myTeam, opponentTeam, curPlayer, opponentCurPlayer } = useMy();
+    const { myTeam, opponentTeam, curPlayer, opponentCurPlayer, answers, opponentAnswers } = useMy();
     const [isTeamsVisible, setIsTeamsVisible] = useState(false);
     const showModal = useModal();
     const curAnswers = state.answers.filter(i => i.round === state.round);
@@ -42,7 +42,10 @@ const Layout = ({ children, cx = [] }) => {
                             >
                                 <h6>{i}
                                     {state.mainUser === i && ' (admin)'}
-                                    {!!curAnswers?.length && curAnswers.every(a => a.user === i || a[`team_${state.team_1.some(u => u === i) ? 1 : 2}_agree`]?.some(j => j === i)) && <img src={done} className={css.done} alt={'done'}/>}
+                                    {!!curAnswers?.length &&
+                                        answers.length === state.round &&
+                                        curAnswers.every(a => a.user === i || a[`team_${state.team_1.some(u => u === i) ? 1 : 2}_agree`]?.some(j => j === i)) &&
+                                        <img src={done} className={css.done} alt={'done'}/>}
                                     {i === curPlayer && !curAnswers.some(i => i.round === state.round && i.user === curPlayer) && <img src={think} className={css.think} alt={'think'}/>}
                                 </h6>
                             </li>)}
@@ -57,7 +60,10 @@ const Layout = ({ children, cx = [] }) => {
                                 <h6>
                                     {i}
                                     {state.mainUser === i && ' (admin)'}
-                                    {!!curAnswers?.length && curAnswers.every(a => a.user === i || a[`team_${state.team_1.some(u => u === i) ? 1 : 2}_agree`]?.some(j => j === i)) && <img src={done} className={css.done} alt={'done'}/>}
+                                    {!!curAnswers?.length &&
+                                        opponentAnswers.length === state.round &&
+                                        curAnswers.every(a => a.user === i || a[`team_${state.team_1.some(u => u === i) ? 1 : 2}_agree`]?.some(j => j === i)) &&
+                                        <img src={done} className={css.done} alt={'done'}/>}
                                     {i === opponentCurPlayer && !curAnswers.some(i => i.round === state.round && i.user === opponentCurPlayer) && <img src={think} className={css.think} alt={'think'}/>}
                                 </h6>
                             </li>)}
