@@ -12,3 +12,20 @@
 .noTouch {
   touch-action: none;
 }
+
+.list {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 6px);
+}
+
+.dndElement {
+  &:last-child {
+    flex-grow: 1;
+  }
+}
+
+.dndGhost {
+  border: 1px solid #ccc;
+  opacity: 0.8;
+}
