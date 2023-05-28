@@ -6,6 +6,7 @@ import {DragHandle} from "@epam/uui-components";
 import classNames from "classnames";
 import css from './styles.module.scss'
 import useServer from "../../hooks/useServer";
+import DndElement from "./DndElement";
 
 const TeamsDragAndDrop = ({onSave, onCancel}) => {
     const server =  useServer();
@@ -51,46 +52,13 @@ const TeamsDragAndDrop = ({onSave, onCancel}) => {
             <div className={'w-50 p-2 m-2 pb-4 border rounded'}>
                 <h3>Team 1</h3>
                 <ul className={`list-group mb-4 ${css.noTouch} ${css.list} mb-4`}>
-                    { order.team_1.map(i => <DndActor
-                        key={ i }
-                        srcData={ i }
-                        dstData={ i }
-                        canAcceptDrop={ canAcceptDrop }
-                        onDrop={ (params) => handleOnDrop(params) }
-                        render={ (params) => {
-                            return <div ref={ params.ref } { ...params.eventHandlers } className={classNames({[uuiDndState.dragGhost]: params.isDragGhost}, css.dndElement)}>
-                                <li className={`list-group-item text-center rounded bg-${params.isDragGhost ? `light ${css.dndGhost}` : 'white'} p-1 mb-1 text-break`}><DragHandle />{i}</li>
-                                <DropMarker { ...params } />
-                            </div>
-                        }}
-                    />)}
+                    { order.team_1.map(i => <DndElement userName={i} canAcceptDrop={canAcceptDrop} handleOnDrop={handleOnDrop} key={i} />) }
                 </ul>
             </div>
             <div className={'w-50 p-2 m-2 pb-4 border rounded'}>
                 <h3>Team 2</h3>
                 <ul className={`list-group ${css.noTouch} ${css.list} mb-4`}>
-                    { order.team_2.map(i => <DndActor
-                        key={ i }
-                        srcData={ i }
-                        dstData={ i }
-                        canAcceptDrop={ canAcceptDrop }
-                        onDrop={ (params) => handleOnDrop(params) }
-                        render={ (params) => {
-                            return <div
-                                ref={ params.ref }
-                                { ...params.eventHandlers }
-                                className={classNames({[uuiDndState.dragGhost]: params.isDragGhost}, css.dndElement)}
-                            >
-                                <li
-                                    className={`list-group-item text-center rounded bg-${params.isDragGhost ? `light ${css.dndGhost}` : 'white'} p-1 mb-1 text-break`}
-                                >
-                                    <DragHandle />
-                                    {i}
-                                </li>
-                                <DropMarker { ...params } />
-                            </div>
-                        }}
-                    />)}
+                    { order.team_2.map(i => <DndElement userName={i} canAcceptDrop={canAcceptDrop} handleOnDrop={handleOnDrop} key={i} />) }
                 </ul>
             </div>
         </div>

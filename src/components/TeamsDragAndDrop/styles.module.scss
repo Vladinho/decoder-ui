@@ -19,7 +19,7 @@
   height: calc(100% - 6px);
 }
 
-.dndElement {
+.dndElementWrapper {
   &:last-child {
     flex-grow: 1;
   }
@@ -28,4 +28,28 @@
 .dndGhost {
   border: 1px solid #ccc;
   opacity: 0.8;
+}
+
+.dndElement {
+  position: relative;
+}
+
+.isDraggedOver {
+  :global(div[class^='DropMarker']) {
+    position: absolute;
+    top: -6px;
+    left: 1px;
+    background: #dc3545;
+    border-radius: 6px;
+    width: 100%;
+    height: 2px;
+    margin-bottom: 6px;
+  }
+}
+
+.isBottom {
+  :global(div[class^='DropMarker']) {
+    top: auto;
+    bottom: -6px;
+  }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import '@epam/uui-components/styles.css'; // TODO: EPMHIVEUNS-2623
+import '@epam/uui-components/styles.css';
 import '@epam/promo/styles.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css'
