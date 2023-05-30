@@ -267,6 +267,7 @@ class Server {
         }
     }
     joinRoom = async (roomId, user) => {
+        this.updateData();
         this.startLoading();
         try {
             const r = await api.joinRoom(roomId, user);
