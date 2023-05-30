@@ -216,7 +216,7 @@ class Server {
                 comments_2: state.myTeam === 2 ? comments : null,
             });
             await this.getGame();
-            this.ws?.send(JSON.stringify({data: 'update answers'}));
+            this.ws?.send(JSON.stringify({data: 'update game'}));
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
         } finally {
