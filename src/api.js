@@ -46,7 +46,7 @@ const api = {
     setNextRound: (roomId, gameId, curRound) => axios.post('nextRound', {
         roomId, gameId, curRound
     }),
-    setComment: (gameId, { comments_1, comments_2 }) => axios.post('comment', {
+    setComment: (roomId, gameId, { comments_1, comments_2 }) => axios.post('comment', {
         gameId, comments_1, comments_2
     }),
     reset: (gameId, roomId) => axios.post('reset', {

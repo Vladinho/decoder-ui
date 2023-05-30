@@ -2,13 +2,70 @@ import {initialState, setState} from "../reducers/roomReducer";
 import api from "../api";
 import store from "../store";
 
+const dev = 'ws://decoder-web-sockets.herokuapp.com/ws'
+
 class Server {
     constructor() {
+        if (!Server._instance) {
+            this.updateData();
+            this.setWebSocket();
+            Server._instance = this;
+        }
+
+        if (!Server._instance.ws) {
+            Server._instance.setWebSocket();
+        }
+        Server._instance.updateData();
+        return Server._instance;
+    }
+
+    updateData = () => {
         this.dispatch = store.dispatch;
         this.getState = store.getState;
         this.gameId = this.getState().gameId;
         this.roomId = this.getState().roomId;
         this.user = this.getState().me;
+    }
+
+    setWebSocket = () => {
+        if (!this.ws) {
+            this.connectToServer().then((ws) => {
+                ws.onmessage = (webSocketMessage) => {
+                    if (webSocketMessage && webSocketMessage.data) {
+                        this.onWebSocketMessage(webSocketMessage.data)
+                    }
+                }
+            }).catch(() => {
+                this.ws = null;
+                setTimeout(this.connectToServer, 2000);
+            });
+        }
+    }
+
+    onWebSocketMessage = (msg) => {
+        switch (msg) {
+            case 'update answers':
+                return this.getAnswers(false);
+            case 'update game':
+                return this.getGame(false);
+            case 'update room':
+                return this.getRoom(false);
+            default:
+                console.error('No msg handler!')
+        }
+    }
+    connectToServer = async () =>  {
+        const ws = new WebSocket(`${dev}?roomId=${this.roomId}&gameId=${this.gameId}`);
+        this.ws = ws;
+        window.ws = ws;
+        return new Promise((resolve, reject) => {
+            const timer = setInterval(() => {
+                if(ws.readyState === 1) {
+                    clearInterval(timer)
+                    resolve(ws);
+                }
+            }, 10);
+        });
     }
     startLoading = () => {
         this.dispatch(setState({ isLoading: true }));
@@ -16,14 +73,14 @@ class Server {
     stopLoading = () => {
         this.dispatch(setState({ isLoading: false }));
     }
-    getGame = async (roomId = this.roomId) => {
-        if (!roomId) {
+    getGame = async (withLoader = true) => {
+        if (!this.roomId) {
             console.log('no id for getGameByRoomId');
             return;
         }
-        this.startLoading();
+        withLoader && this.startLoading();
         try {
-            const game = await api.getGameByRoomId(roomId);
+            const game = await api.getGameByRoomId(this.roomId);
             const { data: { round, team_1_code, team_2_code, words_1, words_2, comments_1, comments_2, team_1_player, team_2_player, _id } } = game;
             localStorage.setItem('gameId', _id);
             const data = { round, team_1_code, team_2_code, words_1, words_2, comments_1, comments_2, team_1_player, team_2_player }
@@ -33,18 +90,18 @@ class Server {
         } catch (e) {
             this.dispatch(setState({ errors: e }));
         } finally {
-            this.stopLoading();
+            withLoader && this.stopLoading();
         }
 
     };
-    getRoom = async (id = this.roomId) => {
-        if (!id) {
+    getRoom = async (withLoader = true) => {
+        if (!this.roomId) {
             console.log('no id for getRoom');
             return;
         }
-        this.startLoading();
+        withLoader && this.startLoading();
         try {
-            const room = await api.getRoom(id);
+            const room = await api.getRoom(this.roomId);
             const me = localStorage.getItem('userName');
             const { users = [], team_1 = [], team_2 = [], mainUser = null } = room?.data || { data: {}};
             const data = { me, users, team_1, team_2, mainUser, myTeam: team_1.some(i => i === me) ? 1 : 2, opponentTeam: team_1.some(i => i === me) ? 2 : 1 };
@@ -53,23 +110,23 @@ class Server {
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
         } finally {
-            this.stopLoading();
+            withLoader && this.stopLoading();
         }
 
     };
-    getAnswers = async (id = this.gameId) => {
-        if (!id) {
+    getAnswers = async (withLoader = true) => {
+        if (!this.gameId) {
             console.log('no id for getAnswers');
             return;
         }
-        this.startLoading();
+        withLoader && this.startLoading();
         try {
-            const answers = await api.getAnswers(id);
+            const answers = await api.getAnswers(this.gameId);
             this.dispatch(setState({ answers: answers.data }));
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
         } finally {
-            this.stopLoading();
+            withLoader && this.stopLoading();
         }
     }
     setAnswer = async (code, answer) => {
@@ -84,6 +141,8 @@ class Server {
                 }
             })
             this.dispatch(setState({ ...newState }));
+            
+            this.ws?.send(JSON.stringify({ data: 'update answers' }));
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
         } finally {
@@ -98,6 +157,7 @@ class Server {
             const room = await api.createTeams(this.roomId, t1, t2);
             const { data: { team_1, team_2 } } = room;
             this.dispatch(setState({ team_1, team_2, myTeam: team_1.some(i => i === me) ? 1 : 2 }));
+            this.ws?.send(JSON.stringify({data: 'update room'}));
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
         } finally {
@@ -109,6 +169,7 @@ class Server {
         try {
             await api.setAgree(this.roomId, this.gameId, this.user, answerId);
             await this.getAnswers();
+            this.ws?.send(JSON.stringify({data: 'update answers'}));
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
         } finally {
@@ -120,6 +181,7 @@ class Server {
         try {
             await api.setGuess(this.roomId, this.gameId, this.user, answerId, guess);
             await this.getAnswers();
+            this.ws?.send(JSON.stringify({data: 'update answers'}));
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
         } finally {
@@ -134,6 +196,7 @@ class Server {
             await api.setNextRound(this.roomId, this.gameId, curRound);
             await this.getGame();
             await this.getAnswers();
+            this.ws?.send(JSON.stringify({data: 'update game'}));
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
         } finally {
@@ -144,11 +207,12 @@ class Server {
         this.startLoading();
         try {
             const state = this.getState();
-            await api.setComment(this.gameId, {
+            await api.setComment(this.roomId, this.gameId, {
                 comments_1: state.myTeam === 1 ? comments : null,
                 comments_2: state.myTeam === 2 ? comments : null,
             });
             await this.getGame();
+            this.ws?.send(JSON.stringify({data: 'update answers'}));
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
         } finally {
@@ -162,6 +226,9 @@ class Server {
             await this.getGame();
             await this.getRoom();
             await this.getAnswers();
+            this.ws?.send(JSON.stringify({data: 'update room'}));
+            this.ws?.send(JSON.stringify({data: 'update game'}));
+            this.ws?.send(JSON.stringify({data: 'update answers'}));
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
         } finally {
@@ -195,6 +262,7 @@ class Server {
             await this.getGame();
             await this.getRoom();
             await this.getAnswers();
+            this.ws?.send(JSON.stringify({data: 'update room'}));
             return r;
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
