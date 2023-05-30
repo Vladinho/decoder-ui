@@ -3,7 +3,6 @@ import api from "../api";
 import store from "../store";
 
 const dev = 'wss://decoder-web-sockets.herokuapp.com/ws'
-// const dev = 'wss://localhost'
 
 class Server {
     constructor() {
@@ -81,6 +80,7 @@ class Server {
         this.dispatch(setState({ isLoading: false }));
     }
     getGame = async (withLoader = true) => {
+        this.updateData();
         if (!this.roomId) {
             console.log('no id for getGameByRoomId');
             return;
@@ -102,6 +102,7 @@ class Server {
 
     };
     getRoom = async (withLoader = true) => {
+        this.updateData();
         if (!this.roomId) {
             console.log('no id for getRoom');
             return;
@@ -122,6 +123,7 @@ class Server {
 
     };
     getAnswers = async (withLoader = true) => {
+        this.updateData();
         if (!this.gameId) {
             console.log('no id for getAnswers');
             return;
@@ -137,6 +139,7 @@ class Server {
         }
     }
     setAnswer = async (code, answer) => {
+        this.updateData();
         this.startLoading();
         try {
             const { data: { team_1_code, team_2_code, team_1_player, team_2_player } } = await api.setAnswer(this.roomId, this.gameId, this.user, code, answer);
@@ -158,6 +161,7 @@ class Server {
     }
 
     createTeams = async (t1, t2) => {
+        this.updateData();
         this.startLoading();
         try {
             const me = this.getState().me;
@@ -172,6 +176,7 @@ class Server {
         }
     }
     agree = async (answerId) => {
+        this.updateData();
         this.startLoading();
         try {
             await api.setAgree(this.roomId, this.gameId, this.user, answerId);
@@ -184,6 +189,7 @@ class Server {
         }
     }
     guess = async (answerId, guess) => {
+        this.updateData();
         this.startLoading();
         try {
             await api.setGuess(this.roomId, this.gameId, this.user, answerId, guess);
@@ -197,6 +203,7 @@ class Server {
     }
 
     nextRound = async () => {
+        this.updateData();
         this.startLoading();
         try {
             const curRound = this.getState().round;
@@ -211,6 +218,7 @@ class Server {
         }
     }
     setComment = async (comments) => {
+        this.updateData();
         this.startLoading();
         try {
             const state = this.getState();
@@ -227,6 +235,7 @@ class Server {
         }
     }
     mixTeams = async () => {
+        this.updateData();
         this.startLoading();
         try {
             await this.createTeams();
@@ -243,6 +252,7 @@ class Server {
         }
     }
     reset = async (mixTeams, t1, t2) => {
+        this.updateData();
         this.startLoading();
         try {
             mixTeams && await this.createTeams(t1, t2);
@@ -278,6 +288,7 @@ class Server {
         }
     }
     reloadData = async () => {
+        this.updateData();
         this.dispatch(setState({...initialState}));
         this.startLoading();
         try {
