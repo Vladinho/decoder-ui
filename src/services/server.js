@@ -28,18 +28,19 @@ class Server {
     }
 
     setWebSocket = () => {
+        console.log('setWebSocket')
         if (!this.ws) {
             this.connectToServer().then((ws) => {
+                console.log(ws, '!!!')
                 ws.onmessage = (webSocketMessage) => {
                     if (webSocketMessage && webSocketMessage.data) {
                         this.onWebSocketMessage(webSocketMessage.data)
                     }
                 }
             }).catch((e) => {
+                console.log('eeee', e)
                 this.ws = null;
-                setTimeout(() => {
-                    !this.ws && this.connectToServer();
-                }, 3000);
+                setTimeout(this.connectToServer, 2000);
             });
         }
     }
@@ -57,19 +58,17 @@ class Server {
         }
     }
     connectToServer = async () =>  {
-        this.ws = new WebSocket(`${dev}?roomId=${this.roomId}&gameId=${this.gameId}`);
-
-        this.ws.onclose = () => {
-            this.ws = null
-            setTimeout(() => {
-                !this.ws && this.connectToServer();
-            }, 3000)
-        }
+        const ws = new WebSocket(`${dev}?roomId=${this.roomId}&gameId=${this.gameId}`);
+        ws.onclose = () => {
+            setTimeout(this.connectToServer, 1000);
+        };
+        this.ws = ws;
+        window.ws = ws;
         return new Promise((resolve, reject) => {
             const timer = setInterval(() => {
-                if(this.ws.readyState === 1) {
+                if(ws.readyState === 1) {
                     clearInterval(timer)
-                    resolve(this.ws);
+                    resolve(ws);
                 }
             }, 10);
         });
