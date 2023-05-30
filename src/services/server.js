@@ -28,14 +28,17 @@ class Server {
     }
 
     setWebSocket = () => {
+        console.log('setWebSocket')
         if (!this.ws) {
             this.connectToServer().then((ws) => {
+                console.log(ws, '!!!')
                 ws.onmessage = (webSocketMessage) => {
                     if (webSocketMessage && webSocketMessage.data) {
                         this.onWebSocketMessage(webSocketMessage.data)
                     }
                 }
-            }).catch(() => {
+            }).catch((e) => {
+                console.log('eeee', e)
                 this.ws = null;
                 setTimeout(this.connectToServer, 2000);
             });
