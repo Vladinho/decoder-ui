@@ -60,6 +60,9 @@ class Server {
     }
     connectToServer = async () =>  {
         const ws = new WebSocket(`${dev}?roomId=${this.roomId}&gameId=${this.gameId}`);
+        ws.onclose = () => {
+            setTimeout(this.connectToServer, 1000);
+        };
         this.ws = ws;
         window.ws = ws;
         return new Promise((resolve, reject) => {
@@ -201,6 +204,7 @@ class Server {
             await this.getGame();
             await this.getAnswers();
             this.ws?.send(JSON.stringify({data: 'update game'}));
+            this.ws?.send(JSON.stringify({data: 'update room'}));
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
         } finally {
