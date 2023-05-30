@@ -18,8 +18,7 @@ const api = {
         params: { id }
     }),
     newRoom: (user) => axios.post('room', {
-        user
-    }),
+        user}),
     newGame: (roomId) => axios.post('game', {
         roomId
     }),
