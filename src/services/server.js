@@ -204,7 +204,6 @@ class Server {
             await this.getGame();
             await this.getAnswers();
             this.ws?.send(JSON.stringify({data: 'update game'}));
-            this.ws?.send(JSON.stringify({data: 'update room'}));
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
         } finally {
