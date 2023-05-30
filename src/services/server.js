@@ -28,17 +28,18 @@ class Server {
     }
 
     setWebSocket = () => {
-        console.log('setWebSocket')
         if (!this.ws) {
             this.connectToServer().then((ws) => {
-                console.log(ws, '!!!')
                 ws.onmessage = (webSocketMessage) => {
                     if (webSocketMessage && webSocketMessage.data) {
                         this.onWebSocketMessage(webSocketMessage.data)
                     }
                 }
+                ws.onclose = () => {
+                    this.ws = null;
+                    setTimeout(this.setWebSocket, 3000)
+                }
             }).catch((e) => {
-                console.log('eeee', e)
                 this.ws = null;
                 setTimeout(this.connectToServer, 2000);
             });
@@ -63,7 +64,6 @@ class Server {
             setTimeout(this.connectToServer, 1000);
         };
         this.ws = ws;
-        window.ws = ws;
         return new Promise((resolve, reject) => {
             const timer = setInterval(() => {
                 if(ws.readyState === 1) {
