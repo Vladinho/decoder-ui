@@ -2,7 +2,8 @@ import {initialState, setState} from "../reducers/roomReducer";
 import api from "../api";
 import store from "../store";
 
-const dev = 'ws://decoder-web-sockets.herokuapp.com/ws'
+const dev = 'wss://decoder-web-sockets.herokuapp.com/ws'
+// const dev = 'wss://localhost'
 
 class Server {
     constructor() {
