@@ -41,6 +41,7 @@ const StartGame = () => {
                 <button className={classNames(['btn', ' btn-primary', 'mb-2', 'w-100'])} disabled={!state.team_1.length || !state.team_2.length} onClick={async () => {
                     // const round = await api.nextRound(state.roomId, state.gameId, 0);
                     const round = await api.nextRound(state.roomId, state.gameId, 0);
+                    server.ws?.send(JSON.stringify({data: 'update room'}));
                     server.ws?.send(JSON.stringify({data: 'update game'}));
                     dispatch(setState({ round: round.data.round }));
                     navigate('/game');
