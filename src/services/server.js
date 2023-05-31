@@ -24,7 +24,7 @@ class Server {
         this.getState = store.getState;
         this.gameId = localStorage.getItem('gameId');
         this.roomId = localStorage.getItem('roomId');
-        this.user = localStorage.getItem('user');
+        this.user = localStorage.getItem('userName');
     }
 
     setWebSocket = () => {
