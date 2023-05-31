@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useState,} from "react";
+import {useState,} from "react";
 import css from './styles.module.scss'
 import classNames from "classnames";
 import api from "../../api";
@@ -13,10 +13,6 @@ const LoginPage = () => {
     const server = new Server();
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    useEffect(() => {
-        server.reloadData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
     return <div className={`container-md p-3 ${css.main}`}>
         <h2 className={'mb-3 display-6'}>Decoder -<br />the best game ever!</h2>
         <div className={classNames(['form-group', 'mb-2', 'w-100'])}>
