@@ -275,6 +275,7 @@ class Server {
                 this.dispatch(setState({ roomId: r.data?._id }));
                 this.roomId = r.data?._id;
                 localStorage.setItem('roomId', r.data._id);
+                localStorage.setItem('gameId', null);
             }
 
             await this.getGame();
