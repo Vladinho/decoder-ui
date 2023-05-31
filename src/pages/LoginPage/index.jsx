@@ -79,7 +79,6 @@ const LoginPage = () => {
             gameId && localStorage.setItem('gameId', gameId);
             shortRoomId && localStorage.setItem('shortRoomId', shortRoomId);
             dispatch(setState({ mainUser, users, roomId, gameId, shortRoomId }));
-            await server.reloadData();
             navigate('/StartGame')
         }}>Create new room</button>
         {/*<pre>{JSON.stringify(state, null, 4)}</pre>*/}
