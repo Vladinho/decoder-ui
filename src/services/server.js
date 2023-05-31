@@ -37,11 +37,11 @@ class Server {
                 }
                 ws.onclose = () => {
                     this.ws = null;
-                    setTimeout(this.setWebSocket, 3000)
+                    setTimeout(this.setWebSocket, 2000)
                 }
             }).catch((e) => {
                 this.ws = null;
-                setTimeout(this.connectToServer, 2000);
+                setTimeout(this.setWebSocket, 2000);
             });
         }
     }
