@@ -272,7 +272,7 @@ class Server {
         try {
             const r = await api.joinRoom(roomId, user);
             if ( r.data?._id) {
-                this.dispatch(setState({ roomId: r.data?._id }));
+                this.dispatch(setState({ roomId: r.data?._id, gameId: null, me: user }));
                 this.roomId = r.data?._id;
                 localStorage.setItem('roomId', r.data._id);
                 localStorage.setItem('gameId', null);
