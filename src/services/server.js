@@ -29,7 +29,7 @@ class Server {
 
     setWebSocket = () => {
         if (!this.ws) {
-            this.connectToServer().then((ws) => {
+            this.connectToServer().then(async (ws) => {
                 ws.onmessage = (webSocketMessage) => {
                     if (webSocketMessage && webSocketMessage.data) {
                         this.onWebSocketMessage(webSocketMessage.data)
@@ -39,6 +39,9 @@ class Server {
                     this.ws = null;
                     setTimeout(this.setWebSocket, 2000)
                 }
+                await this.getRoom(false);
+                await this.getGame(false);
+                await this.getAnswers(false);
             }).catch((e) => {
                 this.ws = null;
                 setTimeout(this.setWebSocket, 2000);
