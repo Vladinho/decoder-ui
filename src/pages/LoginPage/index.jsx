@@ -5,12 +5,12 @@ import classNames from "classnames";
 import api from "../../api";
 import {setState} from "../../reducers/roomReducer";
 import {useNavigate} from "react-router";
-import useServer from "../../hooks/useServer";
+import Server from "../../services/server";
 
 const LoginPage = () => {
     const [roomId, setRoomId] = useState(localStorage.getItem('shortRoomId') || localStorage.getItem('roomId'));
     const state = useSelector((state) => state);
-    const server = useServer();
+    const server = new Server();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     useEffect(() => {

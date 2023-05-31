@@ -8,12 +8,12 @@ import refreshIcon from "../../assets/refresh.svg"
 import done from "../../assets/done.svg"
 import think from "../../assets/think.gif"
 import TeamsDragAndDrop from "../TeamsDragAndDrop";
-import useServer from "../../hooks/useServer";
+import Server from "../../services/server";
 
 const Layout = ({ children, cx = [] }) => {
     const state = useSelector((state) => state);
     const [isDragMode, setIsDragMode] = useState(false);
-    const server =  useServer();
+    const server = new Server();
     const { myTeam, opponentTeam, curPlayer, opponentCurPlayer, answers, opponentAnswers } = useMy();
     const [isTeamsVisible, setIsTeamsVisible] = useState(false);
     const showModal = useModal();

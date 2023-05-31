@@ -6,14 +6,14 @@ import {useNavigate} from "react-router";
 import {useEffect, useState} from "react";
 import api from "../../api";
 import TeamsDragAndDrop from "../../components/TeamsDragAndDrop";
-import useServer from "../../hooks/useServer";
+import Server from "../../services/server";
 
 const StartGame = () => {
     const state = useSelector((state) => state);
     const [isDragMode, setIsDragMode] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const server = useServer();
+    const server = new Server();
     useEffect( () => {
         const run = async () => {
             await server.getRoom();

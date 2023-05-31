@@ -11,12 +11,12 @@ import emptyGif from "../../assets/empty.gif"
 import useCount from "../../hooks/useCount";
 import {setState} from "../../reducers/roomReducer";
 import Answer from "./Answer";
-import useServer from "../../hooks/useServer";
+import Server from "../../services/server";
 
 const Game = () => {
     const state = useSelector((state) => state);
     const dispatch = useDispatch();
-    const server = useServer();
+    const server = new Server();
     const [activeTab, setActiveTab] = useState('My');
     const { code, answers, curPlayer, words, opponentAnswers, opponentWords } = useMy();
     useEffect(  () => {

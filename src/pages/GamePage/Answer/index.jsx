@@ -1,13 +1,13 @@
 import useMy from "../../../hooks/useMy";
 import {useState} from "react";
 import useModal from "../../../hooks/useModal";
-import useServer from "../../../hooks/useServer";
+import Server from "../../../services/server";
 
 const Answer = () => {
     const [answerState, setAnswerState] = useState(['', '', ''])
     const { code, words } = useMy();
     const showModal = useModal();
-    const server = useServer();
+    const server = new Server();
     return <>
         <h1 className='mb-2 mt-2'>Code: {code}</h1>
         <form onSubmit={(e) => {

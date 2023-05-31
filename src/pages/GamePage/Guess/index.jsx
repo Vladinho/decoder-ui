@@ -1,13 +1,13 @@
 import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import useModal from "../../../hooks/useModal";
-import useServer from "../../../hooks/useServer";
+import Server from "../../../services/server";
 
 const Guess = ({answers}) => {
     const [guessState, setGuessState] = useState(['', '', '']);
 
     const state = useSelector((state) => state);
-    const server = useServer();
+    const server = new Server();
 
     const curAnswer = answers.find(i => i.round === state.round);
     const guess = curAnswer?.[`team_${state.myTeam}_guess`];
