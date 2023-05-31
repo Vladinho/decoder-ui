@@ -12,6 +12,7 @@ import useCount from "../../hooks/useCount";
 import {setState} from "../../reducers/roomReducer";
 import Answer from "./Answer";
 import Server from "../../services/server";
+import LoaderCircle from "../../components/LoaderCircle";
 
 const Game = () => {
     const state = useSelector((state) => state);
@@ -45,6 +46,12 @@ const Game = () => {
         myCounter.answeredRounds.some(i => i === state.round) &&
         opponentCounter.answeredRounds.some(i => i === state.round);
 
+    const isMyAnswer = !state.isLoading && code && state.round > answers.length && curPlayer === state.me;
+
+    const isLost = isTeamsReady && ((myCounter.black > 1 && opponentCounter.black < 2) || (opponentCounter.white > 1 && myCounter.white < 2));
+    const isWin = isTeamsReady && ((myCounter.white > 1 && opponentCounter.white < 2) || (opponentCounter.black > 1 && myCounter.black < 2));
+    const isNoWinner = isTeamsReady && (!isWin && !isLost && [...Object.values(myCounter), ...Object.values(opponentCounter)].some(i => i > 1))
+
     if (!state.round && !state.isLoading) {
         return <Layout>
             <h6 className={'mt-4'}>The game has`t been started yet! Wait...</h6>
@@ -53,12 +60,13 @@ const Game = () => {
     }
 
     return <Layout>
-        <Counter isTeamsReady={isTeamsReady} />
+        {!isTeamsReady && !isMyAnswer && !isMyGuess && !isOpponentGuess && !isLost && !isWin && !isNoWinner && <LoaderCircle /> }
+        <Counter isLost={isLost} isWin={isWin} isNoWinner={isNoWinner} />
         {[myCounter.black, myCounter.white, opponentCounter.black, opponentCounter.white].every(i => i < 2) && isTeamsReady &&
             <button type="button" className="btn btn-success w-100 mb-3" onClick={() => server.nextRound()}>Next Round</button>}
 
         {
-            !state.isLoading && code && state.round > answers.length && curPlayer === state.me && <Answer />
+            isMyAnswer && <Answer />
         }
 
         <ul className="nav nav-tabs mt-2 mb-4">

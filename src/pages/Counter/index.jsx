@@ -5,15 +5,12 @@ import winGif from "../../assets/win.gif";
 import looserGif from "../../assets/looser.gif";
 import noWinners from "../../assets/noWinners.gif";
 
-const Counter = ({isTeamsReady}) => {
+const Counter = ({isLost, isWin, isNoWinner}) => {
     const myCounter = useCount();
     const opponentCounter = useCount(false);
     if (!myCounter.black && !myCounter.white && !opponentCounter.black && !opponentCounter.white) {
         return null
     }
-
-    const isLost = (myCounter.black > 1 && opponentCounter.black < 2) || (opponentCounter.white > 1 && myCounter.white < 2);
-    const isWin = (myCounter.white > 1 && opponentCounter.white < 2) || (opponentCounter.black > 1 && myCounter.black < 2);
 
     return <div className={css.container}>
         <div className={classNames('d-flex', 'justify-content-between', 'w-100')}>
@@ -30,16 +27,16 @@ const Counter = ({isTeamsReady}) => {
             {Array(opponentCounter.white).fill('').map((i, index) => <div className={classNames(css.badge, css.white)} key={index}></div>)}
             {Array(opponentCounter.black).fill('').map((i, index) => <div className={classNames(css.badge, css.black)} key={index}></div>)}
         </div>
-        { isTeamsReady && isLost && !isWin && <>
+        { isLost && !isWin && <>
             <span className="badge bg-danger mb-2 w-100 mt-2">You are the looser!</span>
             <img className={'w-100'} src={looserGif} alt={'loose'}/>
         </> }
-        { isTeamsReady && isWin && !isLost && <>
+        { isWin && !isLost && <>
             <span className="badge bg-success mb-2 w-100 mt-2">You are the winner!</span>
             <img className={'w-100'} src={winGif} alt={'win'}/>
         </> }
         {
-            isTeamsReady && !isWin && !isLost && [...Object.values(myCounter), ...Object.values(opponentCounter)].some(i => i > 1) && <img className={'w-100 mt-2'} src={noWinners} alt={'no winners'}/>
+           isNoWinner && <img className={'w-100 mt-2'} src={noWinners} alt={'no winners'}/>
         }
     </div>
 }
