@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-export const initialState = {
+export const getInitialState = () => ({
     round: null,
     comments_1: [],
     comments_2: [],
@@ -8,7 +8,7 @@ export const initialState = {
     team_1: [],
     team_2: [],
     users: [],
-    me: null,
+    me: localStorage.getItem('userName') || null,
     myTeam: null,
     opponentTeam: null,
     isLoading: false,
@@ -27,10 +27,10 @@ export const initialState = {
     isOpponentDetailsOpened: false,
     isDndInProgress: false,
     shortRoomId:  localStorage.getItem('shortRoomId') || null,
-}
+})
 export const roomSlice = createSlice({
     name: 'room',
-    initialState,
+    initialState: getInitialState(),
     reducers: {
         setState: (state, { payload }) => {
             Object.keys(payload).forEach((key) => {

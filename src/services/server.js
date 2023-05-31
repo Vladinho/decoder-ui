@@ -1,4 +1,4 @@
-import {initialState, setState} from "../reducers/roomReducer";
+import {getInitialState, setState} from "../reducers/roomReducer";
 import api from "../api";
 import store from "../store";
 
@@ -265,7 +265,7 @@ class Server {
                 this.dispatch(setState({ roomId: r.data?._id, gameId: game.data?._id || null, me: user, shortRoomId: roomId.length === 4 ? roomId : null }));
                 this.roomId = r.data?._id;
                 localStorage.setItem('roomId', r.data._id);
-                localStorage.setItem('user', user);
+                localStorage.setItem('userName', user);
                 localStorage.setItem('gameId', game.data?._id || null);
             }
             this.ws?.send(JSON.stringify({data: 'update room'}));
@@ -277,7 +277,7 @@ class Server {
         }
     }
     reloadData = async () => {
-        this.dispatch(setState({...initialState}));
+        this.dispatch(setState({...getInitialState()}));
         this.startLoading();
         try {
             await this.getRoom();
