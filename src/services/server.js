@@ -272,16 +272,16 @@ class Server {
         try {
             const r = await api.joinRoom(roomId, user);
             if ( r.data?._id) {
-                this.dispatch(setState({ roomId: r.data?._id, gameId: null, me: user }));
+                this.dispatch(setState({ roomId: r.data?._id, gameId: null, me: user, shortRoomId: roomId.length === 4 ? roomId : null }));
                 this.roomId = r.data?._id;
                 localStorage.setItem('roomId', r.data._id);
                 localStorage.setItem('gameId', null);
+                localStorage.setItem('user', user);
             }
-
-            await this.getGame();
-            await this.getRoom();
-            await this.getAnswers();
-            this.ws?.send(JSON.stringify({data: 'update room'}));
+            setTimeout(async () => {
+                await this.reloadData();
+                this.ws?.send(JSON.stringify({data: 'update room'}));
+            }, 100)
             return r;
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
