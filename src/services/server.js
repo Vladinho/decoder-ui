@@ -278,10 +278,7 @@ class Server {
                 localStorage.setItem('gameId', null);
                 localStorage.setItem('user', user);
             }
-            setTimeout(async () => {
-                await this.reloadData();
-                this.ws?.send(JSON.stringify({data: 'update room'}));
-            }, 100)
+            this.ws?.send(JSON.stringify({data: 'update room'}));
             return r;
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));

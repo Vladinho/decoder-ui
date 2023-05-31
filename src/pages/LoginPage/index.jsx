@@ -14,11 +14,7 @@ const LoginPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     useEffect(() => {
-        const run = async () => {
-            await server.getGame();
-            await server.getRoom();
-        }
-        run();
+        server.reloadData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return <div className={`container-md p-3 ${css.main}`}>
@@ -33,8 +29,13 @@ const LoginPage = () => {
         </div>
         <form className={css.form} onSubmit={async (e) => {
             e.preventDefault();
-            roomId.length === 4 && localStorage.setItem('shortRoomId', roomId);
+            if (roomId.length === 4) {
+                localStorage.setItem('shortRoomId', roomId);
+                localStorage.setItem('roomId', null);
+                localStorage.setItem('gameId', null);
+            }
             const res = await server.joinRoom(roomId, state.me);
+            // await server.reloadData();
             if (!res) {
                 return;
             }
@@ -78,6 +79,7 @@ const LoginPage = () => {
             gameId && localStorage.setItem('gameId', gameId);
             shortRoomId && localStorage.setItem('shortRoomId', shortRoomId);
             dispatch(setState({ mainUser, users, roomId, gameId, shortRoomId }));
+            await server.reloadData();
             navigate('/StartGame')
         }}>Create new room</button>
         {/*<pre>{JSON.stringify(state, null, 4)}</pre>*/}
