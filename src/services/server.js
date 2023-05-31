@@ -61,7 +61,8 @@ class Server {
     connectToServer = async () =>  {
         const ws = new WebSocket(`${dev}?roomId=${this.roomId}&gameId=${this.gameId}`);
         ws.onclose = () => {
-            setTimeout(this.connectToServer, 1000);
+            this.ws = null;
+            setTimeout(this.setWebSocket, 2000);
         };
         this.ws = ws;
         return new Promise((resolve, reject) => {
