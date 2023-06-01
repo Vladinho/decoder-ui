@@ -9,6 +9,7 @@ class Server {
         if (!Server._instance) {
             this.updateData();
             this.setWebSocket();
+            setInterval(this.webSocketChecker, 3000);
             Server._instance = this;
         }
 
@@ -18,7 +19,12 @@ class Server {
         Server._instance.updateData();
         return Server._instance;
     }
-
+    webSocketChecker = () => {
+        if (this.ws && (this.ws.readyState === 2 || this.ws.readyState === 3)) {
+            this.ws = null;
+            this.setWebSocket();
+        }
+    }
     updateData = () => {
         this.dispatch = store.dispatch;
         this.getState = store.getState;
@@ -68,6 +74,7 @@ class Server {
             setTimeout(this.setWebSocket, 2000);
         };
         this.ws = ws;
+        window.ws = ws;
         return new Promise((resolve, reject) => {
             const timer = setInterval(() => {
                 if(ws.readyState === 1) {
