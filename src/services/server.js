@@ -1,6 +1,7 @@
 import {getInitialState, setState} from "../reducers/roomReducer";
 import api from "../api";
 import store from "../store";
+import debounce from "../utils/debounce";
 
 const dev = 'wss://decoder-web-sockets.herokuapp.com/ws'
 
@@ -89,7 +90,7 @@ class Server {
     stopLoading = () => {
         this.dispatch(setState({ isLoading: false }));
     }
-    getGame = async (withLoader = true) => {
+    getGame = debounce(async (withLoader = true) => {
         if (!this.roomId) {
             console.log('no id for getGameByRoomId');
             return;
@@ -109,8 +110,8 @@ class Server {
             withLoader && this.stopLoading();
         }
 
-    };
-    getRoom = async (withLoader = true) => {
+    });
+    getRoom = debounce(async (withLoader = true) => {
         if (!this.roomId) {
             console.log('no id for getRoom');
             return;
@@ -129,8 +130,8 @@ class Server {
             withLoader && this.stopLoading();
         }
 
-    };
-    getAnswers = async (withLoader = true) => {
+    });
+    getAnswers = debounce(async (withLoader = true) => {
         if (!this.gameId) {
             console.log('no id for getAnswers');
             return;
@@ -144,7 +145,7 @@ class Server {
         } finally {
             withLoader && this.stopLoading();
         }
-    }
+    })
     setAnswer = async (code, answer) => {
         this.startLoading();
         try {
@@ -205,7 +206,7 @@ class Server {
         }
     }
 
-    nextRound = async () => {
+    nextRound = debounce(async () => {
         this.startLoading();
         try {
             const curRound = this.getState().round;
@@ -218,7 +219,7 @@ class Server {
         } finally {
             this.stopLoading();
         }
-    }
+    })
     setComment = async (comments) => {
         this.startLoading();
         try {
@@ -288,7 +289,7 @@ class Server {
             this.stopLoading();
         }
     }
-    reloadData = async () => {
+    reloadData = debounce(async () => {
         this.dispatch(setState({...getInitialState()}));
         this.startLoading();
         try {
@@ -300,7 +301,7 @@ class Server {
         } finally {
             this.stopLoading();
         }
-    }
+    })
 }
 
 export default Server;
