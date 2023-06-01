@@ -16,8 +16,8 @@
   right: 10px;
   top: 10px;
   font-size: 20px;
-  background: #dc3545;
-  color: #fff;
+  background: #dc3545 !important;
+  color: #fff !important;
 }
 
 .king {
@@ -38,8 +38,6 @@
 
 .header {
   position: sticky !important;
-  margin: 0 -16px;
-  width: calc(100% + 32px);
   background-color: #fff;
   top: 0;
   left: 0;
