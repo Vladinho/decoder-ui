@@ -69,7 +69,7 @@ const Game = () => {
             isMyAnswer && <Answer />
         }
 
-        <ul className="nav nav-tabs mt-2 mb-4">
+        <ul className="nav nav-tabs mt-4 mb-4">
             <li className="nav-item">
                 <a className={classNames('nav-link', {active: activeTab === 'My'})} onClick={(e) => {
                     e.preventDefault();

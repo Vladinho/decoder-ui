@@ -47,7 +47,7 @@ const Guess = ({answers}) => {
                 >Confirm?</button> :
                 <button
                     type="button"
-                    className="btn btn-primary w-100 mb-4"
+                    className="btn btn-primary w-100"
                     disabled={new Set(guessState.filter(i => i)).size !== 3}
                     onClick={() => showModal(() => {
                         server.guess(curAnswer._id, guessState.join(''));
