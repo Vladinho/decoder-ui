@@ -74,7 +74,6 @@ class Server {
             setTimeout(this.setWebSocket, 2000);
         };
         this.ws = ws;
-        window.ws = ws;
         return new Promise((resolve, reject) => {
             const timer = setInterval(() => {
                 if(ws.readyState === 1) {
@@ -260,6 +259,9 @@ class Server {
             await this.getGame();
             await this.getRoom();
             await this.getAnswers();
+            this.ws?.send(JSON.stringify({data: 'update room'}));
+            this.ws?.send(JSON.stringify({data: 'update game'}));
+            this.ws?.send(JSON.stringify({data: 'update answers'}));
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
         } finally {

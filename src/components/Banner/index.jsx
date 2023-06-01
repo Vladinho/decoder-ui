@@ -3,7 +3,7 @@ import bg from '../../assets/think_2.gif'
 
 const Banner = () => {
     return <div className={`${css.container} mb-4 alert alert-warning`}  role="alert">
-        <img src={bg} className={css.thinking}/>
+        <img src={bg} className={css.thinking} alt={'thinking'}/>
         <p className={'m-0'}>Other players are thinking</p>
         <span className={css.loader}></span>
     </div>
