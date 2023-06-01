@@ -7,12 +7,12 @@ import Table from "./Table";
 import classNames from "classnames";
 import ResultsTable from "./ResultsTable";
 import Counter from "../Counter";
-import emptyGif from "../../assets/empty.gif"
 import useCount from "../../hooks/useCount";
 import {setState} from "../../reducers/roomReducer";
 import Answer from "./Answer";
 import Server from "../../services/server";
 import Banner from "../../components/Banner";
+import Empty from "./Empty";
 
 const Game = () => {
     const state = useSelector((state) => state);
@@ -54,8 +54,7 @@ const Game = () => {
 
     if (!state.round && !state.isLoading) {
         return <Layout>
-            <h6 className={'mt-4'}>The game has`t been started yet! Wait...</h6>
-            <img className={'w-100'} src={emptyGif} alt={'empty'}/>
+            <Empty text={'The game has`t been started yet! Wait...'} withAnimation={true}/>
         </Layout>
     }
 
@@ -148,10 +147,7 @@ const Game = () => {
                     !opponentTeamAnswersForTable.length &&
                     !isOpponentGuess &&
                     !state.isLoading &&
-                    <>
-                        <h6>There are no opponent`s words. Wait...</h6>
-                        <img className={'w-100'} src={emptyGif} alt={'empty'}/>
-                    </>
+                    <Empty text={'There are no opponent`s words. Wait...'}/>
                 }
             </>
         }
