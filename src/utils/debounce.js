@@ -1,13 +1,9 @@
-const debounce = (func, timeout = 1000) => {
+const debounce = function (func, before = () => {},  timeout = 500){
     let timer;
     return (...args) => {
-        if (!timer) {
-            func.apply(this, args);
-        }
+        before();
         clearTimeout(timer);
-        timer = setTimeout(() => {
-            timer = undefined;
-        }, timeout);
+        timer = setTimeout(() => { func.apply(this, args); }, timeout);
     };
 }
 

@@ -290,8 +290,7 @@ class Server {
         }
     }
     reloadData = debounce(async () => {
-        this.dispatch(setState({...getInitialState()}));
-        this.startLoading();
+        this.dispatch(setState({ ...getInitialState(), isLoading: true }));
         try {
             await this.getRoom();
             await this.getGame();
@@ -301,6 +300,8 @@ class Server {
         } finally {
             this.stopLoading();
         }
+    }, () => {
+        this.startLoading();
     })
 }
 

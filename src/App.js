@@ -15,7 +15,7 @@ function App() {
     const history = createBrowserHistory();
     const state = useSelector((state) => state);
     const dispatch = useDispatch();
-    const isLoading = useDebounce(state.isLoading, 100);
+    const isLoading = useDebounce(state.isLoading, 200);
   return (
       <ContextProvider
           onInitCompleted={() => {}}
