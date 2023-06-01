@@ -45,15 +45,15 @@ const TeamsDragAndDrop = ({onSave, onCancel}) => {
 
     return <div className={css.container}>
         <div className={'mb-2 d-flex w-100'}>
-            <div className={'w-50 p-2 m-2 pb-4 border rounded'}>
+            <div className={'w-50 p-2 m-2'}>
                 <h3>Team 1</h3>
-                <ul className={`list-group mb-4 ${css.noTouch} ${css.list} mb-4`}>
+                <ul className={`list-group mb-4 ${css.noTouch} ${css.list}`}>
                     { order.team_1.map(i => <DndElement userName={i} canAcceptDrop={canAcceptDrop} handleOnDrop={handleOnDrop} key={i} />) }
                 </ul>
             </div>
-            <div className={'w-50 p-2 m-2 pb-4 border rounded'}>
+            <div className={'w-50 p-2 m-2'}>
                 <h3>Team 2</h3>
-                <ul className={`list-group ${css.noTouch} ${css.list} mb-4`}>
+                <ul className={`list-group ${css.noTouch} ${css.list}`}>
                     { order.team_2.map(i => <DndElement userName={i} canAcceptDrop={canAcceptDrop} handleOnDrop={handleOnDrop} key={i} />) }
                 </ul>
             </div>

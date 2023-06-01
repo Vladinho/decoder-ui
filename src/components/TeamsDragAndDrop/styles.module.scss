@@ -16,14 +16,13 @@
 .list {
   display: flex;
   flex-direction: column;
-  height: calc(100% - 6px);
 }
 
-.dndElementWrapper {
-  &:last-child {
-    flex-grow: 1;
-  }
-}
+//.dndElementWrapper {
+//  &:last-child {
+//    flex-grow: 1;
+//  }
+//}
 
 .dndGhost {
   border: 1px solid #ccc;
