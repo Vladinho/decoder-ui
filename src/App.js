@@ -1,21 +1,26 @@
 import './App.css';
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import {useDispatch, useSelector} from "react-redux";
 import Loader from "./components/Loader";
 import StartGame from "./pages/StartGamePage";
 import Game from "./pages/GamePage";
 import Modal from "./components/Modal";
-import {setState} from "./reducers/roomReducer";
+import { setState } from "./reducers/roomReducer";
 import { ContextProvider } from '@epam/uui-core';
+import { createBrowserHistory } from "history";
 import useDebounce from "./hooks/useDebounce";
 
 function App() {
+    const history = createBrowserHistory();
     const state = useSelector((state) => state);
     const dispatch = useDispatch();
     const isLoading = useDebounce(state.isLoading, 100);
   return (
-      <ContextProvider onInitCompleted={() => {}}>
+      <ContextProvider
+          onInitCompleted={() => {}}
+          history={ history }
+      >
           {isLoading && <Loader />}
           <BrowserRouter>
               <Routes>
