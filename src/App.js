@@ -24,12 +24,9 @@ function App() {
           {isLoading && <Loader />}
           <BrowserRouter>
               <Routes>
-                  <Route path="/" element={<LoginPage />} />
-                  <Route path="/startGame" element={<StartGame />} />
-                  <Route path="/game" element={<Game />} />
-                  <Route path="/decoder-ui" element={<LoginPage />} />
-                  <Route path="/decoder-ui/startGame" element={<StartGame />} />
-                  <Route path="/decoder-ui/game" element={<Game />} />
+                  <Route path={`${state.origin}/`} element={<LoginPage />} />
+                  <Route path={`${state.origin}/startGame`} element={<StartGame />} />
+                  <Route path={`${state.origin}/game`} element={<Game />} />
               </Routes>
           </BrowserRouter>
           {state.modalCallback && <Modal callback={state.modalCallback} /> }

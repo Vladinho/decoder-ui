@@ -36,9 +36,9 @@ const LoginPage = () => {
                 return;
             }
             if (state.round) {
-                navigate('/game');
+                navigate(`${state.origin}/game`);
             } else {
-                state.mainUser === state.me ? navigate('/startGame') : navigate('/game');
+                state.mainUser === state.me ? navigate(`${state.origin}/startGame`) : navigate(`${state.origin}/game`);
             }
         }}>
             <div className={classNames(['form-group', 'mb-2', 'w-100'])}>

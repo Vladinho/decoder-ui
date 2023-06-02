@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 export const getInitialState = () => ({
+    origin: window.location.origin === 'https://vladinho.github.io' ? '/decoder-ui' : '',
     round: null,
     comments_1: [],
     comments_2: [],
