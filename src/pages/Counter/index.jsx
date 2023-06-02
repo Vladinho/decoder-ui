@@ -28,11 +28,11 @@ const Counter = ({isLost, isWin, isNoWinner}) => {
             {Array(opponentCounter.black).fill('').map((i, index) => <div className={classNames(css.badge, css.black)} key={index}></div>)}
         </div>
         { isLost && !isWin && <>
-            <span className="badge bg-danger mb-2 w-100 mt-2">You are the looser!</span>
+            <span className="badge bg-danger mb-2 w-100 mt-2">You are a looser!</span>
             <img className={'w-100'} src={looserGif} alt={'loose'}/>
         </> }
         { isWin && !isLost && <>
-            <span className="badge bg-success mb-2 w-100 mt-2">You are the winner!</span>
+            <span className="badge bg-success mb-2 w-100 mt-2">You are a winner!</span>
             <img className={'w-100'} src={winGif} alt={'win'}/>
         </> }
         {
