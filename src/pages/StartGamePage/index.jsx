@@ -43,7 +43,7 @@ const StartGame = () => {
                     server.ws?.send(JSON.stringify({data: 'update room'}));
                     server.ws?.send(JSON.stringify({data: 'update game'}));
                     dispatch(setState({ round: round.data.round }));
-                    navigate(`${state.origin}/game`);
+                    navigate(`/game`);
                 }}>Start Game</button>
 
                 {!!state.team_1.length && !!state.team_2.length && <button onClick={() => setIsDragMode(true)} className={'btn btn-primary w-100 mb-2'}>Change teams

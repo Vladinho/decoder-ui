@@ -7,6 +7,7 @@ import StartGame from "./pages/StartGamePage";
 import Game from "./pages/GamePage";
 import Modal from "./components/Modal";
 import { setState } from "./reducers/roomReducer";
+import { HashRouter } from 'react-router-dom';
 import { ContextProvider } from '@epam/uui-core';
 import { createBrowserHistory } from "history";
 import useDebounce from "./hooks/useDebounce";
@@ -22,13 +23,13 @@ function App() {
           history={ history }
       >
           {isLoading && <Loader />}
-          <BrowserRouter>
+          <HashRouter>
               <Routes>
-                  <Route path={`${state.origin}/`} element={<LoginPage />} />
-                  <Route path={`${state.origin}/startGame`} element={<StartGame />} />
-                  <Route path={`${state.origin}/game`} element={<Game />} />
+                  <Route path={`/`} element={<LoginPage />} />
+                  <Route path={`/startGame`} element={<StartGame />} />
+                  <Route path={`/game`} element={<Game />} />
               </Routes>
-          </BrowserRouter>
+          </HashRouter>
           {state.modalCallback && <Modal callback={state.modalCallback} /> }
           {!!state.errors?.length && <Modal
               text={`${state.errors[0]?.message}\n${state.errors[0]?.response?.data?.message}` || 'Something went wrong!'}
