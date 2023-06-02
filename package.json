@@ -1,6 +1,6 @@
 {
   "name": "decoder-ui",
-  "homepage": "https://vladinho.github.io",
+  "homepage": "http://vladinho.github.io/decoder-ui",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
