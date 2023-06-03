@@ -61,7 +61,7 @@ const Game = () => {
     return <Layout>
         {!isTeamsReady && !isMyAnswer && !isMyGuess && !isOpponentGuess && !isLost && !isWin && !isNoWinner && !state.isLoading && <Banner /> }
         <Counter isLost={isLost} isWin={isWin} isNoWinner={isNoWinner} />
-        {[myCounter.black, myCounter.white, opponentCounter.black, opponentCounter.white].every(i => i < 2) && isTeamsReady &&
+        {[myCounter.black, myCounter.white, opponentCounter.black, opponentCounter.white].every(i => i < 2) && isTeamsReady && state.mainUser === state.me &&
             <button type="button" className="btn btn-success w-100 mb-3" onClick={() => server.nextRound()}>Next Round</button>}
 
         {
