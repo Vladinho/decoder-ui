@@ -109,7 +109,7 @@ const Game = () => {
                             <div className={classNames('accordion-collapse', 'collapse', { 'show': state.isMyDetailsOpened })}>
                                 <div className="accordion-body">
                                     {
-                                        myTeamAnswersForTable.map(a => <Table answer={a} key={a._id} /> )
+                                        myTeamAnswersForTable.reverse().map(a => <Table answer={a} key={a._id} /> )
                                     }
                                 </div>
                             </div>
@@ -140,7 +140,7 @@ const Game = () => {
                             <div className={classNames('accordion-collapse', 'collapse', { 'show': state.isOpponentDetailsOpened })}>
                                 <div className="accordion-body">
                                     {
-                                        opponentTeamAnswersForTable.map(a => <Table answer={a} key={a._id} /> )
+                                        opponentTeamAnswersForTable.reverse().map(a => <Table answer={a} key={a._id} /> )
                                     }
                                 </div>
                             </div>

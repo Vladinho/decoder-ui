@@ -25,12 +25,15 @@ const Layout = ({ children, cx = [] }) => {
                 <div className={'container-md d-flex justify-content-between align-items-center flex-wrap'}>
                     <h2>{state.me}</h2> {!!state.round && <span className="badge bg-secondary">round {state.round}</span>}
                     <button type="button" className="btn btn-primary" onClick={() => setIsTeamsVisible((s) => !s)}>{isTeamsVisible ? 'Hide' : 'Show'} teams</button>
-                    <button className="btn btn-primary" onClick={() => server.reloadData()}>
+                    <button className="btn btn-primary" onClick={() => window.location.reload()}>
                         <img src={refreshIcon} alt={'refresh'}/>
                     </button>
                     {isTeamsVisible && <div className={classNames([css.container, 'shadow', 'p-3', 'mb-5', 'bg-white', 'rounded', 'animate__animated animate__bounceInDown', {[css.isDnd]: state.isDndInProgress} ])}>
                         <div className={`${css.teamsHeader} shadow`}>
-                            <button type="button" className={classNames(['btn', 'btn-light', css.close])} aria-label="Close" onClick={() => setIsTeamsVisible(false)}>
+                            <button type="button" className={classNames(['btn', 'btn-light', css.close])} aria-label="Close" onClick={() => {
+                                setIsTeamsVisible(false);
+                                isDragMode && setIsDragMode(false);
+                            }}>
                                 <span aria-hidden="true">&times;</span>
                             </button>
                             <h3>Teams</h3>
