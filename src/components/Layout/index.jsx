@@ -25,7 +25,7 @@ const Layout = ({ children, cx = [] }) => {
                     <button className="btn btn-primary" onClick={() => window.location.reload()}>
                         <img src={refreshIcon} alt={'refresh'}/>
                     </button>
-                    {isTeamsVisible && <Teams setIsTeamsVisible={setIsTeamsVisible} /> }
+                    {isTeamsVisible && <Teams onClose={() => setIsTeamsVisible(false)} /> }
                 </div>
             </div>
         </>}

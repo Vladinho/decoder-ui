@@ -9,7 +9,7 @@ import {useSelector} from "react-redux";
 import Server from "../../services/server";
 import useModal from "../../hooks/useModal";
 
-const Teams = ({setIsTeamsVisible}) => {
+const Teams = ({ onClose }) => {
     const server = new Server();
     const showModal = useModal();
     const state = useSelector((state) => state);
@@ -21,7 +21,7 @@ return <>
         classNames([css.container, 'shadow', 'p-3', 'mb-5', 'bg-white', 'rounded', 'animate__animated animate__bounceInDown', {[css.isDnd]: state.isDndInProgress} ])}>
         <div className={`${css.teamsHeader} shadow`}>
             <button type="button" className={classNames(['btn', 'btn-light', css.close])} aria-label="Close" onClick={() => {
-                setIsTeamsVisible(false);
+                onClose();
                 isDragMode && setIsDragMode(false);
             }}>
                 <span aria-hidden="true">&times;</span>
@@ -65,7 +65,7 @@ return <>
                 {!state.team_2?.length && <li className="list-group-item">No users</li>}
                 { state.mainUser === state.me && <button type="button" className="btn btn-primary mt-4 w-100" onClick={() => showModal( async () => {
                     await server.reset();
-                    setIsTeamsVisible(false);
+                    onClose(false);
                 })}>Restart the game</button>}
                 { state.mainUser === state.me && <button type="button" className="btn btn-primary mt-2 w-100" onClick={() => showModal(() => server.mixTeams())}>Mix the teams</button>}
                 { state.mainUser === state.me && <button type="button" className="btn btn-primary mt-2 w-100" onClick={() => setIsDragMode(true)}>Change the order</button>}
