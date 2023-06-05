@@ -3,7 +3,7 @@ import api from "../api";
 import store from "../store";
 import debounce from "../utils/debounce";
 
-const dev = 'wss://decoder-web-sockets.herokuapp.com/ws'
+const WS_URL = 'wss://decoder-web-sockets.herokuapp.com/ws'
 
 class Server {
     constructor() {
@@ -64,12 +64,14 @@ class Server {
                 return this.getGame(false);
             case 'update room':
                 return this.getRoom(false);
+            case 'Hello!':
+                return;
             default:
-                console.error('No msg handler!')
+                console.error(`No websocket msg handler! (${msg})`)
         }
     }
     connectToServer = async () =>  {
-        const ws = new WebSocket(`${dev}?roomId=${this.roomId}&gameId=${this.gameId}`);
+        const ws = new WebSocket(`${WS_URL}?roomId=${this.roomId}&gameId=${this.gameId}`);
         ws.onclose = () => {
             this.ws = null;
             setTimeout(this.setWebSocket, 2000);
