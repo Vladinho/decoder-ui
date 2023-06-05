@@ -1,13 +1,13 @@
 import {useSelector} from "react-redux";
 import React, {useState} from "react";
 import columnsToRows from "../../../utils/columnsToRows";
-import Server from "../../../services/server";
+import useServer from "../../../hooks/useServer";
 
 const ResultsTable = ({ answers, words, comments = [], isMyResults }) => {
     const [isCommentMode, setIsCommentMode] = useState(false);
     const state = useSelector((state) => state);
     const wordsColumns = [];
-    const server = new Server();
+    const server = useServer();
     answers.forEach((i) => {
         const code = i.code.split('');
         code.forEach((c, index) => {

@@ -6,11 +6,11 @@ import think from "../../assets/think.gif";
 import {useState} from "react";
 import useMy from "../../hooks/useMy";
 import {useSelector} from "react-redux";
-import Server from "../../services/server";
 import useModal from "../../hooks/useModal";
+import useServer from "../../hooks/useServer";
 
 const Teams = ({ onClose }) => {
-    const server = new Server();
+    const server = useServer();
     const showModal = useModal();
     const state = useSelector((state) => state);
     const [isDragMode, setIsDragMode] = useState(false);

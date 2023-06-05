@@ -5,12 +5,12 @@ import classNames from "classnames";
 import api from "../../api";
 import {setState} from "../../reducers/roomReducer";
 import {useNavigate} from "react-router";
-import Server from "../../services/server";
+import useServer from "../../hooks/useServer";
 
 const LoginPage = () => {
     const [roomId, setRoomId] = useState(localStorage.getItem('shortRoomId') || localStorage.getItem('roomId'));
     const state = useSelector((state) => state);
-    const server = new Server();
+    const server = useServer();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     return <div className={`container-md p-3 ${css.main} d-flex flex-column justify-content-between`}>

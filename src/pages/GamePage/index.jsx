@@ -10,14 +10,14 @@ import Counter from "../Counter";
 import useCount from "../../hooks/useCount";
 import {setState} from "../../reducers/roomReducer";
 import Answer from "./Answer";
-import Server from "../../services/server";
 import Banner from "../../components/Banner";
 import Empty from "./Empty";
+import useServer from "../../hooks/useServer";
 
 const Game = () => {
     const state = useSelector((state) => state);
     const dispatch = useDispatch();
-    const server = new Server();
+    const server = useServer();
     const [activeTab, setActiveTab] = useState('My');
     const { code, answers, curPlayer, words, opponentAnswers, opponentWords } = useMy();
     useEffect(  () => {

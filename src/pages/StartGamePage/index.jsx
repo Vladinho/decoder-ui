@@ -6,14 +6,14 @@ import {useNavigate} from "react-router";
 import {useEffect, useState} from "react";
 import api from "../../api";
 import TeamsDragAndDrop from "../../components/TeamsDragAndDrop";
-import Server from "../../services/server";
+import useServer from "../../hooks/useServer";
 
 const StartGame = () => {
     const state = useSelector((state) => state);
     const [isDragMode, setIsDragMode] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const server = new Server();
+    const server = useServer();
     useEffect( () => {
         const run = async () => {
             await server.getRoom();
@@ -39,10 +39,7 @@ const StartGame = () => {
                 }}>Create teams</button>
 
                 <button className={classNames(['btn', ' btn-primary', 'mb-2', 'w-100'])} disabled={!state.team_1.length || !state.team_2.length} onClick={async () => {
-                    const round = await api.nextRound(state.roomId, state.gameId, 0);
-                    server.ws?.send(JSON.stringify({data: 'update room'}));
-                    server.ws?.send(JSON.stringify({data: 'update game'}));
-                    dispatch(setState({ round: round.data.round }));
+                    server.nextRound(true);
                     navigate(`/game`);
                 }}>Start Game</button>
 

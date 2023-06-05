@@ -2,10 +2,10 @@ import {useState} from "react";
 import {useSelector} from "react-redux";
 import css from './styles.module.scss'
 import DndElement from "./DndElement";
-import Server from "../../services/server";
+import useServer from "../../hooks/useServer";
 
 const TeamsDragAndDrop = ({onSave, onCancel}) => {
-    const server = new Server();
+    const server = useServer();
     const state = useSelector((state) => state);
     const [order, setOrder] = useState({team_1: state.team_1, team_2: state.team_2});
 

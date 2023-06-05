@@ -2,29 +2,19 @@ import {getInitialState, setState} from "../reducers/roomReducer";
 import api from "../api";
 import store from "../store";
 import debounce from "../utils/debounce";
-
-const WS_URL = 'wss://decoder-web-sockets.herokuapp.com/ws'
+import Ws from "./ws";
 
 class Server {
     constructor() {
         if (!Server._instance) {
             this.updateData();
-            this.setWebSocket();
-            setInterval(this.webSocketChecker, 3000);
+            this.wss = new Ws(this.roomId, this.gameId, this.onWebSocketMessage);
+            window.wss = this.wss;
             Server._instance = this;
         }
 
-        if (!Server._instance.ws) {
-            Server._instance.setWebSocket();
-        }
         Server._instance.updateData();
         return Server._instance;
-    }
-    webSocketChecker = () => {
-        if (this.ws && (this.ws.readyState === 2 || this.ws.readyState === 3)) {
-            this.ws = null;
-            this.setWebSocket();
-        }
     }
     updateData = () => {
         this.dispatch = store.dispatch;
@@ -32,28 +22,6 @@ class Server {
         this.gameId = localStorage.getItem('gameId');
         this.roomId = localStorage.getItem('roomId');
         this.user = localStorage.getItem('userName');
-    }
-
-    setWebSocket = () => {
-        if (!this.ws) {
-            this.connectToServer().then(async (ws) => {
-                ws.onmessage = (webSocketMessage) => {
-                    if (webSocketMessage && webSocketMessage.data) {
-                        this.onWebSocketMessage(webSocketMessage.data)
-                    }
-                }
-                ws.onclose = () => {
-                    this.ws = null;
-                    setTimeout(this.setWebSocket, 2000)
-                }
-                await this.getRoom(false);
-                await this.getGame(false);
-                await this.getAnswers(false);
-            }).catch((e) => {
-                this.ws = null;
-                setTimeout(this.setWebSocket, 2000);
-            });
-        }
     }
 
     onWebSocketMessage = (msg) => {
@@ -69,22 +37,6 @@ class Server {
             default:
                 console.error(`No websocket msg handler! (${msg})`)
         }
-    }
-    connectToServer = async () =>  {
-        const ws = new WebSocket(`${WS_URL}?roomId=${this.roomId}&gameId=${this.gameId}`);
-        ws.onclose = () => {
-            this.ws = null;
-            setTimeout(this.setWebSocket, 2000);
-        };
-        this.ws = ws;
-        return new Promise((resolve, reject) => {
-            const timer = setInterval(() => {
-                if(ws.readyState === 1) {
-                    clearInterval(timer)
-                    resolve(ws);
-                }
-            }, 10);
-        });
     }
     startLoading = () => {
         this.dispatch(setState({ isLoading: true }));
@@ -161,7 +113,7 @@ class Server {
             })
             this.dispatch(setState({ ...newState }));
             
-            this.ws?.send(JSON.stringify({ data: 'update answers' }));
+            this.wss?.updateAnswers();
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
         } finally {
@@ -176,7 +128,7 @@ class Server {
             const room = await api.createTeams(this.roomId, t1, t2);
             const { data: { team_1, team_2 } } = room;
             this.dispatch(setState({ team_1, team_2, myTeam: team_1.some(i => i === me) ? 1 : 2 }));
-            this.ws?.send(JSON.stringify({data: 'update room'}));
+            this.wss.updateRoom();
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
         } finally {
@@ -188,7 +140,7 @@ class Server {
         try {
             await api.setAgree(this.roomId, this.gameId, this.user, answerId);
             await this.getAnswers();
-            this.ws?.send(JSON.stringify({data: 'update answers'}));
+            this.wss.updateAnswers();
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
         } finally {
@@ -200,7 +152,7 @@ class Server {
         try {
             await api.setGuess(this.roomId, this.gameId, this.user, answerId, guess);
             await this.getAnswers();
-            this.ws?.send(JSON.stringify({data: 'update answers'}));
+            this.wss.updateAnswers();
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
         } finally {
@@ -208,14 +160,15 @@ class Server {
         }
     }
 
-    nextRound = debounce(async () => {
+    nextRound = debounce(async (isFirst) => {
         this.startLoading();
         try {
             const curRound = this.getState().round;
-            await api.setNextRound(this.roomId, this.gameId, curRound);
+            await api.setNextRound(this.roomId, this.gameId, isFirst ? 0 : curRound);
+            await this.getRoom();
             await this.getGame();
             await this.getAnswers();
-            this.ws?.send(JSON.stringify({data: 'update game'}));
+            this.wss.updateAll();
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
         } finally {
@@ -231,7 +184,7 @@ class Server {
                 comments_2: state.myTeam === 2 ? comments : null,
             });
             await this.getGame();
-            this.ws?.send(JSON.stringify({data: 'update game'}));
+            this.wss.updateGame();
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
         } finally {
@@ -245,9 +198,7 @@ class Server {
             await this.getGame();
             await this.getRoom();
             await this.getAnswers();
-            this.ws?.send(JSON.stringify({data: 'update room'}));
-            this.ws?.send(JSON.stringify({data: 'update game'}));
-            this.ws?.send(JSON.stringify({data: 'update answers'}));
+            this.wss.updateAll();
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
         } finally {
@@ -262,9 +213,7 @@ class Server {
             await this.getGame();
             await this.getRoom();
             await this.getAnswers();
-            this.ws?.send(JSON.stringify({data: 'update room'}));
-            this.ws?.send(JSON.stringify({data: 'update game'}));
-            this.ws?.send(JSON.stringify({data: 'update answers'}));
+            this.wss.updateAll();
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
         } finally {
@@ -283,7 +232,7 @@ class Server {
                 localStorage.setItem('userName', user);
                 localStorage.setItem('gameId', game.data?._id || null);
             }
-            this.ws?.send(JSON.stringify({data: 'update room'}));
+            this.wss.updateRoom();
             return r;
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));

@@ -1,13 +1,13 @@
 import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import useModal from "../../../hooks/useModal";
-import Server from "../../../services/server";
+import useServer from "../../../hooks/useServer";
 
 const Guess = ({answers}) => {
     const [guessState, setGuessState] = useState(['', '', '']);
 
     const state = useSelector((state) => state);
-    const server = new Server();
+    const server = useServer();
 
     const curAnswer = answers.find(i => i.round === state.round);
     const guess = curAnswer?.[`team_${state.myTeam}_guess`];
@@ -44,7 +44,7 @@ const Guess = ({answers}) => {
                     onClick={() => {
                         server.agree(curAnswer._id);
                     }}
-                >Confirm?</button> :
+                >Confirm</button> :
                 <button
                     type="button"
                     className="btn btn-primary w-100"
