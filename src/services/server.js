@@ -17,6 +17,10 @@ class Server {
             Server._instance = this;
         }
 
+        if (!this.wss?.ws) {
+            this.wss?.reload(this.roomId, this.gameId);
+        }
+
         Server._instance.updateData();
         return Server._instance;
     }

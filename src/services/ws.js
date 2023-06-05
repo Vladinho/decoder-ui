@@ -13,6 +13,12 @@ class Ws {
         return Ws._instance;
     }
 
+    reload = (roomId, gameId) => {
+        this.roomId = roomId;
+        this.gameId = gameId;
+        this._create();
+    }
+
     updateAll = () => {
         this.updateRoom();
         this.updateGame();
@@ -39,12 +45,15 @@ class Ws {
     }
 
     _webSocketChecker = () => {
-        if ((this.ws?.readyState === 2 || this.ws?.readyState === 3 || !this.ws) && this.onMessage) {
+        if ((this.ws?.readyState === 2 || this.ws?.readyState === 3 || !this.ws) && this.onMessage && this.roomId && this.gameId) {
             this.ws = null;
             return this._create();
         }
     }
     _create =  () => {
+        if (!this.roomId || !this.gameId) {
+            return;
+        }
         this._connectToServer().then(async (ws) => {
             this.onConnect();
             ws.onmessage = (webSocketMessage) => {
