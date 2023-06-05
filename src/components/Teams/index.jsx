@@ -35,7 +35,7 @@ return <>
                     key={i}
                     className={classNames("list-group-item", {border: i === curPlayer, 'bg-light': i === curPlayer})}
                 >
-                    <h6>{i}
+                    <h6 className={'m-1 d-flex align-items-center'}>{i}
                         {state.mainUser === i && ' (admin)'}
                         {!!curAnswers?.length &&
                             answers.length === state.round &&
@@ -52,7 +52,7 @@ return <>
                     key={i}
                     className={classNames("list-group-item", {border: i === opponentCurPlayer, 'bg-light': i === opponentCurPlayer})}
                 >
-                    <h6>
+                    <h6 className={'m-1 d-flex align-items-center'}>
                         {i}
                         {state.mainUser === i && ' (admin)'}
                         {!!curAnswers?.length &&
