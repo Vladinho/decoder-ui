@@ -1,11 +1,11 @@
 class Ws {
     WS_URL = 'wss://decoder-web-sockets.herokuapp.com/ws'
-    constructor(roomId, gameId, onMessage, beforeConnect) {
+    constructor(roomId, gameId, onMessage, onConnect) {
         if (!Ws._instance) {
             this.roomId = roomId;
             this.gameId = gameId;
             this.onMessage = onMessage;
-            this.beforeConnect = beforeConnect;
+            this.onConnect = onConnect;
             this._create();
             setInterval(this._webSocketChecker, 3000);
             Ws._instance = this;
@@ -45,8 +45,8 @@ class Ws {
         }
     }
     _create =  () => {
-        this.beforeConnect();
         this._connectToServer().then(async (ws) => {
+            this.onConnect();
             ws.onmessage = (webSocketMessage) => {
                 if (webSocketMessage && webSocketMessage.data) {
                     this.onMessage(webSocketMessage.data)
