@@ -16,6 +16,7 @@ const LoginPage = () => {
     return <div className={`container-md p-3 ${css.main}`}>
         <h2 className={'mb-3 display-6'}>Decoder -<br />the best game ever!</h2>
         <div className={classNames(['form-group', 'mb-2', 'w-100'])}>
+            <label htmlFor="userName">Your name</label>
             <input type="text" className="form-control" id="userName" onChange={(e) =>{
                 localStorage.setItem('userName', e.target.value);
                 dispatch(setState({ me: e.target.value }));
@@ -42,27 +43,30 @@ const LoginPage = () => {
             }
         }}>
             <div className={classNames(['form-group', 'mb-2', 'w-100'])}>
-                <input
-                    type="text"
-                    className="form-control"
-                    id="roomID"
-                    aria-describedby="emailHelp"
-                    onChange={
-                        (e) => {
-                            setRoomId(e.target.value);
+                <label htmlFor="roomID">Room id</label>
+                <div className={'d-flex gap-2'}>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="roomID"
+                        aria-describedby="emailHelp"
+                        onChange={
+                            (e) => {
+                                setRoomId(e.target.value);
+                            }
                         }
-                    }
-                       placeholder="Enter room ID"
-                    value={roomId || ''}
-                />
+                        placeholder="Enter room ID"
+                        value={roomId || ''}
+                    />
+                    <button
+                        type="submit"
+                        className={'btn btn-primary text-nowrap'}
+                        disabled={!roomId || roomId.length < 4 || !state.me}
+                    >
+                        Join the room
+                    </button>
+                </div>
             </div>
-            <button
-                type="submit"
-                className={'btn btn-primary mb-2'}
-                disabled={!roomId || roomId.length < 4 || !state.me}
-            >
-                Join
-            </button>
         </form>
         <h3 className='text-center'>Or</h3>
         <button type="submit" className={classNames(['btn', ' btn-primary', 'mb-2', 'w-100'])} disabled={!state.me || roomId} onClick={async () => {
@@ -76,7 +80,7 @@ const LoginPage = () => {
             shortRoomId && localStorage.setItem('shortRoomId', shortRoomId);
             dispatch(setState({ mainUser, users, roomId, gameId, shortRoomId }));
             navigate('/StartGame')
-        }}>Create new room</button>
+        }}>Create a new room</button>
         {/*<pre>{JSON.stringify(state, null, 4)}</pre>*/}
     </div>
 }
