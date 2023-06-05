@@ -15,7 +15,7 @@ const Counter = ({isLost, isWin, isNoWinner}) => {
     return <div className={css.container}>
         <div className={classNames('d-flex', 'justify-content-between', 'w-100')}>
             <h6>My count:</h6>
-            <h6>Opponent`s count:</h6>
+            <h6>Opponent's count:</h6>
         </div>
         <div className={css.badges}>
             {!myCounter.white && !myCounter.black && '-'}

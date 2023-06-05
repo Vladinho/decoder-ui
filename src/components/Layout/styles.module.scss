@@ -5,3 +5,14 @@
   left: 0;
   z-index: 111;
 }
+
+.logoutImg {
+  position: relative;
+  left: 2px;
+}
+
+.name {
+  max-width: calc(100% - 230px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -22,7 +22,7 @@ const DndElement = ({ userName, handleOnDrop, canAcceptDrop }) => {
                 }, css.dndElementWrapper)}
             >
                 <li
-                    className={`list-group-item text-center rounded  ${css.dndElement} bg-${params.isDragGhost ? `light ${css.dndGhost}` : 'white'} p-1 mb-1 text-break`}
+                    className={`list-group-item text-center rounded  ${css.dndElement} bg-${params.isDragGhost ? `light ${css.dndGhost}` : 'white'} p-1 text-break`}
                 >
                     <DragHandle />
                     {userName}

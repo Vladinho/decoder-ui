@@ -9,7 +9,7 @@ const Table = ({ answer }) => {
             <th scope="col">Round {answer.round}</th>
             <th scope="col" className={'text-center'} style={{fontSize: '10px'}}>your<br/>answer</th>
             <th scope="col" className={'text-center'} style={{fontSize: '10px'}}>correct<br/>answer</th>
-            <th scope="col" className={'text-center'} style={{fontSize: '10px'}}>opponent`s<br/>answer</th>
+            <th scope="col" className={'text-center'} style={{fontSize: '10px'}}>Opponent's<br/>answer</th>
         </tr>
         </thead>
         <tbody>

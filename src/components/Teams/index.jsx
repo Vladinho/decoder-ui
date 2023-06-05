@@ -46,7 +46,7 @@ return <>
                 </li>)}
                 {!state.team_1?.length && <li className="list-group-item">No users</li>}
             </ul>
-            <h3>Opponent`s team:</h3>
+            <h3>Opponent's team:</h3>
             <ul className={classNames(["list-group"])}>
                 {opponentTeam.map(i => <li
                     key={i}

@@ -3,7 +3,7 @@ import {useSelector} from "react-redux";
 import {useState} from "react";
 import css from './styles.module.scss';
 import refreshIcon from "../../assets/refresh.svg"
-import backIcon from "../../assets/back.svg"
+import logout from "../../assets/logout.svg"
 import {useNavigate} from "react-router";
 import Teams from "../Teams";
 
@@ -17,9 +17,9 @@ const Layout = ({ children, cx = [] }) => {
 
                 <div className={'container-md d-flex justify-content-between align-items-center flex-wrap gap-1'}>
                     <button type="button" className="btn btn-light border" onClick={() => navigate('/')}>
-                        <img src={backIcon} alt={'back'}/>
+                        <img className={css.logoutImg} src={logout} alt={'back'}/>
                     </button>
-                    <h2>{state.me}</h2>
+                    <h3 className={`m-0 ${css.name}`}>{state.me}</h3>
                     {!!state.round && <span className="badge bg-secondary">round {state.round}</span>}
                     <button type="button" className="btn btn-primary" onClick={() => setIsTeamsVisible((s) => !s)}>Teams</button>
                     <button className="btn btn-primary" onClick={() => window.location.reload()}>

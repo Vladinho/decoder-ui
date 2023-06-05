@@ -27,6 +27,14 @@
   position: relative;
 }
 
+.dndElementWrapper {
+  padding-bottom: 6px;
+
+  &:last-child {
+    padding-bottom: 50px;
+  }
+}
+
 .isDraggedOver {
   :global(div[class^='DropMarker']) {
     position: absolute;

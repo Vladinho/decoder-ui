@@ -85,7 +85,7 @@ const Game = () => {
                 <a className={classNames('nav-link', {active: activeTab === 'Opponent'})} onClick={(e) => {
                     e.preventDefault();
                     setActiveTab('Opponent');
-                }} href='/' style={{fontSize: '12px'}}>Opponent`s words {isOpponentGuess && <span className="badge bg-danger">1</span>}</a>
+                }} href='/' style={{fontSize: '12px'}}>Opponent's words {isOpponentGuess && <span className="badge bg-danger">1</span>}</a>
             </li>
         </ul>
 
@@ -153,7 +153,7 @@ const Game = () => {
                     !opponentTeamAnswersForTable.length &&
                     !isOpponentGuess &&
                     !state.isLoading &&
-                    <Empty text={'There are no opponent`s words. Wait...'}/>
+                    <Empty text={"There are no Opponent's words. Wait..."}/>
                 }
             </>
         }
