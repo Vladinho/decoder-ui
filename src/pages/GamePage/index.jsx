@@ -23,7 +23,7 @@ const Game = () => {
     useEffect(  () => {
         const run = async () => {
             await server.reloadData();
-            server.runWs();
+            server.runWs(() => state.round === null && server.wss?.updateRoom());
         }
         run();
         // eslint-disable-next-line react-hooks/exhaustive-deps

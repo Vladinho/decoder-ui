@@ -19,13 +19,14 @@ class Server {
         return Server._instance;
     }
 
-    runWs = () => {
+    runWs = (callback) => {
         if (this.roomId && this.gameId && !this.wss) {
             this.wss = new Ws(this.roomId, this.gameId, this.onWebSocketMessage, async () => {
                 if (this.roomId && this.gameId) {
                     await this.getRoom(false);
                     await this.getGame(false);
                     await this.getAnswers(false);
+                    callback();
                 }
             });
             window.wss = this.wss;
