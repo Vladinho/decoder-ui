@@ -18,6 +18,7 @@ const StartGame = () => {
         const run = async () => {
             await server.getRoom();
             await server.getGame();
+            server.runWs();
         }
         run();
         // eslint-disable-next-line react-hooks/exhaustive-deps

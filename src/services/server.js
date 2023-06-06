@@ -8,14 +8,6 @@ class Server {
     constructor() {
         if (!Server._instance) {
             this.updateData();
-            this.wss = new Ws(this.roomId, this.gameId, this.onWebSocketMessage, async () => {
-                if (this.roomId && this.gameId) {
-                    await this.getRoom(false);
-                    await this.getGame(false);
-                    await this.getAnswers(false);
-                }
-            });
-            window.wss = this.wss;
             Server._instance = this;
         }
 
@@ -25,6 +17,19 @@ class Server {
 
         Server._instance.updateData();
         return Server._instance;
+    }
+
+    runWs = () => {
+        if (this.roomId && this.gameId && !this.wss) {
+            this.wss = new Ws(this.roomId, this.gameId, this.onWebSocketMessage, async () => {
+                if (this.roomId && this.gameId) {
+                    await this.getRoom(false);
+                    await this.getGame(false);
+                    await this.getAnswers(false);
+                }
+            });
+            window.wss = this.wss;
+        }
     }
     updateData = () => {
         this.dispatch = store.dispatch;
@@ -138,7 +143,7 @@ class Server {
             const room = await api.createTeams(this.roomId, t1, t2);
             const { data: { team_1, team_2 } } = room;
             this.dispatch(setState({ team_1, team_2, myTeam: team_1.some(i => i === me) ? 1 : 2 }));
-            this.wss.updateRoom();
+            this.wss?.updateRoom();
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
         } finally {
@@ -150,7 +155,7 @@ class Server {
         try {
             await api.setAgree(this.roomId, this.gameId, this.user, answerId);
             await this.getAnswers();
-            this.wss.updateAnswers();
+            this.wss?.updateAnswers();
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
         } finally {
@@ -162,7 +167,7 @@ class Server {
         try {
             await api.setGuess(this.roomId, this.gameId, this.user, answerId, guess);
             await this.getAnswers();
-            this.wss.updateAnswers();
+            this.wss?.updateAnswers();
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
         } finally {
@@ -178,7 +183,7 @@ class Server {
             await this.getRoom();
             await this.getGame();
             await this.getAnswers();
-            this.wss.updateAll();
+            this.wss?.updateAll();
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
         } finally {
@@ -194,7 +199,7 @@ class Server {
                 comments_2: state.myTeam === 2 ? comments : null,
             });
             await this.getGame();
-            this.wss.updateGame();
+            this.wss?.updateGame();
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
         } finally {
@@ -208,7 +213,7 @@ class Server {
             await this.getGame();
             await this.getRoom();
             await this.getAnswers();
-            this.wss.updateAll();
+            this.wss?.updateAll();
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
         } finally {
@@ -223,7 +228,7 @@ class Server {
             await this.getGame();
             await this.getRoom();
             await this.getAnswers();
-            this.wss.updateAll();
+            this.wss?.updateAll();
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));
         } finally {
@@ -242,7 +247,7 @@ class Server {
                 localStorage.setItem('userName', user);
                 localStorage.setItem('gameId', game.data?._id || null);
             }
-            this.wss.updateRoom();
+            this.wss?.updateRoom();
             return r;
         } catch (e) {
             this.dispatch(setState({ errors: [e] }));

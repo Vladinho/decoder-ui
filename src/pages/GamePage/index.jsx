@@ -6,7 +6,7 @@ import Guess from "./Guess";
 import Table from "./Table";
 import classNames from "classnames";
 import ResultsTable from "./ResultsTable";
-import Counter from "../Counter";
+import Counter from "../../components/Counter";
 import useCount from "../../hooks/useCount";
 import {setState} from "../../reducers/roomReducer";
 import Answer from "./Answer";
@@ -21,7 +21,11 @@ const Game = () => {
     const [activeTab, setActiveTab] = useState('My');
     const { code, answers, curPlayer, words, opponentAnswers, opponentWords } = useMy();
     useEffect(  () => {
-        server.reloadData();
+        const run = async () => {
+            await server.reloadData();
+            server.runWs();
+        }
+        run();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const curAnswer = answers.find(i => i.round === state.round);
