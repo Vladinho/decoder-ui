@@ -35,9 +35,6 @@ const StartGame = () => {
         { isDragMode ?
             <TeamsDragAndDrop onSave={() => setIsDragMode(false)} onCancel={() => setIsDragMode(false)} /> :
             <>
-                <button className={classNames(['btn', ' btn-primary', 'mb-2', 'w-100'])} onClick={async () => {
-                    server.getRoom();
-                }}>See team members</button>
                 <button className={classNames(['btn', ' btn-primary', 'mb-2', 'w-100'])} disabled={state.users.length < 4} onClick={async () => {
                     const room = await api.createTeams(state.roomId);
                     const { data: { team_1, team_2 } } = room;
