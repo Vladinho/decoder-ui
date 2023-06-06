@@ -21,7 +21,8 @@ const Layout = ({ children, cx = [] }) => {
                     </button>
                     <h3 className={`m-0 ${css.name}`}>{state.me}</h3>
                     {!!state.round && <span className="badge bg-secondary">round {state.round}</span>}
-                    <button type="button" className="btn btn-primary" onClick={() => setIsTeamsVisible((s) => !s)}>Teams</button>
+                    {!!state.team_1.length && !!state.team_2.length && <button type="button" className="btn btn-primary"
+                             onClick={() => setIsTeamsVisible((s) => !s)}>Teams</button>}
                     <button className="btn btn-primary" onClick={() => window.location.reload()}>
                         <img src={refreshIcon} alt={'refresh'}/>
                     </button>
