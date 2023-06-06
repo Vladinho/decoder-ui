@@ -24,6 +24,11 @@ const StartGame = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return <Layout>
+        {
+            state.users.length < 4 && <div className="alert alert-warning" role="alert">
+                There must be 4 players minimum to start the game!
+            </div>
+        }
         <h1>Room ID:</h1>
         <h3 className={'mb-4'}>{state.shortRoomId || state.roomId}</h3>
 
@@ -37,7 +42,7 @@ const StartGame = () => {
                     const room = await api.createTeams(state.roomId);
                     const { data: { team_1, team_2 } } = room;
                     dispatch(setState({team_1, team_2}));
-                }}>Create teams</button>
+                }}>Create random teams</button>
 
                 <button className={classNames(['btn', ' btn-primary', 'mb-2', 'w-100'])} disabled={!state.team_1.length || !state.team_2.length} onClick={async () => {
                     server.nextRound(true);
@@ -46,6 +51,7 @@ const StartGame = () => {
 
                 {!!state.team_1.length && !!state.team_2.length && <button onClick={() => setIsDragMode(true)} className={'btn btn-primary w-100 mb-2'}>Change teams
                     order</button>}
+
             {
                 !!state.team_1.length && !!state.team_2.length ? <>
                     <h2 className={'mt-4'}>Team 1:</h2>
@@ -57,7 +63,7 @@ const StartGame = () => {
                         {state.team_2.map((i) => <li key={i} className="list-group-item">{i}</li>)}
                     </ul>
                 </>: <>
-                    <h2>Team members:</h2>
+                    <h2 className={'mt-4'}>Team members:</h2>
                     <ul className="list-group">
                         {state.users.map((i) => <li key={i} className="list-group-item">{i}</li>)}
                     </ul>
