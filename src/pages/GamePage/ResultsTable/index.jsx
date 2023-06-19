@@ -8,7 +8,7 @@ const ResultsTable = ({ answers, words, comments = [], isMyResults }) => {
     const state = useSelector((state) => state);
     const wordsColumns = [];
     const server = useServer();
-    answers.forEach((i) => {
+    answers.reverse().forEach((i) => {
         const code = i.code.split('');
         code.forEach((c, index) => {
             if (!wordsColumns[+c - 1]) {
