@@ -1,7 +1,7 @@
 function columnsToRows(columns) {
     const r = [];
     columns.forEach((c, columnIndex) => {
-        c.forEach((word, rowIndex) => {
+        c.reverse().forEach((word, rowIndex) => {
             if (!r[rowIndex]) {
                 r[rowIndex] = ['', '', '', '']
             }
