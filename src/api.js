@@ -1,6 +1,6 @@
 import axios from "axios";
 
-axios.defaults.baseURL = 'https://decoder90.herokuapp.com/';
+axios.defaults.baseURL = 'https://decoder-ux4v.onrender.com/';
 // axios.defaults.baseURL = 'http://localhost:4444/';
 
 const api = {

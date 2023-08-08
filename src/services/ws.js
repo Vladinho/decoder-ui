@@ -1,5 +1,5 @@
 class Ws {
-    WS_URL = 'wss://decoder-web-sockets.herokuapp.com/ws'
+    WS_URL = 'wss://decoderws.onrender.com/ws'
     constructor(roomId, gameId, onMessage, onConnect) {
         if (!Ws._instance) {
             this.roomId = roomId;
