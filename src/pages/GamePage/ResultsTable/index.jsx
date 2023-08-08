@@ -1,12 +1,12 @@
 import {useSelector} from "react-redux";
-import React, {useState} from "react";
+import React, {useMemo, useState} from "react";
 import columnsToRows from "../../../utils/columnsToRows";
 import useServer from "../../../hooks/useServer";
 
 const ResultsTable = ({ answers, words, comments = [], isMyResults }) => {
     const [isCommentMode, setIsCommentMode] = useState(false);
     const state = useSelector((state) => state);
-    const wordsColumns = [];
+    const wordsColumns = useMemo(() => [], []);
     const server = useServer();
     answers.reverse().forEach((i) => {
         const code = i.code.split('');
@@ -18,8 +18,7 @@ const ResultsTable = ({ answers, words, comments = [], isMyResults }) => {
         });
     })
 
-    const rows = columnsToRows(wordsColumns);
-
+    const rows = useMemo(() => columnsToRows(wordsColumns), [wordsColumns]);
     const commentsObj = {};
     comments.forEach(c => {
         const user = c.split('_')[0];
