@@ -1,12 +1,12 @@
 import {useSelector} from "react-redux";
-import React, {useMemo, useState} from "react";
+import React, {useState} from "react";
 import columnsToRows from "../../../utils/columnsToRows";
 import useServer from "../../../hooks/useServer";
 
 const ResultsTable = ({ answers, words, comments = [], isMyResults }) => {
     const [isCommentMode, setIsCommentMode] = useState(false);
     const state = useSelector((state) => state);
-    const wordsColumns = useMemo(() => [], []);
+    const wordsColumns = [];
     const server = useServer();
     answers.reverse().forEach((i) => {
         const code = i.code.split('');
@@ -18,7 +18,7 @@ const ResultsTable = ({ answers, words, comments = [], isMyResults }) => {
         });
     })
 
-    const rows = useMemo(() => columnsToRows(wordsColumns), [wordsColumns]);
+    const rows = columnsToRows(wordsColumns);
     const commentsObj = {};
     comments.forEach(c => {
         const user = c.split('_')[0];
@@ -48,7 +48,7 @@ const ResultsTable = ({ answers, words, comments = [], isMyResults }) => {
             </thead>
             <tbody>
             {
-                rows.map((i, index) => <tr key={index}>
+                (isCommentMode ? rows : rows.reverse()).map((i, index) => <tr key={index}>
                     {i.map((j, index) => <td key={index} className={'text-break'} style={{width: '25%'}}>{j}</td>)}
                 </tr>)
             }
