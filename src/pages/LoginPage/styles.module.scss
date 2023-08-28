@@ -23,3 +23,25 @@
     z-index: 1;
   }
 }
+
+.banner {
+  position: fixed;
+  z-index: 100000000;
+  top: 10px;
+  left: 10px;
+  right: 19px;
+  opacity: 0;
+  animation-name: show;
+  animation-duration: 0.3s;
+  animation-delay: 2s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -6,6 +6,7 @@ import api from "../../api";
 import {setState} from "../../reducers/roomReducer";
 import {useNavigate} from "react-router";
 import useServer from "../../hooks/useServer";
+import sorryGif from "../../assets/sorry.gif";
 
 const LoginPage = () => {
     const [roomId, setRoomId] = useState(localStorage.getItem('shortRoomId') || localStorage.getItem('roomId'));
@@ -14,6 +15,10 @@ const LoginPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     return <div className={`container-md p-3 ${css.main} d-flex flex-column justify-content-between`}>
+        {state.isLoading && <div className={`alert alert-warning ${css.banner}`} role="alert">
+            Try one minute later... We are running the server.
+            <img className={'w-100 mt-2'} src={sorryGif} alt={'sorry..'}/>
+        </div>}
         <h2 className={'mb-3 display-6'}>Decoder -<br />the best game ever!</h2>
         <form className={`${css.form} d-flex flex-wrap`}>
             <div className={classNames(['form-group', 'mb-2', 'w-100'])}>
