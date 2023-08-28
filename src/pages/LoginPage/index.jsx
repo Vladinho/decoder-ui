@@ -75,16 +75,23 @@ const LoginPage = () => {
             <h3 className='text-center w-100'>Or</h3>
             <button type="submit" className={classNames(['btn', ' btn-primary', 'mb-2', 'w-100'])} disabled={!state.me || roomId} onClick={async (e) => {
                 e.preventDefault();
-                const room = await api.newRoom(state.me);
-                const { data: { _id: roomId, mainUser, users, roomId: shortRoomId }} = room;
-                const game = await api.newGame(roomId);
-                const { data: { _id: gameId }} = game;
-                roomId && localStorage.setItem('roomId', roomId);
-                state.me && localStorage.setItem('userName', state.me);
-                gameId && localStorage.setItem('gameId', gameId);
-                shortRoomId && localStorage.setItem('shortRoomId', shortRoomId);
-                dispatch(setState({ mainUser, users, roomId, gameId, shortRoomId }));
-                navigate('/StartGame');
+                dispatch(setState({ isLoading: true }));
+                try {
+                    const room = await api.newRoom(state.me);
+                    const { data: { _id: roomId, mainUser, users, roomId: shortRoomId }} = room;
+                    const game = await api.newGame(roomId);
+                    const { data: { _id: gameId }} = game;
+                    roomId && localStorage.setItem('roomId', roomId);
+                    state.me && localStorage.setItem('userName', state.me);
+                    gameId && localStorage.setItem('gameId', gameId);
+                    shortRoomId && localStorage.setItem('shortRoomId', shortRoomId);
+                    dispatch(setState({ mainUser, users, roomId, gameId, shortRoomId }));
+                    navigate('/StartGame');
+                } catch (e) {
+                    dispatch(setState({ errors: e }));
+                } finally {
+                    dispatch(setState({ isLoading: false }));
+                }
             }}>Create a new room</button>
         </form>
         {/*<pre>{JSON.stringify(state, null, 4)}</pre>*/}
